@@ -29,18 +29,22 @@
     <div class="container">
         <div class="row">
             <div class="col-md-offset-3 col-md-6">
-                <s:form action="employee_login" namespace="/" method="POST" cssClass="form-horizontal">
-                    <span class="heading">用户登录</span>
-                    <div class="form-group">
-                        <input class="form-control" type="text" name="name" placeholder="用户名">
-                        <i class="fa fa-user"></i>
-                    </div>
-                    <div class="form-group">
-                        <input class="form-control" type="password" name="password" placeholder="密码">
-                        <i class="fa fa-key"></i>
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" name="login" value="提交" class="btn btn-default">
+                <s:form action="employee_login" namespace="/" method="POST" cssClass="block">
+                    <p class="block-heading">用户登录</p>
+                    <div class="block-body">
+                        <label>用户名</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
+                            <input class="form-control" type="text" name="name" placeholder="用户名">
+                        </div>
+                        <label>密码</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+                            <input class="form-control" type="password" name="password" placeholder="密码">
+                        </div>
+                        <div class="input-group-btn">
+                            <input type="submit" name="login" value="提交" class="btn btn-primary pull-right">
+                        </div>
                     </div>
                 </s:form>
             </div>
