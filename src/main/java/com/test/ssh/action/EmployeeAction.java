@@ -21,7 +21,7 @@ public class EmployeeAction extends ActionSupport implements ModelDriven<Employe
         Employee returnEmployee = employeeService.login(employee);
         if (returnEmployee == null){
             this.addActionError("用户名或密码错误！");
-            return "input";
+            return "failed";
         }else{
             ActionContext.getContext().getSession().put("user", returnEmployee);
             return "success";

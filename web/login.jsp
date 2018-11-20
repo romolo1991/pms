@@ -9,47 +9,59 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/font-awesome.min.css">
-    <link rel="stylesheet" href="css/self.css">
-    <script src="js/jquery-3.0.0.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>login</title>
+    <link rel="stylesheet" type="text/css" href="css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="css/demo.css" />
+    <!--必要样式-->
+    <link rel="stylesheet" type="text/css" href="css/component.css" />
+    <script type="text/javascript">
+        if (navigator.userAgent.toLowerCase().indexOf("chrome") >= 0) {
+            $(window).load(function(){
+                $('input:-webkit-autofill').each(function(){
+                    var text = $(this).val();
+                    var name = $(this).attr('name');
+                    $(this).after(this.outerHTML).remove();
+                    $('input[name=' + name + ']').val(text);
+                });
+            });
+        }
+    </script>
 </head>
 <body>
-    <div>
-        <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="#"><span class="firstFont">TestWebSet</span></a>
+    <div class="container demo-1">
+        <div class="content">
+            <div id="large-header" class="large-header">
+                <canvas id="demo-canvas"></canvas>
+                <div class="logo_box">
+                    <h3>Welcome</h3>
+                    <form action="employee_login" namespace="/" method="POST">
+                        <div class="input_outer">
+                            <span class="user"></span>
+                            <input name="name" class="text" style="color: #FFFFFF !important" type="text" placeholder="请输入账户">
+                        </div>
+                        <div class="input_outer">
+                            <span class="pwd"></span>
+                            <input name="password" class="text" style="color: #FFFFFF !important; position:absolute; z-index:100;"value="" type="password" placeholder="请输入密码">
+                        </div>
+                        <div class="mb2">
+
+                                <input class="act-but submit"  type="submit" name="login" style="color: #FFFFFF" value="登录">
+                        </div>
+
+                    </form>
                 </div>
             </div>
-        </nav>
-    </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-offset-3 col-md-6">
-                <s:form action="employee_login" namespace="/" method="POST" cssClass="block">
-                    <p class="block-heading">用户登录</p>
-                    <div class="block-body">
-                        <label>用户名</label>
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
-                            <input class="form-control" type="text" name="name" placeholder="用户名">
-                        </div>
-                        <label>密码</label>
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
-                            <input class="form-control" type="password" name="password" placeholder="密码">
-                        </div>
-                        <div class="input-group-btn">
-                            <input type="submit" name="login" value="提交" class="btn btn-primary pull-right">
-                        </div>
-                    </div>
-                </s:form>
-            </div>
         </div>
+    </div><!-- /container -->
+        <script src="js/TweenLite.min.js"></script>
+        <script src="js/EasePack.min.js"></script>
+        <script src="js/rAF.js"></script>
+        <script src="js/demo-1.js"></script>
+        <div style="text-align:center;">
     </div>
-    <h4><s:actionerror/></h4>
+
 </body>
 </html>
