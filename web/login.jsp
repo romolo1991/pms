@@ -37,7 +37,7 @@
                 <canvas id="demo-canvas"></canvas>
                 <div class="logo_box">
                     <h3>Welcome</h3>
-                    <form action="employee_login" namespace="/" method="POST">
+                    <form action="employee" namespace="/" method="POST">
                         <div class="input_outer">
                             <span class="user"></span>
                             <input name="name" class="text" style="color: #FFFFFF !important" type="text" placeholder="请输入账户">
