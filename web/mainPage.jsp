@@ -14,7 +14,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="stylesheet" href="WebTemplate/layuiadmin/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="WebTemplate/layuiadmin/style/admin.css" media="all">
+    <link rel="stylesheet" href="WebTemplate/layuiadmin/style/template.css" media="all">
+    <link rel="stylesheet" href="css/flipclock.css" type="text/css">
 
+    <script src="js/jquery-3.0.0.min.js"></script>
+    <script src="js/flipclock.min.js"></script>
     <script src="WebTemplate/layuiadmin/layui/layui.js"></script>
     <script>
         layui.config({
@@ -27,7 +31,7 @@
 <body>
     <div class="layui-fluid">
         <div class="layui-row layui-col-space12">
-            <div class="layui-col-md8">
+            <div class="layui-col-md7">
                 <div class="layui-card">
                     <div class="layui-card-header">您好</div>
                     <div class="layui-card-body">
@@ -35,12 +39,13 @@
                             <legend>欢迎</legend>
                             <div class="layui-field-box layui-text">
                                 欢迎来到PMS系统。接下来应该说一些欢迎的话语，并对这个系统是干嘛的进行介绍。总而言之，我不会写。
+                                <img src="images/huge.jpg" style="display: block; max-width: 100%; height: auto; margin: 5px 5px">
                             </div>
                         </fieldset>
                     </div>
                 </div>
             </div>
-            <div class="layui-col-md4">
+            <div class="layui-col-md5">
                 <div class="layui-card">
                     <div class="layui-card-header">版本信息</div>
                     <div class="layui-card-body layui-text">
@@ -70,8 +75,19 @@
                         </table>
                     </div>
                 </div>
+                <div class="layui-card">
+                    <div class="layui-card-header">时间</div>
+                    <div class="layui-card-body">
+                        <div class="flip-clock-wrapper" style="width: 100%; height: auto"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+<script>
+    var clock = new FlipClock($(".flip-clock-wrapper"), {
+        clockFace : 'TwentyFourHourClock'
+    });
+</script>
 </body>
 </html>

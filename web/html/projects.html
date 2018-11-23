@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>projects</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="../WebTemplate/layuiadmin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="../WebTemplate/layuiadmin/style/admin.css" media="all">
+
+    <script src="../WebTemplate/layuiadmin/layui/layui.js"></script>
+    <script>
+        layui.config({
+            base: '../WebTemplate/layuiadmin/' //静态资源所在路径
+        }).extend({
+            index: 'lib/index' //主入口模块
+        }).use(['index', 'form', 'laydate'], function () {
+            var laydate = layui.laydate;
+
+            laydate.render({
+                elem: '#laydate-start'
+                ,theme: 'grid'
+            });
+            laydate.render({
+                elem: '#laydate-end'
+                ,theme: 'grid'
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="layui-fluid">
+        <div class="layui-card">
+            <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+                <div class="layui-row layui-col-space12">
+                    <div class="layui-inline layui-col-md3">
+                        <label class="layui-form-label">项目编号</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="projectId" placeholder="请输入" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline layui-col-md3">
+                        <label class="layui-form-label">项目名称</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="projectName" placeholder="请输入" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline layui-col-md3">
+                            <label class="layui-form-label">项目类型</label>
+                            <div class="layui-input-block">
+                                <select name="projectType">
+                                    <option value="">请选择项目类型</option>
+                                    <option value="0">专项</option>
+                                    <option value="1">快捷项目</option>
+                                    <option value="2">项目协办</option>
+                                    <option value="3">项目主办</option>
+                                </select>
+                            </div>
+                    </div>
+                </div>
+                <div class="layui-row layui-col-space12">
+                    <div class="layui-inline layui-col-md3">
+                        <label class="layui-form-label">开始时间</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" id="laydate-start" placeholder="yyyy-MM-dd" name="startTime">
+                        </div>
+                    </div>
+                    <div class="layui-inline layui-col-md3">
+                        <label class="layui-form-label">结束时间</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" id="laydate-end" placeholder="yyyy-MM-dd" name="endTime">
+                        </div>
+                    </div>
+                    <div class="layui-inline layui-col-md3">
+                        <label class="layui-form-label">项目规模</label>
+                        <div class="layui-input-block">
+                            <select name="projectScale">
+                                <option value="">请选择项目规模</option>
+                                <option value="0">总行快捷开发项目</option>
+                                <option value="1">分行快捷开发项目</option>
+                                <option value="2">小型项目</option>
+                                <option value="3">中型项目</option>
+                                <option value="4">大型项目</option>
+                                <option value="5">特大型项目</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline layui-col-md2 layui-text-center">
+                        <button class="layui-btn" style="margin-left: 20px; margin-bottom: 5px">
+                            <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-card-body">
+                <div style="padding-bottom: 10px">
+                    <button class="layui-btn layui-btn-danger">
+                        <i class="layui-icon layui-icon-delete layuiadmin-button-btn"></i>删除
+                    </button>
+                    <button class="layui-btn">
+                        <i class="layui-icon layui-icon-add-1 layuiadmin-button-btn"></i>添加
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

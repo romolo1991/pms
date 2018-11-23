@@ -39,21 +39,8 @@
             <i class="layui-icon layui-icon-refresh-3"></i>
           </a>
         </li>
-        <li class="layui-nav-item layui-hide-xs" lay-unselect>
-          <input type="text" placeholder="搜索..." autocomplete="off" class="layui-input layui-input-search" layadmin-event="serach" lay-action="template/search.html?keywords=">
-        </li>
       </ul>
       <ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
-
-        <li class="layui-nav-item" lay-unselect>
-          <a lay-href="app/message/index.html" layadmin-event="message" lay-text="消息中心">
-            <i class="layui-icon layui-icon-notice"></i>
-
-            <!-- 如果有新消息，则显示小圆点 -->
-            <span class="layui-badge-dot"></span>
-          </a>
-        </li>
-
         <li class="layui-nav-item layui-hide-xs" lay-unselect>
           <a href="javascript:;" layadmin-event="fullscreen">
             <i class="layui-icon layui-icon-screen-full"></i>
@@ -82,7 +69,7 @@
     <div class="layui-side layui-side-menu">
       <div class="layui-side-scroll">
         <div class="layui-logo" lay-href="home/console.html">
-          <span>PMS</span>
+          <span style="font-family: 晚歌自制夏天的风; font-size: larger; color: #FF9900">PMS</span>
         </div>
 
         <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
@@ -95,10 +82,10 @@
             </a>
             <dl class="layui-nav-child">
               <dd>
-                <a lay-href="project/intro.html">项目简介</a>
+                <a lay-href="html/projects.html">项目简介</a>
               </dd>
               <dd data-name="workload">
-                <a lay-href="project/workload.html">工作量管理</a>
+                <a lay-href="html/element.html">工作量管理</a>
               </dd>
             </dl>
           </li>
