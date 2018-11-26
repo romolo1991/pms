@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.test.ssh.domain.User" schema="renyue" table="systemusers">
+        <id name="userId" column="userId" type="integer">
+            <generator class="native"/>
+        </id>
+        <property name="name" column="userName" type="java.lang.String"/>
+        <property name="password" column="userPassword" type="java.lang.String"/>
+        <property name="isDelete" column="isDelete" type="char"/>
+    </class>
+
+</hibernate-mapping>

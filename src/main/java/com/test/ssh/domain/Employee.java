@@ -1,31 +1,69 @@
 package com.test.ssh.domain;
 
+import java.util.Date;
+
 public class Employee {
-    private int id;
-    private String name;
-    private String password;
+    private String employeeId;
+    private String employeeName;
+    private Date entryTime;
+    private int department;
+    private int groupOfEmployee;
+    private char groupLeader;
+    private char isDelete;
 
-    public int getId() {
-        return id;
+    public String getEmployeeId() {
+        return employeeId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setEmployeeId(String employeeId) {
+        this.employeeId = employeeId;
     }
 
-    public String getName() {
-        return name;
+    public String getEmployeeName() {
+        return employeeName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
     }
 
-    public String getPassword() {
-        return password;
+    public Date getEntryTime() {
+        return entryTime;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setEntryTime(Date entryTime) {
+        this.entryTime = entryTime;
+    }
+
+    public int getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(int department) {
+        this.department = department;
+    }
+
+    public int getGroupOfEmployee() {
+        return groupOfEmployee;
+    }
+
+    public void setGroupOfEmployee(int groupOfEmployee) {
+        this.groupOfEmployee = groupOfEmployee;
+    }
+
+    public char getGroupLeader() {
+        return groupLeader;
+    }
+
+    public void setGroupLeader(char groupLeader) {
+        this.groupLeader = groupLeader;
+    }
+
+    public char getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(char isDelete) {
+        this.isDelete = isDelete;
     }
 }

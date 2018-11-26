@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans.xsd
                            http://www.springframework.org/schema/context
-                           http://www.springframework.org/schema/context/spring-context.xsd
-                           http://www.springframework.org/schema/tx
-                           http://www.springframework.org/schema/tx/spring-tx.xsd">
+                           http://www.springframework.org/schema/context/spring-context.xsd">
     <!--配置连接池属性-->
     <context:property-placeholder location="classpath:db.properties"/>
 
@@ -38,6 +36,7 @@
         <property name="mappingResources">
             <list>
                 <value>com/test/ssh/domain/Employee.hbm.xml</value>
+                <value>com/test/ssh/domain/User.hbm.xml</value>
             </list>
         </property>
     </bean>
@@ -46,11 +45,21 @@
     <bean id="employeeAction" class="com.test.ssh.action.EmployeeAction" scope="prototype">
         <property name="employeeService" ref="employeeService"/>
     </bean>
+    <bean id="userAction" class="com.test.ssh.action.UserAction" scope="prototype">
+        <property name="userService" ref="userService"/>
+    </bean>
 
     <bean id="employeeService" class="com.test.ssh.service.impl.EmployeeServiceImpl">
         <property name="employeeDao" ref="employeeDao"/>
     </bean>
+    <bean id="userService" class="com.test.ssh.service.impl.UserServiceImpl">
+        <property name="userDao" ref="userDao"/>
+    </bean>
+
     <bean id="employeeDao" class="com.test.ssh.dao.impl.EmployeeDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="userDao" class="com.test.ssh.dao.impl.UserDaoImpl">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
@@ -58,8 +67,5 @@
     <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-
-    <!-- 开启注解式事务管理 -->
-    <tx:annotation-driven transaction-manager="transactionManager"/>
 
 </beans>

@@ -37,7 +37,7 @@
                 <canvas id="demo-canvas"></canvas>
                 <div class="logo_box">
                     <h3>Welcome</h3>
-                    <form action="employee" namespace="/" method="POST">
+                    <form action="user" namespace="/" method="POST">
                         <div class="input_outer">
                             <span class="user"></span>
                             <input name="name" class="text" style="color: #FFFFFF !important" type="text" placeholder="请输入账户">
@@ -47,20 +47,18 @@
                             <input name="password" class="text" style="color: #FFFFFF !important; position:absolute; z-index:100;"value="" type="password" placeholder="请输入密码">
                         </div>
                         <div class="mb2">
-
-                                <input class="act-but submit"  type="submit" name="login" style="color: #FFFFFF" value="登录">
+                            <input class="act-but submit"  type="submit" name="login" style="color: #FFFFFF" value="登录">
                         </div>
-
                     </form>
                 </div>
             </div>
         </div>
     </div><!-- /container -->
-        <script src="js/TweenLite.min.js"></script>
-        <script src="js/EasePack.min.js"></script>
-        <script src="js/rAF.js"></script>
-        <script src="js/demo-1.js"></script>
-        <div style="text-align:center;">
+    <script src="js/TweenLite.min.js"></script>
+    <script src="js/EasePack.min.js"></script>
+    <script src="js/rAF.js"></script>
+    <script src="js/demo-1.js"></script>
+    <div style="text-align:center;">
     </div>
 
 </body>

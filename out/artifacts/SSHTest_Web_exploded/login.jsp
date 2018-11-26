@@ -37,7 +37,7 @@
                 <canvas id="demo-canvas"></canvas>
                 <div class="logo_box">
                     <h3>Welcome</h3>
-                    <form action="employee" namespace="/" method="POST">
+                    <form action="user" namespace="/" method="POST">
                         <div class="input_outer">
                             <span class="user"></span>
                             <input name="name" class="text" style="color: #FFFFFF !important" type="text" placeholder="请输入账户">
@@ -56,11 +56,11 @@
             </div>
         </div>
     </div><!-- /container -->
-        <script src="js/TweenLite.min.js"></script>
-        <script src="js/EasePack.min.js"></script>
-        <script src="js/rAF.js"></script>
-        <script src="js/demo-1.js"></script>
-        <div style="text-align:center;">
+    <script src="js/TweenLite.min.js"></script>
+    <script src="js/EasePack.min.js"></script>
+    <script src="js/rAF.js"></script>
+    <script src="js/demo-1.js"></script>
+    <div style="text-align:center;">
     </div>
 
 </body>

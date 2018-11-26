@@ -1,6 +1,5 @@
 package com.test.ssh.action;
 
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 import com.test.ssh.domain.Employee;
@@ -15,17 +14,6 @@ public class EmployeeAction extends ActionSupport implements ModelDriven<Employe
     @Override
     public Employee getModel() {
         return employee;
-    }
-
-    public String login(){
-        Employee returnEmployee = employeeService.login(employee);
-        if (returnEmployee == null){
-            this.addActionError("用户名或密码错误！");
-            return "failed";
-        }else{
-            ActionContext.getContext().getSession().put("user", returnEmployee);
-            return "success";
-        }
     }
 
     public void setEmployee(Employee employee){
