@@ -4,12 +4,16 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class name="com.test.ssh.domain.Employee" table="pbtest">
-        <id name="id" column="id">
-            <generator class="native"></generator>
+    <class name="com.test.ssh.domain.Employee" schema="renyue" table="employee">
+        <id name="employeeId" column="employeeId" type="java.lang.String">
+            <generator class="native"/>
         </id>
-        <property name="name" column="name" length="50"></property>
-        <property name="password" column="password" length="50"></property>
+        <property name="employeeName" column="employeeName" type="java.lang.String"/>
+        <property name="entryTime" column="entryTime" type="java.lang.String"/>
+        <property name="department" column="department" type="integer"/>
+        <property name="groupOfEmployee" column="groupOfEmployee" type="integer"/>
+        <property name="groupLeader" column="groupLeader" type="char"/>
+        <property name="isDelete" column="isDelete" type="char"/>
     </class>
 
 </hibernate-mapping>

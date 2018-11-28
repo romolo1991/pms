@@ -15,67 +15,56 @@
             base: '../WebTemplate/layuiadmin/' //静态资源所在路径
         }).extend({
             index: 'lib/index' //主入口模块
-        }).use(['index', 'form', 'laydate'], function () {
-            var laydate = layui.laydate;
-
-            laydate.render({
-                elem: '#laydate-start'
-                ,theme: 'grid'
-            });
-            laydate.render({
-                elem: '#laydate-end'
-                ,theme: 'grid'
-            });
-        });
+        })
     </script>
 </head>
 <body>
     <div class="layui-fluid">
         <div class="layui-card">
             <div class="layui-form layui-card-header layuiadmin-card-header-auto">
-                <div class="layui-row layui-col-space12">
+                <div class="layui-form-item layui-row layui-col-space12">
                     <div class="layui-inline layui-col-md3">
                         <label class="layui-form-label">项目编号</label>
-                        <div class="layui-input-inline">
-                            <input type="text" name="projectId" placeholder="请输入" autocomplete="off" class="layui-input">
+                        <div class="layui-input-block">
+                            <input type="text" id="projectId" placeholder="请输入" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-inline layui-col-md3">
                         <label class="layui-form-label">项目名称</label>
-                        <div class="layui-input-inline">
-                            <input type="text" name="projectName" placeholder="请输入" autocomplete="off" class="layui-input">
+                        <div class="layui-input-block">
+                            <input type="text" id="projectName" placeholder="请输入" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-inline layui-col-md3">
-                            <label class="layui-form-label">项目类型</label>
-                            <div class="layui-input-block">
-                                <select name="projectType">
-                                    <option value="">请选择项目类型</option>
-                                    <option value="0">专项</option>
-                                    <option value="1">快捷项目</option>
-                                    <option value="2">项目协办</option>
-                                    <option value="3">项目主办</option>
-                                </select>
-                            </div>
+                        <label class="layui-form-label">项目类型</label>
+                        <div class="layui-input-block">
+                            <select id="projectType">
+                                <option value="">请选择项目类型</option>
+                                <option value="0">专项</option>
+                                <option value="1">快捷项目</option>
+                                <option value="2">项目协办</option>
+                                <option value="3">项目主办</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
-                <div class="layui-row layui-col-space12">
+                <div class="layui-form-item layui-row layui-col-space12">
                     <div class="layui-inline layui-col-md3">
                         <label class="layui-form-label">开始时间</label>
-                        <div class="layui-input-inline">
+                        <div class="layui-input-block">
                             <input type="text" class="layui-input" id="laydate-start" placeholder="yyyy-MM-dd" name="startTime">
                         </div>
                     </div>
                     <div class="layui-inline layui-col-md3">
                         <label class="layui-form-label">结束时间</label>
-                        <div class="layui-input-inline">
+                        <div class="layui-input-block">
                             <input type="text" class="layui-input" id="laydate-end" placeholder="yyyy-MM-dd" name="endTime">
                         </div>
                     </div>
                     <div class="layui-inline layui-col-md3">
                         <label class="layui-form-label">项目规模</label>
                         <div class="layui-input-block">
-                            <select name="projectScale">
+                            <select id="projectScale">
                                 <option value="">请选择项目规模</option>
                                 <option value="0">总行快捷开发项目</option>
                                 <option value="1">分行快捷开发项目</option>
@@ -86,24 +75,85 @@
                             </select>
                         </div>
                     </div>
-                    <div class="layui-inline layui-col-md2 layui-text-center">
-                        <button class="layui-btn" style="margin-left: 20px; margin-bottom: 5px">
-                            <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
-                        </button>
+                    <div class="layui-inline layui-col-md2">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" style="margin-left: 20px; margin-bottom: 5px" data-type="reload" id="search">
+                                <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="layui-card-body">
                 <div style="padding-bottom: 10px">
                     <button class="layui-btn layui-btn-danger">
-                        <i class="layui-icon layui-icon-delete layuiadmin-button-btn"></i>删除
+                        <i class="layui-icon layui-icon-delete layuiadmin-button-btn" id="te1"></i>删除
                     </button>
                     <button class="layui-btn">
                         <i class="layui-icon layui-icon-add-1 layuiadmin-button-btn"></i>添加
                     </button>
                 </div>
+                <table id="projectTable"></table>
             </div>
         </div>
     </div>
+    <script>
+        layui.use(['index', 'form', 'laydate', 'table', 'jquery'], function () {
+            var laydate = layui.laydate;
+            var table = layui.table;
+            var $ = layui.jquery;
+
+            laydate.render({
+                elem: '#laydate-start',
+                theme: 'grid'
+            });
+            laydate.render({
+                elem: '#laydate-end',
+                theme: 'grid'
+            });
+            table.render({
+                elem: '#projectTable',
+                url: 'getPro',
+                type: 'post',
+                id: 'projectTableReload',
+                cellMinWidth: 40,
+                contentType: "application/json; charset=utf-8",
+                cols: [[
+                    {type: 'checkbox'},
+                    {field: 'projectId', sort: true, title: '项目编号'},
+                    {field: 'projectName', title: '项目名称'},
+                    {field: 'projectType', sort: true, title: '项目类型'},
+                    {field: 'projectScale', sort: true, title: '项目规模'},
+                    {field: 'isSponsor', title: '协办项目'},
+                    {field: 'leader', sort: true, title: '负责人'},
+                    {field: 'projectManager', sort: true, title: '项目经理'},
+                    {field: 'efficiency', sort: true, title: '研发效率'},
+                    {field: 'functionPoint', sort: true, title: '功能点'},
+                    {field: 'workload', sort: true, title: '工作量'},
+                    {field: 'startTime', sort: true, title: '开始时间'},
+                    {field: 'endTime', sort: true, title: '结束时间'}
+                ]],
+                page: true
+            });
+            var active = {
+                reload: function () {
+                    var projectId = $("#projectId").val();
+                    alert(projectId);
+                    table.reload("projectTableReload", {
+                        where: {
+                            projectId : projectId
+                        },
+                        page: {
+                            curr: 1
+                        }
+                    });
+                }
+            };
+            $("#search").on("click", function () {
+                var type = $(this).data("type");
+                active[type] ? active[type].call(this) : "";
+            });
+        });
+    </script>
 </body>
 </html>

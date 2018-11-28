@@ -13,7 +13,7 @@ public class UserServiceImpl implements UserService {
         return userDao.login(user);
     }
 
-    public  void setUserDao(UserDao userDao){
+    public void setUserDao(UserDao userDao){
         this.userDao = userDao;
     }
 }

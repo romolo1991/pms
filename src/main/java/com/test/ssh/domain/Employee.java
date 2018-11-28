@@ -1,11 +1,9 @@
 package com.test.ssh.domain;
 
-import java.util.Date;
-
 public class Employee {
     private String employeeId;
     private String employeeName;
-    private Date entryTime;
+    private String entryTime;
     private int department;
     private int groupOfEmployee;
     private char groupLeader;
@@ -27,11 +25,11 @@ public class Employee {
         this.employeeName = employeeName;
     }
 
-    public Date getEntryTime() {
+    public String getEntryTime() {
         return entryTime;
     }
 
-    public void setEntryTime(Date entryTime) {
+    public void setEntryTime(String entryTime) {
         this.entryTime = entryTime;
     }
 

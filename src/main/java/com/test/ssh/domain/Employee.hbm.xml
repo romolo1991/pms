@@ -9,7 +9,7 @@
             <generator class="native"/>
         </id>
         <property name="employeeName" column="employeeName" type="java.lang.String"/>
-        <property name="entryTime" column="entryTime" type="java.util.Date"/>
+        <property name="entryTime" column="entryTime" type="java.lang.String"/>
         <property name="department" column="department" type="integer"/>
         <property name="groupOfEmployee" column="groupOfEmployee" type="integer"/>
         <property name="groupLeader" column="groupLeader" type="char"/>

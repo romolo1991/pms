@@ -5,12 +5,17 @@
         "http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
-    <package name="ssh" extends="struts-default" namespace="/">
+    <package name="ssh" extends="json-default" namespace="/">
         <action name="user" class="com.test.ssh.action.UserAction" method="login">
             <result name="failed">/login.jsp</result>
             <!--返回值为"input"时，跳转至login.jsp，并通过login.jsp中的s:actionerror 告诉用户错误信息-->
             <result name="success" type="redirect">/index.jsp</result>
             <!--返回值为“success”时，跳转到管理界面-->
+        </action>
+        <action name="getPro" class="com.test.ssh.action.ProjectAction" method="getProjects">
+            <result type="json">
+                <param name="root">projectsJson</param>
+            </result>
         </action>
     </package>
 </struts>
