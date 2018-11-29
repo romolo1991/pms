@@ -97,10 +97,23 @@
             </div>
         </div>
     </div>
+    <div class="layui-fluid" id="addNew" style="display: none">
+        <div class="layui-form">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">项目名称：</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" id="new-projectId" autocomplete="off" placeholder="必填项">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
-        layui.use(['index', 'form', 'laydate', 'table', 'jquery'], function () {
+        layui.use(['index', 'form', 'laydate', 'table', 'jquery', 'layer'], function () {
             var laydate = layui.laydate;
             var table = layui.table;
+            var layer = layui.layer;
             var $ = layui.jquery;
 
             laydate.render({
@@ -111,13 +124,16 @@
                 elem: '#laydate-end',
                 theme: 'grid'
             });
+            layer.open({
+                type: 1,
+                content: $("#addNew"),
+                title: "新建项目"
+            })
             table.render({
                 elem: '#projectTable',
                 url: 'getPro',
-                type: 'post',
                 id: 'projectTableReload',
                 cellMinWidth: 40,
-                contentType: "application/json; charset=utf-8",
                 cols: [[
                     {type: 'checkbox'},
                     {field: 'projectId', sort: true, title: '项目编号'},
@@ -138,10 +154,19 @@
             var active = {
                 reload: function () {
                     var projectId = $("#projectId").val();
-                    alert(projectId);
+                    var projectName = $("#projectName").val();
+                    var projectType = $("#projectType").val();
+                    var projectScale = $("#projectScale").val();
+                    var startTime = $("#laydate-start").val();
+                    var endTime = $("#laydate-end").val();
                     table.reload("projectTableReload", {
                         where: {
-                            projectId : projectId
+                            projectId : projectId,
+                            projectName : projectName,
+                            projectType : projectType,
+                            projectScale : projectScale,
+                            startTime : startTime,
+                            endTime : endTime
                         },
                         page: {
                             curr: 1

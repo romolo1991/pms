@@ -27,12 +27,15 @@ public class ProjectAction extends ActionSupport implements ModelDriven<Project>
     }
 
     public String getProjects(){
-        System.out.println(limit);
         List<Project> projects = projectService.getProjects(project.getProjectId(), project.getProjectName(), project.getProjectType(), project.getProjectScale(), project.getStartTime(), project.getEndTime());
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("code", 0);
         result.put("msg", "");
-        result.put("count", projects.size());
+        if (projects != null){
+            result.put("count", projects.size());
+        }else{
+            result.put("count", 0);
+        }
         JSONArray array = JSONArray.fromObject(projects);
         result.put("data", array);
         projectsJson = JSONObject.fromObject(result);
