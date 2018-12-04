@@ -24,6 +24,11 @@ public class ProjectServiceImpl implements ProjectService {
         return projectDao.addProject(project);
     }
 
+    @Override
+    public String delProject(String projectId) {
+        return projectDao.delProject(projectId);
+    }
+
     public void setProjectDao(ProjectDao projectDao){
         this.projectDao = projectDao;
     }

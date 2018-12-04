@@ -7,6 +7,7 @@ import com.test.ssh.service.ProjectService;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,8 +18,10 @@ public class ProjectAction extends ActionSupport implements ModelDriven<Project>
 
     private int page = 1;
     private int limit = 10;
+    private ArrayList<String> projectIds = new ArrayList<String>();
     private JSONObject projectsJson;
     private JSONObject addJson;
+    private JSONObject delJson;
 
     private ProjectService projectService;
 
@@ -59,7 +62,21 @@ public class ProjectAction extends ActionSupport implements ModelDriven<Project>
         }else{
             return "fail";
         }
+    }
 
+    public String delProject(){
+        Map<String, String> result = new HashMap<String, String>();
+        for (int i=0;i<projectIds.size();i++){
+            String back = projectService.delProject(projectIds.get(i));
+            if (!back.equals("success")){
+                result.put("msg", "fail");
+                delJson = JSONObject.fromObject(result);
+                return "fail";
+            }
+        }
+        result.put("msg", "success");
+        delJson = JSONObject.fromObject(result);
+        return SUCCESS;
     }
 
     public void setProject(Project project){
@@ -82,6 +99,14 @@ public class ProjectAction extends ActionSupport implements ModelDriven<Project>
         return limit;
     }
 
+    public ArrayList<String> getProjectIds() {
+        return projectIds;
+    }
+
+    public void setProjectIds(ArrayList<String> projectIds) {
+        this.projectIds = projectIds;
+    }
+
     public void setProjectService(ProjectService projectService){
         this.projectService = projectService;
     }
@@ -100,5 +125,13 @@ public class ProjectAction extends ActionSupport implements ModelDriven<Project>
 
     public void setAddJson(JSONObject addJson) {
         this.addJson = addJson;
+    }
+
+    public JSONObject getDelJson() {
+        return delJson;
+    }
+
+    public void setDelJson(JSONObject delJson) {
+        this.delJson = delJson;
     }
 }

@@ -23,5 +23,10 @@
                 <param name="root">addJson</param>
             </result>
         </action>
+        <action name="delPro" class="com.test.ssh.action.ProjectAction" method="delProject">
+            <result type="json">
+                <param name="root">delJson</param>
+            </result>
+        </action>
     </package>
 </struts>

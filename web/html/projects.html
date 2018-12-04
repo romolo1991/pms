@@ -86,17 +86,24 @@
             </div>
             <div class="layui-card-body">
                 <div style="padding-bottom: 10px">
-                    <button class="layui-btn layui-btn-danger">
+                    <button class="layui-btn layui-btn-danger" id="del">
                         <i class="layui-icon layui-icon-delete layuiadmin-button-btn"></i>删除
                     </button>
                     <button class="layui-btn" id="add">
                         <i class="layui-icon layui-icon-add-1 layuiadmin-button-btn"></i>添加
                     </button>
                 </div>
-                <table id="projectTable"></table>
+                <table id="projectTable">
+                    <tr>
+                        <th lay-data="{fixed:'right', width:80, align:'center', toolbar:'#bar'}"></th>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>
+    <script type="text/html" id="bar">
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    </script>
     <div class="layui-fluid" id="addNew" style="display: none">
         <div class="layui-form">
             <div class="layui-form-item">
@@ -217,7 +224,7 @@
                 </div>
             </div>
             <div class="layui-form-item" style="text-align: right">
-                <button class="layui-btn" id="sureAdd">添加</button>
+                <button class="layui-btn" id="sureAdd">确定</button>
                 <button class="layui-btn layui-btn-primary" id="cancelAdd">取消</button>
             </div>
         </div>
@@ -250,11 +257,14 @@
             table.render({
                 elem: '#projectTable',
                 url: 'getPro',
+                type: 'post',
+                limit: 7,
+                limits: [7,10,15,20],
                 id: 'projectTableReload',
                 cellMinWidth: 40,
                 cols: [[
-                    {type: 'checkbox'},
-                    {field: 'projectId', sort: true, title: '项目编号'},
+                    {type: 'checkbox', fixed: true},
+                    {field: 'projectId', sort: true, title: '项目编号', fixed: true},
                     {field: 'projectName', title: '项目名称'},
                     {field: 'projectType', sort: true, title: '项目类型'},
                     {field: 'projectScale', sort: true, title: '项目规模'},
@@ -289,6 +299,32 @@
                     });
                 }
             };
+            $("#del").on("click", function () {
+                var checked = table.checkStatus("projectTableReload").data;
+                var projectIds = new Array();
+                for (var i=0;i<checked.length;i++){
+                    var projectId = checked[i].projectId;
+                    projectIds.push(projectId);
+                }
+                var projectsParams = $.param({
+                    projectIds: projectIds
+                },true);
+                $.ajax({
+                    url: "delPro",
+                    type: "post",
+                    data: projectsParams,
+                    success: function (data) {
+                        if (data.msg=="success"){
+                            layer.msg("删除项目成功！",{
+                                time: 3000,
+                                shadeClose: true
+                            });
+                            var type = $("#search").data("type");
+                            active[type] ? active[type].call("#search") : "";
+                        }
+                    }
+                });
+            });
             $("#add").on("click", function () {
                 indexOfAddPro = layer.open({
                     type: 1,

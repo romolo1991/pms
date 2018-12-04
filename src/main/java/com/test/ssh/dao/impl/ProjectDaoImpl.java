@@ -81,4 +81,14 @@ public class ProjectDaoImpl extends HibernateDaoSupport implements ProjectDao {
         this.getHibernateTemplate().save(project);
         return "success";
     }
+
+    @Override
+    public String delProject(String projectId) {
+        String sql = "from Project where projectId='" + projectId + "'";
+        List<Project> list = this.getHibernateTemplate().find(sql);
+        Project projectNow = list.get(0);
+        projectNow.setIsDelete('1');
+        this.getHibernateTemplate().update(projectNow);
+        return "success";
+    }
 }
