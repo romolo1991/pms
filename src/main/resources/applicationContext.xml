@@ -30,6 +30,7 @@
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
                 <prop key="hibernate.show_sql">true</prop>
                 <prop key="hibernate.format_sql">true</prop>
+
             </props>
         </property>
         <!-- 加载Hibernate中的映射文件 -->
@@ -38,6 +39,7 @@
                 <value>com/test/ssh/domain/Employee.hbm.xml</value>
                 <value>com/test/ssh/domain/User.hbm.xml</value>
                 <value>com/test/ssh/domain/Project.hbm.xml</value>
+                <value>com/test/ssh/domain/Department.hbm.xml</value>
             </list>
         </property>
     </bean>
@@ -52,6 +54,10 @@
     <bean id="projectAction" class="com.test.ssh.action.ProjectAction" scope="prototype">
         <property name="projectService" ref="projectService"/>
     </bean>
+    <bean id="departmentAction" class="com.test.ssh.action.DepartmentAction" scope="prototype">
+        <property name="departmentService" ref="departmentService"/>
+    </bean>
+
 
     <bean id="employeeService" class="com.test.ssh.service.impl.EmployeeServiceImpl">
         <property name="employeeDao" ref="employeeDao"/>
@@ -62,6 +68,9 @@
     <bean id="projectService" class="com.test.ssh.service.impl.ProjectServiceImpl">
         <property name="projectDao" ref="projectDao"/>
     </bean>
+    <bean id="departmentService" class="com.test.ssh.service.impl.DepartmentServiceImpl">
+        <property name="departmentDao" ref="departmentDao"/>
+    </bean>
 
     <bean id="employeeDao" class="com.test.ssh.dao.impl.EmployeeDaoImpl">
         <property name="sessionFactory" ref="sessionFactory"/>
@@ -70,6 +79,9 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="projectDao" class="com.test.ssh.dao.impl.ProjectDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="departmentDao" class="com.test.ssh.dao.impl.DepartmentDaoImpl">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 

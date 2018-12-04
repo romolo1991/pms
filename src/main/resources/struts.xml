@@ -15,17 +15,16 @@
         <action name="getPro" class="com.test.ssh.action.ProjectAction" method="getProjects">
             <result type="json">
                 <param name="root">projectsJson</param>
-                <!--返回的值为JSONObject格式，且名叫projectJson-->
-            </result>
-        </action>
-        <action name="addPro" class="com.test.ssh.action.ProjectAction" method="addProject">
-            <result type="json">
-                <param name="root">addJson</param>
             </result>
         </action>
         <action name="delPro" class="com.test.ssh.action.ProjectAction" method="delProject">
             <result type="json">
                 <param name="root">delJson</param>
+            </result>
+        </action>
+        <action name="getDepts" class="com.test.ssh.action.DepartmentAction" method="getDepts">
+            <result type="json">
+                <param name="root">deptsJson</param>
             </result>
         </action>
     </package>
