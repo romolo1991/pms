@@ -11,8 +11,17 @@ public class ProjectServiceImpl implements ProjectService {
     private ProjectDao projectDao;
 
     @Override
-    public List<Project> getProjects(String projectId, String projectName, String projectType, String projectScale, String startTime, String endTime) {
-        return projectDao.getProjects(projectId, projectName, projectType, projectScale, startTime, endTime);
+    public List<Project> getProjects(String projectId, String projectName, String projectType, String projectScale, String startTime, String endTime, int page, int limit) {
+        return projectDao.getProjects(projectId, projectName, projectType, projectScale, startTime, endTime, page, limit);
+    }
+
+    public int getProjectCount (String projectId, String projectName, String projectType, String projectScale, String startTime, String endTime){
+        return projectDao.getProjectCount(projectId, projectName, projectType, projectScale, startTime, endTime);
+    }
+
+    @Override
+    public String addProject(Project project) {
+        return projectDao.addProject(project);
     }
 
     public void setProjectDao(ProjectDao projectDao){

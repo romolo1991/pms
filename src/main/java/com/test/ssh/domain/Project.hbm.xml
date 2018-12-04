@@ -6,7 +6,6 @@
 <hibernate-mapping>
     <class name="com.test.ssh.domain.Project" schema="renyue" table="project">
         <id name="projectId" column="projectId" type="java.lang.String">
-            <generator class="native"/>
         </id>
         <property name="projectName" column="projectName" type="java.lang.String"/>
         <property name="projectType" column="projectType" type="java.lang.String"/>

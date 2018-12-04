@@ -15,7 +15,7 @@
             base: '../WebTemplate/layuiadmin/' //静态资源所在路径
         }).extend({
             index: 'lib/index' //主入口模块
-        })
+        });
     </script>
 </head>
 <body>
@@ -75,7 +75,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="layui-inline layui-col-md2">
+                    <div class="layui-inline layui-col-md1">
                         <div class="layui-input-block">
                             <button class="layui-btn" style="margin-left: 20px; margin-bottom: 5px" data-type="reload" id="search">
                                 <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
@@ -87,9 +87,9 @@
             <div class="layui-card-body">
                 <div style="padding-bottom: 10px">
                     <button class="layui-btn layui-btn-danger">
-                        <i class="layui-icon layui-icon-delete layuiadmin-button-btn" id="te1"></i>删除
+                        <i class="layui-icon layui-icon-delete layuiadmin-button-btn"></i>删除
                     </button>
-                    <button class="layui-btn">
+                    <button class="layui-btn" id="add">
                         <i class="layui-icon layui-icon-add-1 layuiadmin-button-btn"></i>添加
                     </button>
                 </div>
@@ -101,11 +101,124 @@
         <div class="layui-form">
             <div class="layui-form-item">
                 <div class="layui-inline">
-                    <label class="layui-form-label">项目名称：</label>
+                    <label class="layui-form-label">项目编号：</label>
                     <div class="layui-input-block">
-                        <input type="text" class="layui-input" id="new-projectId" autocomplete="off" placeholder="必填项">
+                        <input type="text" class="layui-input" id="new-projectId" autocomplete="off">
                     </div>
                 </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">项目类型：</label>
+                    <div class="layui-input-block">
+                        <select id="new-projectType">
+                            <option value="">请选择项目类型</option>
+                            <option value="00">专项</option>
+                            <option value="01">快捷项目</option>
+                            <option value="02">项目协办</option>
+                            <option value="03">项目主办</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">项目名称：</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" id="new-projectName" autocomplete="off">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">项目规模：</label>
+                    <div class="layui-input-block">
+                        <select id="new-projectScale">
+                            <option value="">请选择项目规模</option>
+                            <option value="00">总行快捷开发项目</option>
+                            <option value="01">分行快捷开发项目</option>
+                            <option value="02">小型项目</option>
+                            <option value="03">中型项目</option>
+                            <option value="04">大型项目</option>
+                            <option value="05">特大型项目</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">负责人：</label>
+                    <div class="layui-input-block">
+                        <input type="text" readonly="readonly" id="new-leader" class="layui-input" about="0">
+                    </div>
+                </div>
+                <button class="layui-btn layui-btn-sm">
+                    <i class="layui-icon layui-icon-friends"></i>
+                </button>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">负责组：</label>
+                    <div class="layui-input-block">
+                        <input type="text" readonly="readonly" id="new-hostGroup" class="layui-input" about="0">
+                    </div>
+                </div>
+                <button class="layui-btn layui-btn-sm">
+                    <i class="layui-icon layui-icon-group"></i>
+                </button>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">项目经理：</label>
+                    <div class="layui-input-block">
+                        <input type="text" readonly="readonly" id="new-projectManager" class="layui-input" about="0">
+                    </div>
+                </div>
+                <button class="layui-btn layui-btn-sm">
+                    <i class="layui-icon layui-icon-friends"></i>
+                </button>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">研发效率：</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" id="new-efficiency">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">功能点：</label>
+                    <div class="layui-input-block">
+                        <input type="test" class="layui-input" id="new-functionPoint">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">工作量：</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" id="new-workload" readonly="readonly" value="0">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">协办项目：</label>
+                    <div class="layui-input-block">
+                        <input type="checkbox" lay-skin="switch" lay-text="是|否" id="new-isSponsor">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">开始时间：</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" id="new-startTime" placeholder="yyyy-MM-dd" name="startTime">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">结束时间：</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" id="new-endTime" placeholder="yyyy-MM-dd" name="startTime">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item" style="text-align: right">
+                <button class="layui-btn" id="sureAdd">添加</button>
+                <button class="layui-btn layui-btn-primary" id="cancelAdd">取消</button>
             </div>
         </div>
     </div>
@@ -116,6 +229,8 @@
             var layer = layui.layer;
             var $ = layui.jquery;
 
+            var indexOfAddPro;
+
             laydate.render({
                 elem: '#laydate-start',
                 theme: 'grid'
@@ -124,11 +239,14 @@
                 elem: '#laydate-end',
                 theme: 'grid'
             });
-            layer.open({
-                type: 1,
-                content: $("#addNew"),
-                title: "新建项目"
-            })
+            laydate.render({
+                elem: '#new-startTime',
+                theme: 'grid'
+            });
+            laydate.render({
+                elem: '#new-endTime',
+                theme: 'grid'
+            });
             table.render({
                 elem: '#projectTable',
                 url: 'getPro',
@@ -167,16 +285,114 @@
                             projectScale : projectScale,
                             startTime : startTime,
                             endTime : endTime
-                        },
-                        page: {
-                            curr: 1
                         }
                     });
                 }
             };
+            $("#add").on("click", function () {
+                indexOfAddPro = layer.open({
+                    type: 1,
+                    content: $("#addNew"),
+                    area: "55%",
+                    title: "新建项目"
+                });
+            });
             $("#search").on("click", function () {
                 var type = $(this).data("type");
                 active[type] ? active[type].call(this) : "";
+            });
+            $("#new-functionPoint").on("change", function () {
+                var efficiency = $("#new-efficiency").val();
+                if (efficiency != ""){
+                    efficiency = parseFloat(efficiency);
+                    if (efficiency == 0){
+                        return;
+                    }
+                    var functionPoint = $("#new-functionPoint").val();
+                    functionPoint = parseFloat(functionPoint);
+                    var workload = functionPoint/efficiency;
+                    $("#new-workload").val(workload.toFixed(1));
+                }
+            });
+            $("#new-efficiency").on("change", function(){
+                var functionPoint = $("#new-functionPoint").val();
+                if (functionPoint != ""){
+                    functionPoint = parseFloat(functionPoint);
+                    var efficiency = $("#new-efficiency").val();
+                    efficiency = parseFloat(efficiency);
+                    if (efficiency == 0){
+                        return;
+                    }
+                    var workload = functionPoint/efficiency;
+                    $("#new-workload").val(workload.toFixed(1));
+                }
+            });
+            $("#cancelAdd").on("click", function () {
+                layer.close(indexOfAddPro);
+            });
+            $("#sureAdd").on("click", function () {
+                var projectId = $("#new-projectId").val();
+                var projectName = $("#new-projectName").val();
+                var projectType = $("#new-projectType").val();
+                var projectScale = $("#new-projectScale").val();
+                var leader = $("#new-leader").val();
+                var hostGroup = $("#new-hostGroup").val();
+                var projectManager = $("#new-projectManager").val();
+                var efficiency = $("#new-efficiency").val();
+                var functionPoint = $("#new-functionPoint").val();
+                var workload = $("#new-workload").val();
+                var startTime = $("#new-startTime").val();
+                var endTime = $("#new-endTime").val();
+                var isSponsor = $("#new-isSponsor").val();
+
+                if (hostGroup==""){
+                    hostGroup = parseInt("0");
+                }
+                if (efficiency==""){
+                    efficiency = parseFloat("0");
+                }
+                if (functionPoint==""){
+                    functionPoint = parseFloat("0");
+                }
+                if (workload==""){
+                    workload = parseFloat("0");
+                }
+                if (isSponsor=="on"){
+                    isSponsor = '1';
+                }else{
+                    isSponsor = '0';
+                }
+
+                $.ajax({
+                    type: "post",
+                    url: "addPro",
+                    data: {
+                        projectId : projectId,
+                        projectName : projectName,
+                        projectType : projectType,
+                        projectScale : projectScale,
+                        leader: leader,
+                        hostGroup: hostGroup,
+                        projectManager: projectManager,
+                        efficiency: efficiency,
+                        functionPoint: functionPoint,
+                        workload: workload,
+                        startTime: startTime,
+                        endTime: endTime,
+                        isSponsor: isSponsor
+                    },
+                    success:function (data) {
+                        if (data.msg=="success"){
+                            layer.msg("新添项目成功！",{
+                                time: 3000,
+                                shadeClose: true
+                            });
+                            layer.close(indexOfAddPro);
+                            var type = $("#search").data("type");
+                            active[type] ? active[type].call("#search") : "";
+                        }
+                    }
+                });
             });
         });
     </script>

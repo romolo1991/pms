@@ -15,6 +15,12 @@
         <action name="getPro" class="com.test.ssh.action.ProjectAction" method="getProjects">
             <result type="json">
                 <param name="root">projectsJson</param>
+                <!--返回的值为JSONObject格式，且名叫projectJson-->
+            </result>
+        </action>
+        <action name="addPro" class="com.test.ssh.action.ProjectAction" method="addProject">
+            <result type="json">
+                <param name="root">addJson</param>
             </result>
         </action>
     </package>

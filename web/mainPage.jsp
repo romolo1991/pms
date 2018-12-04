@@ -39,7 +39,7 @@
                             <legend>欢迎</legend>
                             <div class="layui-field-box layui-text">
                                 欢迎来到PMS系统。接下来应该说一些欢迎的话语，并对这个系统是干嘛的进行介绍。总而言之，我不会写。
-                                <img src="images/huge.jpg" style="display: block; max-width: 100%; height: auto; margin: 5px 5px">
+                                <img src="images/yuanjing.jpg" style="display: block; max-width: 100%; height: auto; margin: 5px 5px">
                             </div>
                         </fieldset>
                     </div>

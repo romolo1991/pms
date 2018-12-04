@@ -16,8 +16,9 @@ public class ProjectAction extends ActionSupport implements ModelDriven<Project>
     private Project project = new Project();
 
     private int page = 1;
-    private int limit = 30;
+    private int limit = 10;
     private JSONObject projectsJson;
+    private JSONObject addJson;
 
     private ProjectService projectService;
 
@@ -27,12 +28,12 @@ public class ProjectAction extends ActionSupport implements ModelDriven<Project>
     }
 
     public String getProjects(){
-        List<Project> projects = projectService.getProjects(project.getProjectId(), project.getProjectName(), project.getProjectType(), project.getProjectScale(), project.getStartTime(), project.getEndTime());
+        List<Project> projects = projectService.getProjects(project.getProjectId(), project.getProjectName(), project.getProjectType(), project.getProjectScale(), project.getStartTime(), project.getEndTime(), page, limit);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("code", 0);
         result.put("msg", "");
         if (projects != null){
-            result.put("count", projects.size());
+            result.put("count", projectService.getProjectCount(project.getProjectId(), project.getProjectName(), project.getProjectType(), project.getProjectScale(), project.getStartTime(), project.getEndTime()));
         }else{
             result.put("count", 0);
         }
@@ -40,6 +41,25 @@ public class ProjectAction extends ActionSupport implements ModelDriven<Project>
         result.put("data", array);
         projectsJson = JSONObject.fromObject(result);
         return SUCCESS;
+    }
+
+    public String addProject(){
+        //测试数据
+        project.setLeader("0");
+        project.setHostGroup(0);
+        project.setProjectManager("0");
+
+        project.setIsDelete('0');
+        String back = projectService.addProject(project);
+        if (back.equals("success")){
+            Map<String, String> result = new HashMap<String, String>();
+            result.put("msg", "success");
+            addJson = JSONObject.fromObject(result);
+            return SUCCESS;
+        }else{
+            return "fail";
+        }
+
     }
 
     public void setProject(Project project){
@@ -72,5 +92,13 @@ public class ProjectAction extends ActionSupport implements ModelDriven<Project>
 
     public void setProjectsJson(JSONObject projectsJson) {
         this.projectsJson = projectsJson;
+    }
+
+    public JSONObject getAddJson() {
+        return addJson;
+    }
+
+    public void setAddJson(JSONObject addJson) {
+        this.addJson = addJson;
     }
 }
