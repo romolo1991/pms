@@ -86,7 +86,7 @@
             </div>
             <div class="layui-card-body">
                 <div style="padding-bottom: 10px">
-                    <button class="layui-btn layui-btn-danger" id="del">
+                    <button class="layui-btn layui-btn-warm" id="del">
                         <i class="layui-icon layui-icon-delete layuiadmin-button-btn"></i>删除
                     </button>
                     <button class="layui-btn" id="add">
@@ -95,15 +95,12 @@
                 </div>
                 <table id="projectTable">
                     <tr>
-                        <th lay-data="{fixed:'right', width:80, align:'center', toolbar:'#bar'}"></th>
+                        <th lay-data=""></th>
                     </tr>
                 </table>
             </div>
         </div>
     </div>
-    <script type="text/html" id="bar">
-        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    </script>
     <div class="layui-fluid" id="addNew" style="display: none">
         <div class="layui-form">
             <div class="layui-form-item">
@@ -229,6 +226,9 @@
             </div>
         </div>
     </div>
+    <script type="text/html" id="bar">
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    </script>
     <script>
         layui.use(['index', 'form', 'laydate', 'table', 'jquery', 'layer'], function () {
             var laydate = layui.laydate;
@@ -264,18 +264,19 @@
                 cellMinWidth: 40,
                 cols: [[
                     {type: 'checkbox', fixed: true},
-                    {field: 'projectId', sort: true, title: '项目编号', fixed: true},
-                    {field: 'projectName', title: '项目名称'},
-                    {field: 'projectType', sort: true, title: '项目类型'},
-                    {field: 'projectScale', sort: true, title: '项目规模'},
-                    {field: 'isSponsor', title: '协办项目'},
-                    {field: 'leader', sort: true, title: '负责人'},
-                    {field: 'projectManager', sort: true, title: '项目经理'},
-                    {field: 'efficiency', sort: true, title: '研发效率'},
-                    {field: 'functionPoint', sort: true, title: '功能点'},
-                    {field: 'workload', sort: true, title: '工作量'},
-                    {field: 'startTime', sort: true, title: '开始时间'},
-                    {field: 'endTime', sort: true, title: '结束时间'}
+                    {field: 'projectId', sort: true, title: '项目编号', fixed: true, width: 120},
+                    {field: 'projectName', title: '项目名称', width: 120},
+                    {field: 'projectType', sort: true, title: '项目类型', width: 80},
+                    {field: 'projectScale', sort: true, title: '项目规模', width: 80},
+                    {field: 'isSponsor', title: '协办项目', width: 80},
+                    {field: 'leader', sort: true, title: '负责人', width: 80},
+                    {field: 'projectManager', sort: true, title: '项目经理', width: 80},
+                    {field: 'efficiency', sort: true, title: '研发效率', width: 80},
+                    {field: 'functionPoint', sort: true, title: '功能点', width: 80},
+                    {field: 'workload', sort: true, title: '工作量', width: 80},
+                    {field: 'startTime', sort: true, title: '开始时间', width: 100},
+                    {field: 'endTime', sort: true, title: '结束时间', width: 100},
+                    {fixed: 'right', align: 'center', toolbar: '#bar', sort: false}
                 ]],
                 page: true
             });

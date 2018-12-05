@@ -22,6 +22,11 @@
                 <param name="root">delJson</param>
             </result>
         </action>
+        <action name="addPro" class="com.test.ssh.action.ProjectAction" method="addProject">
+            <result type="json">
+                <param name="root">addJson</param>
+            </result>
+        </action>
         <action name="getDepts" class="com.test.ssh.action.DepartmentAction" method="getDepts">
             <result type="json">
                 <param name="root">deptsJson</param>
