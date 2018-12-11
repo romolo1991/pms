@@ -9,6 +9,17 @@
     <link rel="stylesheet" href="../WebTemplate/layuiadmin/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="../WebTemplate/layuiadmin/style/admin.css" media="all">
 
+    <style>
+        .editIcon{
+            font-size: 25px;
+            color: #009688;
+        }
+        .editIcon:hover{
+            color: #5FB878;
+            cursor: pointer;
+        }
+    </style>
+
     <script src="../WebTemplate/layuiadmin/layui/layui.js"></script>
     <script>
         layui.config({
@@ -36,14 +47,21 @@
                         </div>
                     </div>
                     <div class="layui-inline layui-col-md3">
-                        <label class="layui-form-label">项目类型</label>
+                        <label class="layui-form-label">职能组</label>
                         <div class="layui-input-block">
-                            <select id="projectType">
-                                <option value="">请选择项目类型</option>
-                                <option value="0">专项</option>
-                                <option value="1">快捷项目</option>
-                                <option value="2">项目协办</option>
-                                <option value="3">项目主办</option>
+                            <select id="hostGroup">
+                                <option value="">请选择项目负责组</option>
+                                <option value="0">一部一组</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline layui-col-md2">
+                        <label class="layui-form-label">协办项目</label>
+                        <div class="layui-input-block">
+                            <select id="isSponsor">
+                                <option value=""></option>
+                                <option value="1">是</option>
+                                <option value="0">否</option>
                             </select>
                         </div>
                     </div>
@@ -66,18 +84,18 @@
                         <div class="layui-input-block">
                             <select id="projectScale">
                                 <option value="">请选择项目规模</option>
-                                <option value="0">总行快捷开发项目</option>
-                                <option value="1">分行快捷开发项目</option>
-                                <option value="2">小型项目</option>
-                                <option value="3">中型项目</option>
-                                <option value="4">大型项目</option>
-                                <option value="5">特大型项目</option>
+                                <option value="00">总行快捷开发项目</option>
+                                <option value="01">分行快捷开发项目</option>
+                                <option value="02">小型项目</option>
+                                <option value="03">中型项目</option>
+                                <option value="04">大型项目</option>
+                                <option value="05">特大型项目</option>
                             </select>
                         </div>
                     </div>
-                    <div class="layui-inline layui-col-md1">
+                    <div class="layui-inline layui-col-md2">
                         <div class="layui-input-block">
-                            <button class="layui-btn" style="margin-left: 20px; margin-bottom: 5px" data-type="reload" id="search">
+                            <button class="layui-btn" data-type="reload" id="search">
                                 <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
                             </button>
                         </div>
@@ -93,11 +111,7 @@
                         <i class="layui-icon layui-icon-add-1 layuiadmin-button-btn"></i>添加
                     </button>
                 </div>
-                <table id="projectTable">
-                    <tr>
-                        <th lay-data=""></th>
-                    </tr>
-                </table>
+                <table id="projectTable"></table>
             </div>
         </div>
     </div>
@@ -227,7 +241,7 @@
         </div>
     </div>
     <script type="text/html" id="bar">
-        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <i class="layui-icon layui-icon-edit editIcon"></i>
     </script>
     <script>
         layui.use(['index', 'form', 'laydate', 'table', 'jquery', 'layer'], function () {
@@ -256,7 +270,7 @@
             });
             table.render({
                 elem: '#projectTable',
-                url: 'getPro',
+                url: 'pro_getProjects',
                 type: 'post',
                 limit: 7,
                 limits: [7,10,15,20],
@@ -266,16 +280,16 @@
                     {type: 'checkbox', fixed: true},
                     {field: 'projectId', sort: true, title: '项目编号', fixed: true, width: 120},
                     {field: 'projectName', title: '项目名称', width: 120},
-                    {field: 'projectType', sort: true, title: '项目类型', width: 80},
                     {field: 'projectScale', sort: true, title: '项目规模', width: 80},
                     {field: 'isSponsor', title: '协办项目', width: 80},
                     {field: 'leader', sort: true, title: '负责人', width: 80},
+                    {field: 'hostGroup', sort: true, title: '职能组', width: 80},
                     {field: 'projectManager', sort: true, title: '项目经理', width: 80},
-                    {field: 'efficiency', sort: true, title: '研发效率', width: 80},
+                    {field: 'efficiency', sort: true, title: '研发效率', width: 100},
                     {field: 'functionPoint', sort: true, title: '功能点', width: 80},
                     {field: 'workload', sort: true, title: '工作量', width: 80},
-                    {field: 'startTime', sort: true, title: '开始时间', width: 100},
-                    {field: 'endTime', sort: true, title: '结束时间', width: 100},
+                    {field: 'startTime', sort: true, title: '开始时间', width: 110},
+                    {field: 'endTime', sort: true, title: '结束时间', width: 110},
                     {fixed: 'right', align: 'center', toolbar: '#bar', sort: false}
                 ]],
                 page: true
@@ -284,15 +298,25 @@
                 reload: function () {
                     var projectId = $("#projectId").val();
                     var projectName = $("#projectName").val();
-                    var projectType = $("#projectType").val();
+                    var hostGroup = $("#hostGroup").val();
+                    var isSponsor = $("#isSponsor").val();
                     var projectScale = $("#projectScale").val();
                     var startTime = $("#laydate-start").val();
                     var endTime = $("#laydate-end").val();
+                    if (hostGroup==""){
+                        hostGroup = parseInt("-1");
+                    }else{
+                        hostGroup = parseInt(hostGroup);
+                    }
+                    if (isSponsor==""){
+                        isSponsor = '\0';
+                    }
                     table.reload("projectTableReload", {
                         where: {
                             projectId : projectId,
                             projectName : projectName,
-                            projectType : projectType,
+                            hostGroup : hostGroup,
+                            isSponsor : isSponsor,
                             projectScale : projectScale,
                             startTime : startTime,
                             endTime : endTime
@@ -311,7 +335,7 @@
                     projectIds: projectIds
                 },true);
                 $.ajax({
-                    url: "delPro",
+                    url: "pro_delProject",
                     type: "post",
                     data: projectsParams,
                     success: function (data) {
@@ -402,7 +426,7 @@
 
                 $.ajax({
                     type: "post",
-                    url: "addPro",
+                    url: "pro_addProject",
                     data: {
                         projectId : projectId,
                         projectName : projectName,

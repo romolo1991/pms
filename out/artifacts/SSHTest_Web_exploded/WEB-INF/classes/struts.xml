@@ -12,19 +12,9 @@
             <result name="success" type="redirect">/index.jsp</result>
             <!--返回值为“success”时，跳转到管理界面-->
         </action>
-        <action name="getPro" class="com.test.ssh.action.ProjectAction" method="getProjects">
+        <action name="pro_*" class="com.test.ssh.action.ProjectAction" method="{1}">
             <result type="json">
-                <param name="root">projectsJson</param>
-            </result>
-        </action>
-        <action name="delPro" class="com.test.ssh.action.ProjectAction" method="delProject">
-            <result type="json">
-                <param name="root">delJson</param>
-            </result>
-        </action>
-        <action name="addPro" class="com.test.ssh.action.ProjectAction" method="addProject">
-            <result type="json">
-                <param name="root">addJson</param>
+                <param name="root">backJson</param>
             </result>
         </action>
         <action name="getDepts" class="com.test.ssh.action.DepartmentAction" method="getDepts">

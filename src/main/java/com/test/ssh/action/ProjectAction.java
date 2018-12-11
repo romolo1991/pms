@@ -19,9 +19,7 @@ public class ProjectAction extends ActionSupport implements ModelDriven<Project>
     private int page = 1;
     private int limit = 10;
     private ArrayList<String> projectIds = new ArrayList<String>();
-    private JSONObject projectsJson;
-    private JSONObject addJson;
-    private JSONObject delJson;
+    private JSONObject backJson;
 
     private ProjectService projectService;
 
@@ -31,18 +29,18 @@ public class ProjectAction extends ActionSupport implements ModelDriven<Project>
     }
 
     public String getProjects(){
-        List<Project> projects = projectService.getProjects(project.getProjectId(), project.getProjectName(), project.getProjectType(), project.getProjectScale(), project.getStartTime(), project.getEndTime(), page, limit);
+        List<Project> projects = projectService.getProjects(project.getProjectId(), project.getProjectName(), project.getHostGroup(), project.getIsSponsor(), project.getProjectScale(), project.getStartTime(), project.getEndTime(), page, limit);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("code", 0);
         result.put("msg", "");
         if (projects != null){
-            result.put("count", projectService.getProjectCount(project.getProjectId(), project.getProjectName(), project.getProjectType(), project.getProjectScale(), project.getStartTime(), project.getEndTime()));
+            result.put("count", projectService.getProjectCount(project.getProjectId(), project.getProjectName(), project.getHostGroup(), project.getIsSponsor(), project.getProjectScale(), project.getStartTime(), project.getEndTime()));
         }else{
             result.put("count", 0);
         }
         JSONArray array = JSONArray.fromObject(projects);
         result.put("data", array);
-        projectsJson = JSONObject.fromObject(result);
+        backJson = JSONObject.fromObject(result);
         return SUCCESS;
     }
 
@@ -57,7 +55,7 @@ public class ProjectAction extends ActionSupport implements ModelDriven<Project>
         if (back.equals("success")){
             Map<String, String> result = new HashMap<String, String>();
             result.put("msg", "success");
-            addJson = JSONObject.fromObject(result);
+            backJson = JSONObject.fromObject(result);
             return SUCCESS;
         }else{
             return "fail";
@@ -70,12 +68,12 @@ public class ProjectAction extends ActionSupport implements ModelDriven<Project>
             String back = projectService.delProject(projectIds.get(i));
             if (!back.equals("success")){
                 result.put("msg", "fail");
-                delJson = JSONObject.fromObject(result);
+                backJson = JSONObject.fromObject(result);
                 return "fail";
             }
         }
         result.put("msg", "success");
-        delJson = JSONObject.fromObject(result);
+        backJson = JSONObject.fromObject(result);
         return SUCCESS;
     }
 
@@ -111,27 +109,11 @@ public class ProjectAction extends ActionSupport implements ModelDriven<Project>
         this.projectService = projectService;
     }
 
-    public JSONObject getProjectsJson() {
-        return projectsJson;
+    public JSONObject getBackJson() {
+        return backJson;
     }
 
-    public void setProjectsJson(JSONObject projectsJson) {
-        this.projectsJson = projectsJson;
-    }
-
-    public JSONObject getAddJson() {
-        return addJson;
-    }
-
-    public void setAddJson(JSONObject addJson) {
-        this.addJson = addJson;
-    }
-
-    public JSONObject getDelJson() {
-        return delJson;
-    }
-
-    public void setDelJson(JSONObject delJson) {
-        this.delJson = delJson;
+    public void setBackJson(JSONObject backJson) {
+        this.backJson = backJson;
     }
 }
