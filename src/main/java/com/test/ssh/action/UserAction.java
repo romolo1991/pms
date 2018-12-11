@@ -22,7 +22,7 @@ public class UserAction extends ActionSupport implements ModelDriven<User> {
         if (returnUser == null){
             this.addActionError("用户名或密码错误！");
             return "failed";
-        }else if (returnUser.getIsDelete() == '1'){
+        }else if (returnUser.getIsDelete() == "1"){
             this.addActionError("该用户已进入睡眠状态，请联系管理员激活该用户！");
             return "failed";
         }else{

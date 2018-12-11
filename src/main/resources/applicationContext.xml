@@ -30,7 +30,8 @@
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
                 <prop key="hibernate.show_sql">true</prop>
                 <prop key="hibernate.format_sql">true</prop>
-
+                <prop key="hibernate.connection.url">jdbc:mysql://localhost:3306/pms</prop>
+                <prop key="hibernate.connection.driver_class">com.mysql.jdbc.Driver</prop>
             </props>
         </property>
         <!-- 加载Hibernate中的映射文件 -->
@@ -40,6 +41,7 @@
                 <value>com/test/ssh/domain/User.hbm.xml</value>
                 <value>com/test/ssh/domain/Project.hbm.xml</value>
                 <value>com/test/ssh/domain/Department.hbm.xml</value>
+                <value>com/test/ssh/domain/Groupofdepartment.hbm.xml</value>
             </list>
         </property>
     </bean>
@@ -57,8 +59,11 @@
     <bean id="departmentAction" class="com.test.ssh.action.DepartmentAction" scope="prototype">
         <property name="departmentService" ref="departmentService"/>
     </bean>
+    <bean id="groupAction" class="com.test.ssh.action.GroupAction" scope="prototype">
+        <property name="groupService" ref="groupService"/>
+    </bean>
 
-
+    <!--配置 Struts Service类Bean，Scope为Prototype -->
     <bean id="employeeService" class="com.test.ssh.service.impl.EmployeeServiceImpl">
         <property name="employeeDao" ref="employeeDao"/>
     </bean>
@@ -71,7 +76,11 @@
     <bean id="departmentService" class="com.test.ssh.service.impl.DepartmentServiceImpl">
         <property name="departmentDao" ref="departmentDao"/>
     </bean>
+    <bean id="groupService" class="com.test.ssh.service.impl.GroupServiceImpl">
+        <property name="groupDao" ref="groupDao"/>
+    </bean>
 
+    <!--配置 Struts Dao类Bean，Scope为Prototype -->
     <bean id="employeeDao" class="com.test.ssh.dao.impl.EmployeeDaoImpl">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
@@ -82,6 +91,9 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="departmentDao" class="com.test.ssh.dao.impl.DepartmentDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="groupDao" class="com.test.ssh.dao.impl.GroupDaoImpl">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 

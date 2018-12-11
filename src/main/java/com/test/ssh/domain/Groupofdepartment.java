@@ -6,53 +6,53 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class User {
-    private int userId;
-    private String userName;
-    private String userPassword;
-    private String employee;
+public class Groupofdepartment {
+    private int groupId;
+    private String groupName;
+    private String introduction;
+    private int department;
     private String isDelete;
     private String remark1;
     private String remark2;
 
     @Id
-    @Column(name = "userId")
-    public int getUserId() {
-        return userId;
+    @Column(name = "groupId")
+    public int getGroupId() {
+        return groupId;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    @Basic
-    @Column(name = "userName")
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
     }
 
     @Basic
-    @Column(name = "userPassword")
-    public String getUserPassword() {
-        return userPassword;
+    @Column(name = "groupName")
+    public String getGroupName() {
+        return groupName;
     }
 
-    public void setUserPassword(String userPassword) {
-        this.userPassword = userPassword;
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
     @Basic
-    @Column(name = "employee")
-    public String getEmployee() {
-        return employee;
+    @Column(name = "introduction")
+    public String getIntroduction() {
+        return introduction;
     }
 
-    public void setEmployee(String employee) {
-        this.employee = employee;
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
+    }
+
+    @Basic
+    @Column(name = "department")
+    public int getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(int department) {
+        this.department = department;
     }
 
     @Basic
@@ -90,12 +90,12 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        User that = (User) o;
+        Groupofdepartment that = (Groupofdepartment) o;
 
-        if (userId != that.userId) return false;
-        if (userName != null ? !userName.equals(that.userName) : that.userName != null) return false;
-        if (userPassword != null ? !userPassword.equals(that.userPassword) : that.userPassword != null) return false;
-        if (employee != null ? !employee.equals(that.employee) : that.employee != null) return false;
+        if (groupId != that.groupId) return false;
+        if (department != that.department) return false;
+        if (groupName != null ? !groupName.equals(that.groupName) : that.groupName != null) return false;
+        if (introduction != null ? !introduction.equals(that.introduction) : that.introduction != null) return false;
         if (isDelete != null ? !isDelete.equals(that.isDelete) : that.isDelete != null) return false;
         if (remark1 != null ? !remark1.equals(that.remark1) : that.remark1 != null) return false;
         if (remark2 != null ? !remark2.equals(that.remark2) : that.remark2 != null) return false;
@@ -105,10 +105,10 @@ public class User {
 
     @Override
     public int hashCode() {
-        int result = userId;
-        result = 31 * result + (userName != null ? userName.hashCode() : 0);
-        result = 31 * result + (userPassword != null ? userPassword.hashCode() : 0);
-        result = 31 * result + (employee != null ? employee.hashCode() : 0);
+        int result = groupId;
+        result = 31 * result + (groupName != null ? groupName.hashCode() : 0);
+        result = 31 * result + (introduction != null ? introduction.hashCode() : 0);
+        result = 31 * result + department;
         result = 31 * result + (isDelete != null ? isDelete.hashCode() : 0);
         result = 31 * result + (remark1 != null ? remark1.hashCode() : 0);
         result = 31 * result + (remark2 != null ? remark2.hashCode() : 0);

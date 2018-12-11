@@ -1,19 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE hibernate-mapping PUBLIC
-        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.test.ssh.domain.Employee" schema="renyue" table="employee">
-        <id name="employeeId" column="employeeId" type="java.lang.String">
-            <generator class="native"/>
-        </id>
-        <property name="employeeName" column="employeeName" type="java.lang.String"/>
-        <property name="entryTime" column="entryTime" type="java.lang.String"/>
-        <property name="department" column="department" type="integer"/>
-        <property name="groupOfEmployee" column="groupOfEmployee" type="integer"/>
-        <property name="groupLeader" column="groupLeader" type="char"/>
-        <property name="isDelete" column="isDelete" type="char"/>
-    </class>
 
+    <class name="com.test.ssh.domain.Employee" table="employee" schema="pms">
+        <id name="employeeId" column="employeeId"/>
+        <property name="employeeName" column="employeeName"/>
+        <property name="employeeNameSpell" column="employeeNameSpell"/>
+        <property name="entryTime" column="entryTime"/>
+        <property name="department" column="department"/>
+        <property name="groupOfEmployee" column="groupOfEmployee"/>
+        <property name="groupLeader" column="groupLeader"/>
+        <property name="isDelete" column="isDelete"/>
+        <property name="remark1" column="remark1"/>
+        <property name="remark2" column="remark2"/>
+    </class>
 </hibernate-mapping>

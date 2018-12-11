@@ -4,10 +4,11 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="com.test.ssh.domain.Department" table="department" schema="pms">
-        <id name="departmentId" column="departmentId"/>
-        <property name="departmentName" column="departmentName"/>
-        <property name="chief" column="chief"/>
+    <class name="com.test.ssh.domain.Groupofdepartment" table="groupofdepartment" schema="pms">
+        <id name="groupId" column="groupId"/>
+        <property name="groupName" column="groupName"/>
+        <property name="introduction" column="introduction"/>
+        <property name="department" column="department"/>
         <property name="isDelete" column="isDelete"/>
         <property name="remark1" column="remark1"/>
         <property name="remark2" column="remark2"/>
