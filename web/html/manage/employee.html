@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>staff</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="../../WebTemplate/layuiadmin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../WebTemplate/layuiadmin/style/admin.css" media="all">
+
+    <script src="../../WebTemplate/layuiadmin/layui/layui.js"></script>
+    <script type="text/html" id="bar">
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    </script>
+    <script>
+        layui.config({
+            base: '../../WebTemplate/layuiadmin/' //静态资源所在路径
+        }).extend({
+            index: 'lib/index' //主入口模块
+        });
+        layui.use(['index', 'form', 'laydate', 'table', 'jquery', 'layer'], function () {
+            var $ = layui.jquery;//jquery
+            var form = layui.form;//表单
+            var table = layui.table;//表格
+            var layer = layui.layer;//弹出层
+            var laydate = layui.laydate;//日期插件
+
+            var indexOfAddPro;
+
+            <!-- 页面初始化完成后查询部门和职能组 -->
+            $(document).ready(function () {
+                $.ajax({
+                    type: "post",
+                    url: "department_getAllDepartments",
+                    data: {},
+                    success: function (data) {
+                        $("#department").html(data);
+                        form.render("select");
+                    }
+                });
+            });
+
+            form.on("select(department)", function () {
+                var departmentId = $("#department").val();
+                var departmentParam = $.param({
+                    department: departmentId
+                }, true);
+                $.ajax({
+                    type: "post",
+                    url: "group_getGroupsByDept",
+                    data: departmentParam,
+                    success: function (data) {
+                        $("#groupOfEmployee").html(data);
+                        form.render("select");
+                    }
+                });
+                // return false;
+            });
+
+            table.render({
+                elem: "#employeeTable",
+                url: "employee_getEmployees",
+                type: "post",
+                limit: 10,
+                limits: [10, 15, 20, 25],
+                id: "employeeTableReload",
+                cellMinWidth: 40,
+                cols: [[
+                    {type: "checkbox", fixed: true},
+                    {field: "employeeId", sort: true, title: "员工编号", fixed: true, width: 200},
+                    {field: "employeeName", title: "员工姓名", width: 200},
+                    {field: "departmentName", title: "部门", width: 200},
+                    {field: "groupName", title: "职能组", width: 200},
+                    {field: "groupLeaderStr", title: "是否组长", width: 200},
+                    {fixed: 'right', align: 'center', toolbar: '#bar', width: 200}
+                ]],
+                page: true
+            });
+
+            var active = {
+                reload: function () {
+                    var employeeId = $("#employeeId").val();
+                    var employeeName = $("#employeeName").val();
+                    var groupLeader = $("#groupLeader").val();
+                    var department = $("#department").val();
+                    var groupOfEmployee = $("#groupOfEmployee").val();
+                    table.reload("employeeTableReload", {
+                        where: {
+                            employeeId: employeeId,
+                            employeeName: employeeName,
+                            groupLeader: groupLeader,
+                            department: department,
+                            groupOfEmployee: groupOfEmployee
+                        }
+                    });
+                }
+            };
+
+            $("#search").on("click", function () {
+                var type = $(this).data("type");
+                active[type] ? active[type].call(this) : "";
+                return false;
+            });
+
+            $("#del").on("click", function () {
+                layer.confirm("确认要删除吗？", {icon: 3, title: "提示"}, function (index) {
+                    layer.close(index);
+                    //删除功能
+                    var checked = table.checkStatus("employeeTableReload").data;
+                    var employeeIds = new Array();
+                    for (var i = 0; i < checked.length; i++) {
+                        var employeeId = checked[i].employeeId;
+                        employeeIds.push(employeeId);
+                    }
+                    var employeeParams = $.param({
+                        employeeIds: employeeIds
+                    }, true);
+                    $.ajax({
+                        url: "employee_delEmployees",
+                        type: "post",
+                        data: employeeParams,
+                        success: function (data) {
+                            if (data.msg == "success") {
+                                layer.msg("删除成功！", {
+                                    time: 3000,
+                                    shadeClose: true
+                                });
+                                var type = $("#search").data("type");
+                                active[type] ? active[type].call("#search") : "";
+                            }
+                        },
+                        error: function (data) {
+                            if (data.msg == "fail") {
+                                layer.msg("删除成功！", {
+                                    time: 3000,
+                                    shadeClose: true
+                                });
+                                var type = $("#search").data("type");
+                                active[type] ? active[type].call("#search") : "";
+                            }
+                        }
+                    });
+                });
+            });
+
+            $("#add").on("click", function () {
+                $ajax({
+                    type: "post",
+                    url: "department_getAllDepartments",
+                    data: {},
+                    success: function (data) {
+                        $("#new-department").html(data);
+                        form.render("select");
+                    }
+                });
+                indexofAddPro = layer.open({
+                    type: 1,
+                    content: $("#addNew"),
+                    area: "55%",
+                    title: "新建职员"
+                });
+            });
+
+            form.on("select(new-department)", function () {
+                var newDepartmentId = $("#new-department").val();
+                var newDepartmentParam = $.param({
+                    department: newDepartmentId
+                }, true);
+                $.ajax({
+                    type: "post",
+                    url: "group_getGroupsByDept",
+                    data: departmentParam,
+                    success: function (data) {
+                        $("#new-groupOfEmployee").html(data);
+                        form.render("select");
+                    }
+                });
+                return false;
+            });
+
+            $("#cancelAdd").on("click", function () {
+                layer.close(indexOfAddPro);
+            });
+
+            $("#sureAdd").on("click", function () {
+
+            });
+
+
+        });
+    </script>
+</head>
+<body>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <form class="layui-form layui-card-header layuiadmin-card-header-auto">
+
+            <div class="layui-form-item layui-row layui-col-space12">
+                <div class="layui-inline layui-col-md3">
+                    <label class="layui-form-label">员工编号</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="employeeId" placeholder="TY000000" autocomplete="off"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline layui-col-md3">
+                    <label class="layui-form-label">员工姓名</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="employeeName" placeholder="姓名/拼音" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">是否组长</label>
+                    <div class="layui-input-block">
+                        <select id="groupLeader">
+                            <option value="255">全部</option>
+                            <option value="1">是</option>
+                            <option value="0">否</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item layui-row layui-col-space12">
+                <div class="layui-inline layui-col-md3">
+                    <label class="layui-form-label">所属部门</label>
+                    <div class="layui-input-block">
+                        <select name="department" id="department" lay-filter="department">
+                            <option value="0">全部</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline layui-col-md3">
+                    <label class="layui-form-label">所属职能组</label>
+                    <div class="layui-input-block">
+                        <select name="groupOfEmployee" id="groupOfEmployee">
+                            <option value="0">全部</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline layui-col-md1">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" style="margin-left: 20px; margin-bottom: 5px" data-type="reload"
+                                id="search">
+                            <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div class="layui-card-body">
+            <div class="layui-row" style="padding-bottom: 10px">
+                <button class="layui-btn layui-btn-warm" id="del" style="float: left;">
+                    <i class="layui-icon layui-icon-delete layuiadmin-button-btn"></i>删除
+                </button>
+                <button class="layui-btn" id="add" style="float: left;">
+                    <i class="layui-icon layui-icon-add-1 layuiadmin-button-btn"></i>添加
+                </button>
+                <button class="layui-btn layui-btn-warm" id="import" style="float: right;">
+                    <i class="layui-icon layui-icon-add-1 layuiadmin-button-btn"></i>导入
+                </button>
+            </div>
+            <table id="employeeTable">
+                <th lay-data=""></th>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="layui-fluid" id="addNew" style="display:none">
+    <form class="layui-form ">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <lable class="layui-form-label">工号：</lable>
+                <div class="layui-input-block">
+                    <input type="text" class="layui-input" id="new-employeeId" autocomplete="off">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">姓名：</label>
+                <div class="layui-input-block">
+                    <input type="text" class="layui-input" id="new-employeeName" autocomplete="off">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">部门：</label>
+                <div class="layui-input-block">
+                    <select name="new-department" id="new-department" lay-filter="new-department">
+                        <option value="">请选择部门：</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">职能组：</label>
+                <div class="layui-input-block">
+                    <select name="new-groupOfEmployee" id="new-groupOfEmployee">
+                        <option value="">请选择职能组</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">入职日期：</label>
+                <div class="layui-input-block">
+                    <input type="text" class="layui-input" id="new-entryTime" placeholder="yyyy-MM-dd" name="entryTime">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">是否组长：</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" lay-skin="switch" lay-text="是|否" id="new-groupLeader">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item" style="text-align: right">
+            <button class="layui-btn" id="sureAdd">确定</button>
+            <button class="layui-btn layui-btn-primary" id="cancelAdd">取消</button>
+        </div>
+
+    </form>
+</div>
+
+</body>
+</html>

@@ -22,5 +22,20 @@
                 <param name="root">deptsJson</param>
             </result>
         </action>
+        <action name="department_getAllDepartments" class="com.test.ssh.action.DepartmentAction" method="getAllDepartments">
+            <result name="success">/html/manage/employee_DeptOption.jsp</result>
+        </action>
+        <action name="group_getGroupsByDept" class="com.test.ssh.action.GroupAction" method="getGroupsByDept">
+            <result name="success">/html/manage/employee_GroupOption.jsp</result>
+        </action>
+        <action name="employee_*" class="com.test.ssh.action.EmployeeAction" method="{1}">
+            <result type="json">
+                <param name="root">{1}Json</param>
+            </result>
+            <allowed-methods>getEmployees,delEmployees</allowed-methods>
+        </action>
+
+
+
     </package>
 </struts>

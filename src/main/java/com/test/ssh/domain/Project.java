@@ -1,11 +1,17 @@
 package com.test.ssh.domain;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Project {
     private String projectId;
     private String projectName;
     private String projectType;
     private String projectScale;
-    private char isSponsor;
+    private String isSponsor;
     private String leader;
     private int hostGroup;
     private String projectManager;
@@ -14,8 +20,12 @@ public class Project {
     private double workload;
     private String startTime;
     private String endTime;
-    private char isDelete;
+    private String isDelete;
+    private String remark1;
+    private String remark2;
 
+    @Id
+    @Column(name = "projectId")
     public String getProjectId() {
         return projectId;
     }
@@ -24,6 +34,8 @@ public class Project {
         this.projectId = projectId;
     }
 
+    @Basic
+    @Column(name = "projectName")
     public String getProjectName() {
         return projectName;
     }
@@ -32,6 +44,8 @@ public class Project {
         this.projectName = projectName;
     }
 
+    @Basic
+    @Column(name = "projectType")
     public String getProjectType() {
         return projectType;
     }
@@ -40,6 +54,8 @@ public class Project {
         this.projectType = projectType;
     }
 
+    @Basic
+    @Column(name = "projectScale")
     public String getProjectScale() {
         return projectScale;
     }
@@ -48,14 +64,18 @@ public class Project {
         this.projectScale = projectScale;
     }
 
-    public char getIsSponsor() {
+    @Basic
+    @Column(name = "isSponsor")
+    public String getIsSponsor() {
         return isSponsor;
     }
 
-    public void setIsSponsor(char isSponsor) {
+    public void setIsSponsor(String isSponsor) {
         this.isSponsor = isSponsor;
     }
 
+    @Basic
+    @Column(name = "leader")
     public String getLeader() {
         return leader;
     }
@@ -64,6 +84,8 @@ public class Project {
         this.leader = leader;
     }
 
+    @Basic
+    @Column(name = "hostGroup")
     public int getHostGroup() {
         return hostGroup;
     }
@@ -72,6 +94,8 @@ public class Project {
         this.hostGroup = hostGroup;
     }
 
+    @Basic
+    @Column(name = "projectManager")
     public String getProjectManager() {
         return projectManager;
     }
@@ -80,6 +104,8 @@ public class Project {
         this.projectManager = projectManager;
     }
 
+    @Basic
+    @Column(name = "efficiency")
     public double getEfficiency() {
         return efficiency;
     }
@@ -88,6 +114,8 @@ public class Project {
         this.efficiency = efficiency;
     }
 
+    @Basic
+    @Column(name = "functionPoint")
     public double getFunctionPoint() {
         return functionPoint;
     }
@@ -96,6 +124,8 @@ public class Project {
         this.functionPoint = functionPoint;
     }
 
+    @Basic
+    @Column(name = "workload")
     public double getWorkload() {
         return workload;
     }
@@ -104,6 +134,8 @@ public class Project {
         this.workload = workload;
     }
 
+    @Basic
+    @Column(name = "startTime")
     public String getStartTime() {
         return startTime;
     }
@@ -112,6 +144,8 @@ public class Project {
         this.startTime = startTime;
     }
 
+    @Basic
+    @Column(name = "endTime")
     public String getEndTime() {
         return endTime;
     }
@@ -120,11 +154,88 @@ public class Project {
         this.endTime = endTime;
     }
 
-    public char getIsDelete() {
+    @Basic
+    @Column(name = "isDelete")
+    public String getIsDelete() {
         return isDelete;
     }
 
-    public void setIsDelete(char isDelete) {
+    public void setIsDelete(String isDelete) {
         this.isDelete = isDelete;
+    }
+
+    @Basic
+    @Column(name = "remark1")
+    public String getRemark1() {
+        return remark1;
+    }
+
+    public void setRemark1(String remark1) {
+        this.remark1 = remark1;
+    }
+
+    @Basic
+    @Column(name = "remark2")
+    public String getRemark2() {
+        return remark2;
+    }
+
+    public void setRemark2(String remark2) {
+        this.remark2 = remark2;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Project project = (Project) o;
+
+        if (hostGroup != project.hostGroup) return false;
+        if (Double.compare(project.efficiency, efficiency) != 0) return false;
+        if (Double.compare(project.functionPoint, functionPoint) != 0) return false;
+        if (Double.compare(project.workload, workload) != 0) return false;
+        if (projectId != null ? !projectId.equals(project.projectId) : project.projectId != null) return false;
+        if (projectName != null ? !projectName.equals(project.projectName) : project.projectName != null) return false;
+        if (projectType != null ? !projectType.equals(project.projectType) : project.projectType != null) return false;
+        if (projectScale != null ? !projectScale.equals(project.projectScale) : project.projectScale != null)
+            return false;
+        if (isSponsor != null ? !isSponsor.equals(project.isSponsor) : project.isSponsor != null) return false;
+        if (leader != null ? !leader.equals(project.leader) : project.leader != null) return false;
+        if (projectManager != null ? !projectManager.equals(project.projectManager) : project.projectManager != null)
+            return false;
+        if (startTime != null ? !startTime.equals(project.startTime) : project.startTime != null) return false;
+        if (endTime != null ? !endTime.equals(project.endTime) : project.endTime != null) return false;
+        if (isDelete != null ? !isDelete.equals(project.isDelete) : project.isDelete != null) return false;
+        if (remark1 != null ? !remark1.equals(project.remark1) : project.remark1 != null) return false;
+        if (remark2 != null ? !remark2.equals(project.remark2) : project.remark2 != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = projectId != null ? projectId.hashCode() : 0;
+        result = 31 * result + (projectName != null ? projectName.hashCode() : 0);
+        result = 31 * result + (projectType != null ? projectType.hashCode() : 0);
+        result = 31 * result + (projectScale != null ? projectScale.hashCode() : 0);
+        result = 31 * result + (isSponsor != null ? isSponsor.hashCode() : 0);
+        result = 31 * result + (leader != null ? leader.hashCode() : 0);
+        result = 31 * result + hostGroup;
+        result = 31 * result + (projectManager != null ? projectManager.hashCode() : 0);
+        temp = Double.doubleToLongBits(efficiency);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(functionPoint);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(workload);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (startTime != null ? startTime.hashCode() : 0);
+        result = 31 * result + (endTime != null ? endTime.hashCode() : 0);
+        result = 31 * result + (isDelete != null ? isDelete.hashCode() : 0);
+        result = 31 * result + (remark1 != null ? remark1.hashCode() : 0);
+        result = 31 * result + (remark2 != null ? remark2.hashCode() : 0);
+        return result;
     }
 }

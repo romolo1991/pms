@@ -50,7 +50,7 @@ public class ProjectAction extends ActionSupport implements ModelDriven<Project>
         project.setHostGroup(0);
         project.setProjectManager("0");
 
-        project.setIsDelete('0');
+        project.setIsDelete("0");
         String back = projectService.addProject(project);
         if (back.equals("success")){
             Map<String, String> result = new HashMap<String, String>();

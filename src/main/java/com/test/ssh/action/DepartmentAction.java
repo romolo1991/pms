@@ -24,6 +24,8 @@ public class DepartmentAction extends ActionSupport implements ModelDriven<Depar
 
     private JSONObject deptsJson;
 
+    private List<Department> departmentList;
+
     public String getDepts(){
         List<Department> depts = departmentService.getDepts();
         Map<String, Object> result = new HashMap<String, Object>();
@@ -40,8 +42,27 @@ public class DepartmentAction extends ActionSupport implements ModelDriven<Depar
         return SUCCESS;
     }
 
+    public String getAllDepartments() {
+        List<Department> departmentList = departmentService.getDepts();
+        Department department = new Department();
+        department.setDepartmentId(0);
+        department.setDepartmentName("全部");
+        departmentList.add(0,department);
+        setDepartmentList(departmentList);
+        return SUCCESS;
+    }
+
+
     public void setDepartmentService(DepartmentService departmentService) {
         this.departmentService = departmentService;
+    }
+
+    public List<Department> getDepartmentList() {
+        return departmentList;
+    }
+
+    public void setDepartmentList(List<Department> departmentList){
+        this.departmentList = departmentList;
     }
 
     public JSONObject getDeptsJson() {

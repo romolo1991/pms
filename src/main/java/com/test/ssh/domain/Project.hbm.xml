@@ -1,25 +1,25 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE hibernate-mapping PUBLIC
-        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.test.ssh.domain.Project" schema="renyue" table="project">
-        <id name="projectId" column="projectId" type="java.lang.String">
-        </id>
-        <property name="projectName" column="projectName" type="java.lang.String"/>
-        <property name="projectType" column="projectType" type="java.lang.String"/>
-        <property name="projectScale" column="projectScale" type="java.lang.String"/>
-        <property name="isSponsor" column="isSponsor" type="char"/>
-        <property name="leader" column="leader" type="java.lang.String"/>
-        <property name="hostGroup" column="hostGroup" type="integer"/>
-        <property name="projectManager" column="projectManager" type="java.lang.String"/>
-        <property name="efficiency" column="efficiency" type="java.lang.Double"/>
-        <property name="functionPoint" column="functionPoint" type="java.lang.Double"/>
-        <property name="workload" column="workload" type="java.lang.Double"/>
-        <property name="startTime" column="startTime" type="java.lang.String"/>
-        <property name="endTime" column="endTime" type="java.lang.String"/>
-        <property name="isDelete" column="isDelete" type="char"/>
-    </class>
 
+    <class name="com.test.ssh.domain.Project" table="project" schema="pms">
+        <id name="projectId" column="projectId"/>
+        <property name="projectName" column="projectName"/>
+        <property name="projectType" column="projectType"/>
+        <property name="projectScale" column="projectScale"/>
+        <property name="isSponsor" column="isSponsor"/>
+        <property name="leader" column="leader"/>
+        <property name="hostGroup" column="hostGroup"/>
+        <property name="projectManager" column="projectManager"/>
+        <property name="efficiency" column="efficiency"/>
+        <property name="functionPoint" column="functionPoint"/>
+        <property name="workload" column="workload"/>
+        <property name="startTime" column="startTime"/>
+        <property name="endTime" column="endTime"/>
+        <property name="isDelete" column="isDelete"/>
+        <property name="remark1" column="remark1"/>
+        <property name="remark2" column="remark2"/>
+    </class>
 </hibernate-mapping>

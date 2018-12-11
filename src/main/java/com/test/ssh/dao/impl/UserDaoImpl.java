@@ -9,8 +9,8 @@ import java.util.List;
 public class UserDaoImpl extends HibernateDaoSupport implements UserDao {
     @Override
     public User login(User user) {
-        String sql = "from User where name=? and password=?";
-        List<User> list = this.getHibernateTemplate().find(sql, user.getName(), user.getPassword());
+        String sql = "from User where userName=? and userPassword=?";
+        List<User> list = this.getHibernateTemplate().find(sql, user.getUserName(), user.getUserPassword());
         if (list.size()>0){
             return list.get(0);
         }else{

@@ -7,8 +7,6 @@ import org.hibernate.Session;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 public class ProjectDaoImpl extends HibernateDaoSupport implements ProjectDao {
@@ -79,7 +77,7 @@ public class ProjectDaoImpl extends HibernateDaoSupport implements ProjectDao {
         String sql = "from Project where projectId='" + projectId + "'";
         List<Project> list = this.getHibernateTemplate().find(sql);
         Project projectNow = list.get(0);
-        projectNow.setIsDelete('1');
+        projectNow.setIsDelete("1");
         this.getHibernateTemplate().update(projectNow);
         return "success";
     }
