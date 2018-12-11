@@ -11,7 +11,7 @@ import java.util.List;
 
 public class ProjectDaoImpl extends HibernateDaoSupport implements ProjectDao {
 
-    public String getAllProjectSql(String projectId, String projectName, int hostGroup, char isSponsor, String projectScale, String startTime, String endTime){
+    public String getAllProjectSql(String projectId, String projectName, int hostGroup, String isSponsor, String projectScale, String startTime, String endTime){
         String sql = "from Project where isDelete='0'";
         if (projectId != null && !projectId.equals("")){
             sql += "and projectId='" + projectId + "'";
@@ -23,7 +23,7 @@ public class ProjectDaoImpl extends HibernateDaoSupport implements ProjectDao {
         if (hostGroupStr.equals("")){
             sql += "and hostGroup='" + hostGroup + "'";
         }
-        if (isSponsor != '\0'){
+        if (isSponsor != null && !isSponsor.equals("")){
             sql += "and isSponsor='" + isSponsor + "'";
         }
         if (projectScale != null && !projectScale.equals("")){
@@ -39,7 +39,7 @@ public class ProjectDaoImpl extends HibernateDaoSupport implements ProjectDao {
     }
 
     @Override
-    public List<Project> getProjects(String projectId, String projectName, int hostGroup, char isSponsor, String projectScale, String startTime, String endTime, final int page, final int limit) {
+    public List<Project> getProjects(String projectId, String projectName, int hostGroup, String isSponsor, String projectScale, String startTime, String endTime, final int page, final int limit) {
         String sql = getAllProjectSql(projectId, projectName, hostGroup, isSponsor, projectScale, startTime, endTime);
         final String finalSql = sql;
         List list = this.getHibernateTemplate().executeFind(
@@ -60,7 +60,7 @@ public class ProjectDaoImpl extends HibernateDaoSupport implements ProjectDao {
     }
 
     @Override
-    public int getProjectCount (String projectId, String projectName, int hostGroup, char isSponsor, String projectScale, String startTime, String endTime){
+    public int getProjectCount (String projectId, String projectName, int hostGroup, String isSponsor, String projectScale, String startTime, String endTime){
         String sql = getAllProjectSql(projectId, projectName, hostGroup, isSponsor, projectScale, startTime, endTime);
         List list = this.getHibernateTemplate().find(sql);
         return list.size();
