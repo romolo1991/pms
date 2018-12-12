@@ -20,7 +20,7 @@ public class ProjectDaoImpl extends HibernateDaoSupport implements ProjectDao {
             sql += "and projectName like '%" + projectName + "%'";
         }
         String hostGroupStr = hostGroup + "";
-        if (hostGroupStr.equals("")){
+        if (!hostGroupStr.equals("-1")){
             sql += "and hostGroup='" + hostGroup + "'";
         }
         if (isSponsor != null && !isSponsor.equals("")){

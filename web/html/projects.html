@@ -308,9 +308,6 @@
                     }else{
                         hostGroup = parseInt(hostGroup);
                     }
-                    if (isSponsor==""){
-                        isSponsor = '\0';
-                    }
                     table.reload("projectTableReload", {
                         where: {
                             projectId : projectId,
@@ -404,7 +401,7 @@
                 var workload = $("#new-workload").val();
                 var startTime = $("#new-startTime").val();
                 var endTime = $("#new-endTime").val();
-                var isSponsor = $("#new-isSponsor").val();
+                var isSponsor = $("#new-isSponsor").checked ? "1":"0";
 
                 if (hostGroup==""){
                     hostGroup = parseInt("0");
@@ -417,11 +414,6 @@
                 }
                 if (workload==""){
                     workload = parseFloat("0");
-                }
-                if (isSponsor=="on"){
-                    isSponsor = '1';
-                }else{
-                    isSponsor = '0';
                 }
 
                 $.ajax({
