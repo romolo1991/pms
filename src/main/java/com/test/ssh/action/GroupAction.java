@@ -21,12 +21,12 @@ public class GroupAction extends ActionSupport implements ModelDriven<Groupofdep
 
     private List<Groupofdepartment> groupofdepartmentList;
 
-    public String getGroupsByDept(){
+    public String getGroupsByDept() {
         List<Groupofdepartment> groupofdepartmentList = groupService.getGroups(this.group);
         Groupofdepartment groupofdepartment = new Groupofdepartment();
         groupofdepartment.setGroupId(0);
-        groupofdepartment.setGroupName("全部");
-        groupofdepartmentList.add(0,groupofdepartment);
+        groupofdepartment.setGroupName("请选择职能组");
+        groupofdepartmentList.add(0, groupofdepartment);
         setGroupofdepartmentList(groupofdepartmentList);
 
         GroupResult groupResult = new GroupResult(groupofdepartment);
@@ -37,11 +37,11 @@ public class GroupAction extends ActionSupport implements ModelDriven<Groupofdep
     }
 
 
-    public void setGroup(Groupofdepartment groupofdepartment){
+    public void setGroup(Groupofdepartment groupofdepartment) {
         this.group = groupofdepartment;
     }
 
-    public void setGroupService(GroupService groupService){
+    public void setGroupService(GroupService groupService) {
         this.groupService = groupService;
     }
 

@@ -32,9 +32,17 @@
             <result type="json">
                 <param name="root">{1}Json</param>
             </result>
-            <allowed-methods>getEmployees,delEmployees</allowed-methods>
+            <allowed-methods>getEmployees,delEmployees,addEmployee</allowed-methods><!-- stucts2.5之后才需要 -->
         </action>
-
+        <!--EmployeeAction文件导入action-->
+        <action name="employee_importEmployees" class="com.test.ssh.action.EmployeeAction" method="importEmployees" >
+            <interceptor-ref name="json"/>
+            <interceptor-ref name="fileUpload"/>
+            <interceptor-ref name="defaultStack"/>
+            <result name="success" type="json">
+                <param name="root">importEmployeesJson</param>
+            </result>
+        </action>
 
 
     </package>

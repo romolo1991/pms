@@ -17,7 +17,7 @@ public class EmployeeDaoImpl extends HibernateDaoSupport implements EmployeeDao 
 
     @Override
     public List<EmployeeResult> getEmployees(Employee employee, final int page, final int limit) {
-        List<EmployeeResult> employeeResults;
+        List<EmployeeResult> employeeResults = null;
         final StringBuffer sql = new StringBuffer("SELECT e.employeeId, e.employeeName, e.employeeNameSpell, e.entryTime, " +
                 "e.department, e.groupOfEmployee, e.groupLeader, e.isDelete, d.departmentName, g.groupName " +
                 "FROM Employee e, Department d, Groupofdepartment g " +
@@ -25,17 +25,17 @@ public class EmployeeDaoImpl extends HibernateDaoSupport implements EmployeeDao 
                 "AND e.groupOfEmployee = g.groupId " +
                 "AND e.isDelete = 0 ");
         if (StringUtils.isNotEmpty(employee.getEmployeeName()))
-            sql.append(" And e.employeeName = " + employee.getEmployeeName());
+            sql.append(" And e.employeeName = '" + employee.getEmployeeName() + "'");
         if (StringUtils.isNotEmpty(employee.getEmployeeId()))
-            sql.append(" And e.employeeId = " + employee.getEmployeeId());
+            sql.append(" And e.employeeId = '" + employee.getEmployeeId() + "'");
         if (StringUtils.isNotEmpty(employee.getEmployeeNameSpell()))
-            sql.append(" And e.employeeNameSpell = " + employee.getEmployeeNameSpell());
+            sql.append(" And e.employeeNameSpell = '" + employee.getEmployeeNameSpell() + "'");
         if (employee.getDepartment() != 0)
             sql.append(" And e.department = " + employee.getDepartment());
         if (employee.getGroupOfEmployee() != 0)
             sql.append(" And e.groupOfEmployee = " + employee.getGroupOfEmployee());
         if (StringUtils.isNotEmpty(employee.getGroupLeader()) && !employee.getGroupLeader().equals("255"))
-            sql.append(" And e.groupLeader = " + employee.getGroupLeader());
+            sql.append(" And e.groupLeader = '" + employee.getGroupLeader() + "'");
 
         final String finalSql = sql.toString();
         List list = this.getHibernateTemplate().executeFind(
@@ -52,7 +52,6 @@ public class EmployeeDaoImpl extends HibernateDaoSupport implements EmployeeDao 
         try {
             employeeResults = (list.size() > 0 && list != null) ? list : null;
         } catch (Exception e) {
-            employeeResults = null;
             Debug.println("数据库查询结果强转错误", e.toString());
         }
         return employeeResults;
@@ -60,7 +59,6 @@ public class EmployeeDaoImpl extends HibernateDaoSupport implements EmployeeDao 
 
     @Override
     public String delEmployeeByIds(final ArrayList<String> employeeIds) {
-
         List resultList = this.getHibernateTemplate().executeFind(new HibernateCallback() {
             @Override
             public Object doInHibernate(Session session) throws HibernateException, SQLException {
@@ -76,21 +74,65 @@ public class EmployeeDaoImpl extends HibernateDaoSupport implements EmployeeDao 
                     tx.commit();
                     list.add("success");
                 } catch (Exception e) {
-                    list.add("error");
-                    Debug.println("delEmployeeByIds:", e.toString());
+                    list.add(e.toString());
+                    Debug.println("delEmployeeByIds", e.toString());
+                } finally {
+                    return list;
                 }
-                return list;
             }
         });
 
         if (resultList != null && resultList.size() > 0) {
-            if (resultList.get(0).toString().equals("success"))
+            if ("success".equals(resultList.get(0)))
                 return "success";
             else
-                return "fail";
+                return resultList.get(0).toString();
         } else {
             return "fail";
         }
+    }
 
+    @Override
+    public String addEmployee(Employee employee) {
+        try {
+            this.getHibernateTemplate().saveOrUpdate(employee);
+            return "success";
+        } catch (Exception e) {
+            Debug.println("addEmployee", e.toString());
+            return e.toString();
+        }
+    }
+
+    @Override
+    public String importEmployees(final List<Employee> employeeList) {
+
+        List resultList = this.getHibernateTemplate().executeFind(new HibernateCallback() {
+            @Override
+            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+                List list = new ArrayList();
+                try {
+                    Transaction tx = session.beginTransaction();
+                    for (int i = 0; i < employeeList.size(); i++) {
+                        session.save(employeeList.get(i));
+                    }
+                    tx.commit();
+                    list.add("success");
+                } catch (Exception e) {
+                    list.add(e.toString());
+                    Debug.println("importEmployees", e.toString());
+                } finally {
+                    return list;
+                }
+            }
+        });
+
+        if (resultList != null && resultList.size() > 0){
+            if ("success".equals(resultList.get(0)))
+                return "success";
+            else
+                return resultList.get(0).toString();
+        }else {
+            return "fail";
+        }
     }
 }

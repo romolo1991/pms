@@ -10,7 +10,7 @@ public class Employee {
     private String employeeId;
     private String employeeName;
     private String employeeNameSpell;
-        private String entryTime;
+    private String entryTime;
     private int department;
     private int groupOfEmployee;
     private String groupLeader;

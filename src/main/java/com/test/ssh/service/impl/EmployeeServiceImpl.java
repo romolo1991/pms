@@ -65,5 +65,18 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeDao.delEmployeeByIds(employeeIds);
     }
 
+    @Override
+    public String addEmployee(Employee employee) {
+        String employeeNameSpell = StringUtils.getPinYin(employee.getEmployeeName());
+        employee.setEmployeeNameSpell(employeeNameSpell);
+        employee.setIsDelete("0");
+        return employeeDao.addEmployee(employee);
+    }
+
+    @Override
+    public String importEmployees(List<Employee> employeeList) {
+        return employeeDao.importEmployees(employeeList);
+    }
+
 
 }

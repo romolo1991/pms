@@ -10,4 +10,8 @@ public interface EmployeeService{
     List<EmployeeResult> getEmployees(Employee employee, int page, int limit);
 
     String delEmployeeByIds(ArrayList<String> employeeIds);
+
+    String addEmployee(Employee employee);
+
+    String importEmployees(List<Employee> employeeList);
 }

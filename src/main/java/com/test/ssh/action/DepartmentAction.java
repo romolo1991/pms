@@ -46,7 +46,7 @@ public class DepartmentAction extends ActionSupport implements ModelDriven<Depar
         List<Department> departmentList = departmentService.getDepts();
         Department department = new Department();
         department.setDepartmentId(0);
-        department.setDepartmentName("全部");
+        department.setDepartmentName("请选择部门");
         departmentList.add(0,department);
         setDepartmentList(departmentList);
         return SUCCESS;

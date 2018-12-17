@@ -12,7 +12,7 @@
 
     <script src="../../WebTemplate/layuiadmin/layui/layui.js"></script>
     <script type="text/html" id="bar">
-        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <i class="layui-icon layui-icon-edit editIcon"></i>
     </script>
     <script>
         layui.config({
@@ -20,14 +20,15 @@
         }).extend({
             index: 'lib/index' //主入口模块
         });
-        layui.use(['index', 'form', 'laydate', 'table', 'jquery', 'layer'], function () {
+        layui.use(['index', 'form', 'laydate', 'table', 'jquery', 'layer', 'upload'], function () {
             var $ = layui.jquery;//jquery
             var form = layui.form;//表单
             var table = layui.table;//表格
             var layer = layui.layer;//弹出层
             var laydate = layui.laydate;//日期插件
+            var upload = layui.upload;//上传文件
 
-            var indexOfAddPro;
+            var indexOfAddEmployee;
 
             <!-- 页面初始化完成后查询部门和职能组 -->
             $(document).ready(function () {
@@ -56,7 +57,7 @@
                         form.render("select");
                     }
                 });
-                // return false;
+                return false;
             });
 
             table.render({
@@ -74,7 +75,7 @@
                     {field: "departmentName", title: "部门", width: 200},
                     {field: "groupName", title: "职能组", width: 200},
                     {field: "groupLeaderStr", title: "是否组长", width: 200},
-                    {fixed: 'right', align: 'center', toolbar: '#bar', width: 200}
+                    {fixed: "right", align: "center", toolbar: "#bar", width: 200}
                 ]],
                 page: true
             });
@@ -105,48 +106,51 @@
             });
 
             $("#del").on("click", function () {
-                layer.confirm("确认要删除吗？", {icon: 3, title: "提示"}, function (index) {
-                    layer.close(index);
-                    //删除功能
-                    var checked = table.checkStatus("employeeTableReload").data;
-                    var employeeIds = new Array();
-                    for (var i = 0; i < checked.length; i++) {
-                        var employeeId = checked[i].employeeId;
-                        employeeIds.push(employeeId);
-                    }
-                    var employeeParams = $.param({
-                        employeeIds: employeeIds
-                    }, true);
-                    $.ajax({
-                        url: "employee_delEmployees",
-                        type: "post",
-                        data: employeeParams,
-                        success: function (data) {
-                            if (data.msg == "success") {
-                                layer.msg("删除成功！", {
-                                    time: 3000,
-                                    shadeClose: true
-                                });
-                                var type = $("#search").data("type");
-                                active[type] ? active[type].call("#search") : "";
-                            }
-                        },
-                        error: function (data) {
-                            if (data.msg == "fail") {
-                                layer.msg("删除成功！", {
-                                    time: 3000,
-                                    shadeClose: true
-                                });
-                                var type = $("#search").data("type");
-                                active[type] ? active[type].call("#search") : "";
-                            }
+                var checked = table.checkStatus("employeeTableReload").data;
+                if (checked.length > 0) {
+                    layer.confirm("确认要删除吗？", {icon: 3, title: "提示"}, function (index) {
+                        layer.close(index);
+                        //删除功能
+
+                        var employeeIds = new Array();
+                        for (var i = 0; i < checked.length; i++) {
+                            var employeeId = checked[i].employeeId;
+                            employeeIds.push(employeeId);
                         }
+                        var employeeParams = $.param({
+                            employeeIds: employeeIds
+                        }, true);
+                        $.ajax({
+                            url: "employee_delEmployees",
+                            type: "post",
+                            data: employeeParams,
+                            success: function (data) {
+                                if (data.msg == "success") {
+                                    layer.msg("删除成功！", {
+                                        time: 3000,
+                                        shadeClose: true
+                                    });
+                                    var type = $("#search").data("type");
+                                    active[type] ? active[type].call("#search") : "";
+                                } else {
+                                    layer.msg("删除失败！" + data.msg, {
+                                        time: 3000,
+                                        shadeClose: true
+                                    });
+                                }
+                            }
+                        });
                     });
-                });
+                } else {
+                    layer.msg("至少选择一条数据！", {
+                        time: 3000,
+                        shadeClose: true
+                    });
+                }
             });
 
             $("#add").on("click", function () {
-                $ajax({
+                $.ajax({
                     type: "post",
                     url: "department_getAllDepartments",
                     data: {},
@@ -155,10 +159,10 @@
                         form.render("select");
                     }
                 });
-                indexofAddPro = layer.open({
+                indexOfAddEmployee = layer.open({
                     type: 1,
                     content: $("#addNew"),
-                    area: "55%",
+                    area: "50%",
                     title: "新建职员"
                 });
             });
@@ -171,7 +175,7 @@
                 $.ajax({
                     type: "post",
                     url: "group_getGroupsByDept",
-                    data: departmentParam,
+                    data: newDepartmentParam,
                     success: function (data) {
                         $("#new-groupOfEmployee").html(data);
                         form.render("select");
@@ -180,12 +184,91 @@
                 return false;
             });
 
+            laydate.render({
+                elem: "#new-entryTime",
+                theme: "grid"
+            });
+
+            //switch 点击回调事件
+            // form.on("switch(new-groupLeader)", function (data) {
+            //     if (data.elem.checked) {
+            //         $("#new-groupLeader").val("1");
+            //     } else {
+            //         $("#new-groupLeader").val("0");
+            //     }
+            //     form.render();
+            // });
+
             $("#cancelAdd").on("click", function () {
-                layer.close(indexOfAddPro);
+                layer.close(indexOfAddEmployee);
             });
 
             $("#sureAdd").on("click", function () {
+                var newEmployeeId = $("#new-employeeId").val();
+                var newEmployeeName = $("#new-employeeName").val();
+                var newDepartment = $("#new-department").val();
+                var newGroup = $("#new-groupOfEmployee").val();
+                var newEntryTime = $("#new-entryTime").val();
+                var newGroupLeader = $("#new-groupLeader").checked ? "1" : "0";
 
+                var addEmployeeParam = $.param({
+                    employeeId: newEmployeeId,
+                    employeeName: newEmployeeName,
+                    department: newDepartment,
+                    groupOfEmployee: newGroup,
+                    entryTime: newEntryTime,
+                    groupLeader: newGroupLeader
+                }, true);
+
+                $.ajax({
+                    type: "post",
+                    url: "employee_addEmployee",
+                    data: addEmployeeParam,
+                    success: function (data) {
+                        if (data.msg == "success") {
+                            layer.msg("新添职员成功！", {
+                                time: 3000,
+                                shadeClose: true
+                            });
+                            layer.close(indexOfAddEmployee);
+                            var type = $("#search").data("type");
+                            active[type] ? active[type].call("#search") : "";
+                        } else {
+                            layer.msg("新添职员失败！\n" + data.msg, {
+                                time: 3000,
+                                shadeClose: true
+                            });
+                        }
+                    }
+                });
+                //不提交表单
+                return false;
+            });
+
+            upload.render({
+                elem: "#import",
+                url: "employee_importEmployees",
+                accept: "file",
+                exts: "xls|xlsx",
+                before: function (obj) {
+                    layer.load();
+                },
+                done: function (data) {
+                    layer.closeAll("loading");
+                    if (data.msg == "success") {
+                        layer.msg("导入文件成功！", {
+                            time: 3000,
+                            shadeClose: true
+                        });
+                        var type = $("#search").data("type");
+                        active[type] ? active[type].call("#search") : "";
+                    } else {
+                        layer.msg("导入文件失败！\n" + data.msg, {
+                            time: 3000,
+                            shadeClose: true
+                        });
+                    }
+                }
             });
 
 
@@ -243,7 +326,7 @@
                 </div>
                 <div class="layui-inline layui-col-md1">
                     <div class="layui-input-block">
-                        <button class="layui-btn" style="margin-left: 20px; margin-bottom: 5px" data-type="reload"
+                        <button class="layui-btn" style="margin-left:20px; margin-bottom:5px" data-type="reload"
                                 id="search">
                             <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
                         </button>
@@ -254,7 +337,7 @@
 
         <div class="layui-card-body">
             <div class="layui-row" style="padding-bottom: 10px">
-                <button class="layui-btn layui-btn-warm" id="del" style="float: left;">
+                <button class="layui-btn layui-btn-danger" id="del" style="float: left;">
                     <i class="layui-icon layui-icon-delete layuiadmin-button-btn"></i>删除
                 </button>
                 <button class="layui-btn" id="add" style="float: left;">
@@ -264,9 +347,7 @@
                     <i class="layui-icon layui-icon-add-1 layuiadmin-button-btn"></i>导入
                 </button>
             </div>
-            <table id="employeeTable">
-                <th lay-data=""></th>
-            </table>
+            <table id="employeeTable"></table>
         </div>
     </div>
 </div>
@@ -274,22 +355,23 @@
 <div class="layui-fluid" id="addNew" style="display:none">
     <form class="layui-form ">
         <div class="layui-form-item">
-            <div class="layui-inline">
+            <div class="layui-inline layui-col-md9">
                 <lable class="layui-form-label">工号：</lable>
                 <div class="layui-input-block">
                     <input type="text" class="layui-input" id="new-employeeId" autocomplete="off">
                 </div>
             </div>
-            <div class="layui-inline">
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline layui-col-md9">
                 <label class="layui-form-label">姓名：</label>
                 <div class="layui-input-block">
                     <input type="text" class="layui-input" id="new-employeeName" autocomplete="off">
                 </div>
             </div>
         </div>
-
         <div class="layui-form-item">
-            <div class="layui-inline">
+            <div class="layui-inline layui-col-md9">
                 <label class="layui-form-label">部门：</label>
                 <div class="layui-input-block">
                     <select name="new-department" id="new-department" lay-filter="new-department">
@@ -297,7 +379,9 @@
                     </select>
                 </div>
             </div>
-            <div class="layui-inline">
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline layui-col-md9">
                 <label class="layui-form-label">职能组：</label>
                 <div class="layui-input-block">
                     <select name="new-groupOfEmployee" id="new-groupOfEmployee">
@@ -306,22 +390,24 @@
                 </div>
             </div>
         </div>
-
         <div class="layui-form-item">
-            <div class="layui-inline">
+            <div class="layui-inline layui-col-md9">
                 <label class="layui-form-label">入职日期：</label>
                 <div class="layui-input-block">
-                    <input type="text" class="layui-input" id="new-entryTime" placeholder="yyyy-MM-dd" name="entryTime">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">是否组长：</label>
-                <div class="layui-input-block">
-                    <input type="checkbox" lay-skin="switch" lay-text="是|否" id="new-groupLeader">
+                    <input type="text" class="layui-input" id="new-entryTime" placeholder="yyyy-MM-dd"
+                           name="new-entryTime">
                 </div>
             </div>
         </div>
-
+        <div class="layui-form-item">
+            <div class="layui-inline layui-col-md9">
+                <label class="layui-form-label">是否组长：</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" lay-skin="switch" lay-text="是|否" value="0"
+                           id="new-groupLeader" name="new-groupLeader" lay-filter="new-groupLeader">
+                </div>
+            </div>
+        </div>
         <div class="layui-form-item" style="text-align: right">
             <button class="layui-btn" id="sureAdd">确定</button>
             <button class="layui-btn layui-btn-primary" id="cancelAdd">取消</button>
