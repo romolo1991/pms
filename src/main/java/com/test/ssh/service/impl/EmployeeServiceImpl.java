@@ -26,7 +26,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             char[] chars = employeeName.toCharArray();
             for (int i = 0; i < chars.length; i++) {
                 if (chars[i] < 'A' || chars[i] > 'z') {
-                    isAllLetter = true;
+                    isAllLetter = false;
                     break;
                 }
             }
