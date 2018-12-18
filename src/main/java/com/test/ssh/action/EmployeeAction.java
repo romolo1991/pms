@@ -52,10 +52,12 @@ public class EmployeeAction extends ActionSupport implements ModelDriven<Employe
             array = JSONArray.fromObject(employeeResults);
             result.put("code", 0);
             result.put("msg", "success");
+            result.put("count",employeeResults.size());
             result.put("data", array);
         } else {
             result.put("code", 0);
             result.put("msg", "error");
+            result.put("count",0);
             result.put("data", array);
         }
         setGetEmployeesJson(JSONObject.fromObject(result));

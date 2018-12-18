@@ -5,7 +5,7 @@
 <body>
 
 <s:iterator value="departmentList">
-    <option value="<s:property value="departmentId"/> "><s:property value="departmentName"/></option>
+    <option value="<s:property value="departmentId"/>"><s:property value="departmentName"/></option>
 </s:iterator>
 
 </body>

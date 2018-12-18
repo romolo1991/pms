@@ -16,7 +16,10 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public List<Groupofdepartment> getGroups(Groupofdepartment group) {
-        return groupDao.getGroups(group);
+        if (group.getDepartment()==0)
+            return null;
+        else
+            return groupDao.getGroups(group);
     }
 
 

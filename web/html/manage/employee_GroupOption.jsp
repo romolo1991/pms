@@ -5,7 +5,7 @@
 <body>
 
 <s:iterator value="groupofdepartmentList">
-    <option value="<s:property value="groupId"/> "><s:property value="groupName"/></option>
+    <option value="<s:property value="groupId"/>"><s:property value="groupName"/></option>
 </s:iterator>
 
 </body>

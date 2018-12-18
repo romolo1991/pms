@@ -12,7 +12,7 @@
 
     <script src="../../WebTemplate/layuiadmin/layui/layui.js"></script>
     <script type="text/html" id="bar">
-        <i class="layui-icon layui-icon-edit editIcon"></i>
+        <a class="layui-icon layui-icon-edit editIcon" lay-event="edit"></a>
     </script>
     <script>
         layui.config({
@@ -28,7 +28,7 @@
             var laydate = layui.laydate;//日期插件
             var upload = layui.upload;//上传文件
 
-            var indexOfAddEmployee;
+            var indexOfAddOrEditEmployee;
 
             <!-- 页面初始化完成后查询部门和职能组 -->
             $(document).ready(function () {
@@ -38,7 +38,16 @@
                     data: {},
                     success: function (data) {
                         $("#department").html(data);
-                        form.render("select");
+                        // 初始化职能组
+                        $.ajax({
+                            type: "post",
+                            url: "group_getGroupsByDept",
+                            data: {},
+                            success: function (res) {
+                                $("#groupOfEmployee").html(res);
+                                form.render("select");
+                            }
+                        });
                     }
                 });
             });
@@ -57,7 +66,6 @@
                         form.render("select");
                     }
                 });
-                return false;
             });
 
             table.render({
@@ -111,7 +119,6 @@
                     layer.confirm("确认要删除吗？", {icon: 3, title: "提示"}, function (index) {
                         layer.close(index);
                         //删除功能
-
                         var employeeIds = new Array();
                         for (var i = 0; i < checked.length; i++) {
                             var employeeId = checked[i].employeeId;
@@ -149,17 +156,85 @@
                 }
             });
 
+            //table 工具条点击事件
+            table.on("tool(empTable)", function (obj) {
+                var data = obj.data;
+                $.ajax({
+                    type: "post",
+                    url: "department_getAllDepartments",
+                    data: {},
+                    success: function (res) {
+                        $("#new-department").html(res);
+                        $("#new-department").val(data.department)
+                        form.render("select");
+                    }
+                });
+                if (obj.event === "edit") {
+                    $("#new-employeeId").val(data.employeeId);
+                    $("#new-employeeName").val(data.employeeName);
+                    $("#new-entryTime").val(data.entryTime);
+                    if (data.groupLeader == "1") {
+                        $("#new-groupLeader").prop("checked", true);
+                        $("#new-groupLeader").val("1");
+                    } else {
+                        $("#new-groupLeader").prop("checked", false);
+                        $("#new-groupLeader").val("0");
+                    }
+                    form.render("checkbox");
+                    $("#new-department").val(data.department);
+
+                    var newDepartMentParam = $.param({
+                        department: data.department
+                    }, true);
+                    $.ajax({
+                        type: "post",
+                        url: "group_getGroupsByDept",
+                        data: newDepartMentParam,
+                        success: function (res) {
+                            $("#new-groupOfEmployee").html(res);
+                            $("#new-groupOfEmployee").val(data.groupOfEmployee);
+                            form.render("select");
+                        }
+                    });
+                    indexOfAddOrEditEmployee = layer.open({
+                        type: 1,
+                        content: $("#addNew"),
+                        area: "50%",
+                        title: "修改职员"
+                    });
+                }
+            });
+
             $("#add").on("click", function () {
+                // 界面清空
+                $("#new-employeeId").val("");
+                $("#new-employeeName").val("");
+                $("#new-entryTime").val("");
+                $("#new-groupLeader").prop("checked", false);
+                $("#new-groupLeader").val("0");
+                form.render("checkbox");
+                // 初始化部门
                 $.ajax({
                     type: "post",
                     url: "department_getAllDepartments",
                     data: {},
                     success: function (data) {
                         $("#new-department").html(data);
-                        form.render("select");
+                        $("#new-department").val("0");
+                        // 初始化职能组
+                        $.ajax({
+                            type: "post",
+                            url: "group_getGroupsByDept",
+                            data: {},
+                            success: function (res) {
+                                $("#new-groupOfEmployee").html(res);
+                                $("#new-groupOfEmployee").val("0");
+                                form.render("select");
+                            }
+                        });
                     }
                 });
-                indexOfAddEmployee = layer.open({
+                indexOfAddOrEditEmployee = layer.open({
                     type: 1,
                     content: $("#addNew"),
                     area: "50%",
@@ -181,7 +256,6 @@
                         form.render("select");
                     }
                 });
-                return false;
             });
 
             laydate.render({
@@ -189,18 +263,19 @@
                 theme: "grid"
             });
 
-            //switch 点击回调事件
-            // form.on("switch(new-groupLeader)", function (data) {
-            //     if (data.elem.checked) {
-            //         $("#new-groupLeader").val("1");
-            //     } else {
-            //         $("#new-groupLeader").val("0");
-            //     }
-            //     form.render();
-            // });
+            // switch 点击回调事件
+            form.on("switch(new-groupLeader)", function (data) {
+                if (data.elem.checked) {
+                    $("#new-groupLeader").val("1");
+                } else {
+                    $("#new-groupLeader").val("0");
+                }
+                form.render("checkbox");
+            });
 
             $("#cancelAdd").on("click", function () {
-                layer.close(indexOfAddEmployee);
+                layer.close(indexOfAddOrEditEmployee);
+                return false;
             });
 
             $("#sureAdd").on("click", function () {
@@ -209,38 +284,51 @@
                 var newDepartment = $("#new-department").val();
                 var newGroup = $("#new-groupOfEmployee").val();
                 var newEntryTime = $("#new-entryTime").val();
-                var newGroupLeader = $("#new-groupLeader").checked ? "1" : "0";
+                var newGroupLeader = $("#new-groupLeader").val();
+                // var newGroupLeader = $("#new-groupLeader").checked ? "1" : "0";
 
-                var addEmployeeParam = $.param({
-                    employeeId: newEmployeeId,
-                    employeeName: newEmployeeName,
-                    department: newDepartment,
-                    groupOfEmployee: newGroup,
-                    entryTime: newEntryTime,
-                    groupLeader: newGroupLeader
-                }, true);
+                if ($.trim(newEmployeeId) == "" || newEmployeeId == null
+                    || $.trim(newEmployeeName) == "" || newEmployeeName == null
+                    || $.trim(newEntryTime) == "" || newEntryTime == null
+                    || newDepartment == "0" || newGroup == "0"
+                    || $.trim(newEmployeeId).toString().length != 6
+                    || $.trim(newEmployeeId).toString().substr(0, 2) != "TY") {
+                    layer.msg("请确认输入正确后提交！", {
+                        time: 3000,
+                        shadeClose: true
+                    });
+                } else {
+                    var addEmployeeParam = $.param({
+                        employeeId: newEmployeeId,
+                        employeeName: newEmployeeName,
+                        department: newDepartment,
+                        groupOfEmployee: newGroup,
+                        entryTime: newEntryTime,
+                        groupLeader: newGroupLeader
+                    }, true);
 
-                $.ajax({
-                    type: "post",
-                    url: "employee_addEmployee",
-                    data: addEmployeeParam,
-                    success: function (data) {
-                        if (data.msg == "success") {
-                            layer.msg("新添职员成功！", {
-                                time: 3000,
-                                shadeClose: true
-                            });
-                            layer.close(indexOfAddEmployee);
-                            var type = $("#search").data("type");
-                            active[type] ? active[type].call("#search") : "";
-                        } else {
-                            layer.msg("新添职员失败！\n" + data.msg, {
-                                time: 3000,
-                                shadeClose: true
-                            });
+                    $.ajax({
+                        type: "post",
+                        url: "employee_addEmployee",
+                        data: addEmployeeParam,
+                        success: function (data) {
+                            if (data.msg == "success") {
+                                layer.msg("新添职员成功！", {
+                                    time: 3000,
+                                    shadeClose: true
+                                });
+                                layer.close(indexOfAddOrEditEmployee);
+                                var type = $("#search").data("type");
+                                active[type] ? active[type].call("#search") : "";
+                            } else {
+                                layer.msg("新添职员失败！\n" + data.msg, {
+                                    time: 3000,
+                                    shadeClose: true
+                                });
+                            }
                         }
-                    }
-                });
+                    });
+                }
                 //不提交表单
                 return false;
             });
@@ -285,7 +373,7 @@
                 <div class="layui-inline layui-col-md3">
                     <label class="layui-form-label">员工编号</label>
                     <div class="layui-input-block">
-                        <input type="text" id="employeeId" placeholder="TY000000" autocomplete="off"
+                        <input type="text" id="employeeId" placeholder="TY0000" autocomplete="off"
                                class="layui-input">
                     </div>
                 </div>
@@ -347,7 +435,7 @@
                     <i class="layui-icon layui-icon-add-1 layuiadmin-button-btn"></i>导入
                 </button>
             </div>
-            <table id="employeeTable"></table>
+            <table id="employeeTable" lay-filter="empTable"></table>
         </div>
     </div>
 </div>
