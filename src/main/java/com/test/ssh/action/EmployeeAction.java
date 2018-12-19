@@ -46,18 +46,19 @@ public class EmployeeAction extends ActionSupport implements ModelDriven<Employe
     //获取职员信息
     public String getEmployees() {
         List<EmployeeResult> employeeResults = employeeService.getEmployees(employee, page, limit);
+        int count = employeeService.getEmployeesCount(employee);
         Map<String, Object> result = new HashMap<String, Object>();
         JSONArray array = new JSONArray();
-        if (employeeResults != null && employeeResults.size() > 0) {
+        if (employeeResults != null) {
             array = JSONArray.fromObject(employeeResults);
             result.put("code", 0);
             result.put("msg", "success");
-            result.put("count",employeeResults.size());
+            result.put("count", count);
             result.put("data", array);
         } else {
             result.put("code", 0);
             result.put("msg", "error");
-            result.put("count",0);
+            result.put("count", 0);
             result.put("data", array);
         }
         setGetEmployeesJson(JSONObject.fromObject(result));
@@ -109,8 +110,8 @@ public class EmployeeAction extends ActionSupport implements ModelDriven<Employe
             String backMsg = employeeService.importEmployees(employeeList);
             result.put("msg", backMsg);
 
-        }  catch (IOException e) {
-            result.put("msg",e.toString());
+        } catch (IOException e) {
+            result.put("msg", e.toString());
         }
         setImportEmployeesJson(JSONObject.fromObject(result));
         return SUCCESS;

@@ -78,5 +78,26 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeDao.importEmployees(employeeList);
     }
 
+    @Override
+    public int getEmployeesCount(Employee employee) {
+        //姓名和拼写切换
+        String employeeName = employee.getEmployeeName();
+        if (StringUtils.isNotEmpty(employeeName)) {
+            boolean isAllLetter = true;
+            char[] chars = employeeName.toCharArray();
+            for (int i = 0; i < chars.length; i++) {
+                if (chars[i] < 'A' || chars[i] > 'z') {
+                    isAllLetter = false;
+                    break;
+                }
+            }
+            if (isAllLetter) {
+                employee.setEmployeeNameSpell(employeeName.toUpperCase());
+                employee.setEmployeeName(null);
+            }
+        }
+        return employeeDao.getEmployeesCount(employee);
+    }
+
 
 }

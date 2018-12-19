@@ -14,4 +14,6 @@ public interface EmployeeDao {
     String addEmployee(Employee employee);
 
     String importEmployees(List<Employee> employeeList);
+
+    int getEmployeesCount(Employee employee);
 }

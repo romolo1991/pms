@@ -15,10 +15,8 @@ import java.util.List;
 
 public class EmployeeDaoImpl extends HibernateDaoSupport implements EmployeeDao {
 
-    @Override
-    public List<EmployeeResult> getEmployees(Employee employee, final int page, final int limit) {
-        List<EmployeeResult> employeeResults = null;
-        final StringBuffer sql = new StringBuffer("SELECT e.employeeId, e.employeeName, e.employeeNameSpell, e.entryTime, " +
+    public String getEmployeesSQL(Employee employee) {
+        StringBuffer sql = new StringBuffer("SELECT e.employeeId, e.employeeName, e.employeeNameSpell, e.entryTime, " +
                 "e.department, e.groupOfEmployee, e.groupLeader, e.isDelete, d.departmentName, g.groupName " +
                 "FROM Employee e, Department d, Groupofdepartment g " +
                 "WHERE e.department = d.departmentId " +
@@ -37,7 +35,13 @@ public class EmployeeDaoImpl extends HibernateDaoSupport implements EmployeeDao 
         if (StringUtils.isNotEmpty(employee.getGroupLeader()) && !employee.getGroupLeader().equals("255"))
             sql.append(" And e.groupLeader = '" + employee.getGroupLeader() + "'");
 
-        final String finalSql = sql.toString();
+        return sql.toString();
+    }
+
+    @Override
+    public List<EmployeeResult> getEmployees(Employee employee, final int page, final int limit) {
+        List<EmployeeResult> employeeResults = null;
+        final String finalSql = getEmployeesSQL(employee);
         List list = this.getHibernateTemplate().executeFind(
                 new HibernateCallback() {
                     @Override
@@ -50,7 +54,7 @@ public class EmployeeDaoImpl extends HibernateDaoSupport implements EmployeeDao 
                 }
         );
         try {
-            employeeResults = (list.size() > 0 && list != null) ? list : null;
+            employeeResults = (list != null) ? list : null;
         } catch (Exception e) {
             Debug.println("数据库查询结果强转错误", e.toString());
         }
@@ -126,13 +130,25 @@ public class EmployeeDaoImpl extends HibernateDaoSupport implements EmployeeDao 
             }
         });
 
-        if (resultList != null && resultList.size() > 0){
+        if (resultList != null && resultList.size() > 0) {
             if ("success".equals(resultList.get(0)))
                 return "success";
             else
                 return resultList.get(0).toString();
-        }else {
+        } else {
             return "fail";
         }
+    }
+
+    @Override
+    public int getEmployeesCount(Employee employee) {
+        final String finalSql = getEmployeesSQL(employee);
+        List resultList = null;
+        try {
+            resultList = this.getHibernateTemplate().find(finalSql);
+        } catch (Exception e) {
+            Debug.println("getEmployeesCount", e.toString());
+        }
+        return (resultList != null) ? resultList.size() : 0;
     }
 }
