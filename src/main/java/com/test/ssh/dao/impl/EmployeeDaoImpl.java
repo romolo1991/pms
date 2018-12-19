@@ -21,7 +21,7 @@ public class EmployeeDaoImpl extends HibernateDaoSupport implements EmployeeDao 
                 "FROM Employee e, Department d, Groupofdepartment g " +
                 "WHERE e.department = d.departmentId " +
                 "AND e.groupOfEmployee = g.groupId " +
-                "AND e.isDelete = 0 ");
+                "AND e.isDelete = '0' ");
         if (StringUtils.isNotEmpty(employee.getEmployeeName()))
             sql.append(" And e.employeeName = '" + employee.getEmployeeName() + "'");
         if (StringUtils.isNotEmpty(employee.getEmployeeId()))

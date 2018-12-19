@@ -12,7 +12,7 @@ public class GroupDaoImpl extends HibernateDaoSupport implements GroupDao {
     @Override
     public List<Groupofdepartment> getGroups(Groupofdepartment group) {
         List<Groupofdepartment> resultList;
-        StringBuffer sql = new StringBuffer("from Groupofdepartment where isDelete=0");
+        StringBuffer sql = new StringBuffer("from Groupofdepartment where isDelete='0'");
         if (group.getDepartment() != 0) {
             sql.append(" and department =" + group.getDepartment());
         }
