@@ -6,6 +6,26 @@
 
 <struts>
     <package name="ssh" extends="json-default" namespace="/">
+        <!--配置拦截器-->
+        <interceptors>
+            <interceptor name="myInterceptor" class="com.test.ssh.interceptor.LoginInterceptoe">
+                <param name="excludeMethods">user</param>
+            </interceptor>
+            <interceptor-stack name="loginStack">
+                <interceptor-ref name="myInterceptor">
+                    <param name="excludeMethods">user</param>
+                </interceptor-ref>
+                <interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
+        </interceptors>
+        <!--默认拦截器（全局拦截器）-->
+        <default-interceptor-ref name="loginStack"/>
+        <!--全局结果集-->
+        <global-results>
+            <result name="fail" type="redirect">/login.jsp</result>
+        </global-results>
+
+
         <action name="user" class="com.test.ssh.action.UserAction" method="login">
             <result name="failed">/login.jsp</result>
             <!--返回值为"input"时，跳转至login.jsp，并通过login.jsp中的s:actionerror 告诉用户错误信息-->
@@ -22,7 +42,8 @@
                 <param name="root">deptsJson</param>
             </result>
         </action>
-        <action name="department_getAllDepartments" class="com.test.ssh.action.DepartmentAction" method="getAllDepartments">
+        <action name="department_getAllDepartments" class="com.test.ssh.action.DepartmentAction"
+                method="getAllDepartments">
             <result name="success">/html/manage/employee_DeptOption.jsp</result>
         </action>
         <action name="group_getGroupsByDept" class="com.test.ssh.action.GroupAction" method="getGroupsByDept">
@@ -35,7 +56,7 @@
             <allowed-methods>getEmployees,delEmployees,addEmployee</allowed-methods><!-- stucts2.5之后才需要 -->
         </action>
         <!--EmployeeAction文件导入action-->
-        <action name="employee_importEmployees" class="com.test.ssh.action.EmployeeAction" method="importEmployees" >
+        <action name="employee_importEmployees" class="com.test.ssh.action.EmployeeAction" method="importEmployees">
             <interceptor-ref name="json"/>
             <interceptor-ref name="fileUpload"/>
             <interceptor-ref name="defaultStack"/>

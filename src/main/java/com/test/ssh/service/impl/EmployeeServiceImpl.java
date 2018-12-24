@@ -25,7 +25,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             boolean isAllLetter = true;
             char[] chars = employeeName.toCharArray();
             for (int i = 0; i < chars.length; i++) {
-                if (chars[i] < 'A' || chars[i] > 'z') {
+                if (chars[i] < 'A' || chars[i] > 'z' || ('Z' < chars[i] && chars[i] < 'a')) {
                     isAllLetter = false;
                     break;
                 }
@@ -67,10 +67,17 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public String addEmployee(Employee employee) {
-        String employeeNameSpell = StringUtils.getPinYin(employee.getEmployeeName());
-        employee.setEmployeeNameSpell(employeeNameSpell);
-        employee.setIsDelete("0");
-        return employeeDao.addEmployee(employee);
+        Employee employeeParam = new Employee();
+        employeeParam.setEmployeeId(employee.getEmployeeId());
+        List<EmployeeResult> resultList = getEmployees(employeeParam, 1, 10);
+        if (resultList != null && resultList.size() > 0) {
+            return "职员ID已经被注册！请确认后重试";
+        } else {
+            String employeeNameSpell = StringUtils.getPinYin(employee.getEmployeeName());
+            employee.setEmployeeNameSpell(employeeNameSpell);
+            employee.setIsDelete("0");
+            return employeeDao.addEmployee(employee);
+        }
     }
 
     @Override

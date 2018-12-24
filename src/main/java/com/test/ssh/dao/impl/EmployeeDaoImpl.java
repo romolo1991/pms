@@ -39,26 +39,26 @@ public class EmployeeDaoImpl extends HibernateDaoSupport implements EmployeeDao 
     }
 
     @Override
-    public List<EmployeeResult> getEmployees(Employee employee, final int page, final int limit) {
-        List<EmployeeResult> employeeResults = null;
+    public List getEmployees(Employee employee, final int page, final int limit) {
+        List resultArrayList = new ArrayList();
         final String finalSql = getEmployeesSQL(employee);
-        List list = this.getHibernateTemplate().executeFind(
-                new HibernateCallback() {
-                    @Override
-                    public Object doInHibernate(Session session) {
-                        Query query = session.createQuery(finalSql);
-                        query.setFirstResult((page - 1) * limit);
-                        query.setMaxResults(limit);
-                        return query.list();
-                    }
-                }
-        );
         try {
-            employeeResults = (list != null) ? list : null;
+            List list = this.getHibernateTemplate().executeFind(
+                    new HibernateCallback() {
+                        @Override
+                        public Object doInHibernate(Session session) {
+                            Query query = session.createQuery(finalSql);
+                            query.setFirstResult((page - 1) * limit);
+                            query.setMaxResults(limit);
+                            return query.list();
+                        }
+                    }
+            );
+            resultArrayList = (list != null) ? list : null;
         } catch (Exception e) {
-            Debug.println("数据库查询结果强转错误", e.toString());
+            Debug.println("getEmployees", e.toString() + "\n" + finalSql);
         }
-        return employeeResults;
+        return resultArrayList;
     }
 
     @Override
