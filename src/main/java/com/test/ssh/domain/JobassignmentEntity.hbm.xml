@@ -4,10 +4,11 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="com.test.ssh.domain.User" table="systemusers" schema="pms">
-        <id name="userId" column="userId"/>
-        <property name="userName" column="userName"/>
-        <property name="userPassword" column="userPassword"/>
+    <class name="com.test.ssh.domain.JobassignmentEntity" table="jobassignment" schema="pms">
+        <id name="assignmentId" column="assignmentId"/>
+        <property name="project" column="project"/>
+        <property name="workload" column="workload"/>
+        <property name="monthOfAssignment" column="monthOfAssignment"/>
         <property name="employee" column="employee"/>
         <property name="isDelete" column="isDelete"/>
     </class>

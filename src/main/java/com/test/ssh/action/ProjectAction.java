@@ -29,12 +29,12 @@ public class ProjectAction extends ActionSupport implements ModelDriven<Project>
     }
 
     public String getProjects(){
-        List<Project> projects = projectService.getProjects(project.getProjectId(), project.getProjectName(), project.getHostGroup(), project.getIsSponsor(), project.getProjectScale(), project.getStartTime(), project.getEndTime(), page, limit);
+        List<Project> projects = projectService.getProjects(project.getProjectId(), project.getProjectName(), project.getHostGroup(), project.getProjectType(), project.getProjectScale(), project.getStartTime(), project.getEndTime(), page, limit);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("code", 0);
         result.put("msg", "");
         if (projects != null){
-            result.put("count", projectService.getProjectCount(project.getProjectId(), project.getProjectName(), project.getHostGroup(), project.getIsSponsor(), project.getProjectScale(), project.getStartTime(), project.getEndTime()));
+            result.put("count", projectService.getProjectCount(project.getProjectId(), project.getProjectName(), project.getHostGroup(), project.getProjectType(), project.getProjectScale(), project.getStartTime(), project.getEndTime()));
         }else{
             result.put("count", 0);
         }

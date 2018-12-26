@@ -15,8 +15,6 @@ public class Employee {
     private int groupOfEmployee;
     private String groupLeader;
     private String isDelete;
-    private String remark1;
-    private String remark2;
 
     @Id
     @Column(name = "employeeId")
@@ -98,26 +96,6 @@ public class Employee {
         this.isDelete = isDelete;
     }
 
-    @Basic
-    @Column(name = "remark1")
-    public String getRemark1() {
-        return remark1;
-    }
-
-    public void setRemark1(String remark1) {
-        this.remark1 = remark1;
-    }
-
-    @Basic
-    @Column(name = "remark2")
-    public String getRemark2() {
-        return remark2;
-    }
-
-    public void setRemark2(String remark2) {
-        this.remark2 = remark2;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -136,8 +114,6 @@ public class Employee {
         if (groupLeader != null ? !groupLeader.equals(employee.groupLeader) : employee.groupLeader != null)
             return false;
         if (isDelete != null ? !isDelete.equals(employee.isDelete) : employee.isDelete != null) return false;
-        if (remark1 != null ? !remark1.equals(employee.remark1) : employee.remark1 != null) return false;
-        if (remark2 != null ? !remark2.equals(employee.remark2) : employee.remark2 != null) return false;
 
         return true;
     }
@@ -152,8 +128,6 @@ public class Employee {
         result = 31 * result + groupOfEmployee;
         result = 31 * result + (groupLeader != null ? groupLeader.hashCode() : 0);
         result = 31 * result + (isDelete != null ? isDelete.hashCode() : 0);
-        result = 31 * result + (remark1 != null ? remark1.hashCode() : 0);
-        result = 31 * result + (remark2 != null ? remark2.hashCode() : 0);
         return result;
     }
 }

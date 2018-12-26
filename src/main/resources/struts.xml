@@ -26,28 +26,22 @@
         </global-results>
 
 
+        <!--主页-->
         <action name="user" class="com.test.ssh.action.UserAction" method="login">
             <result name="failed">/login.jsp</result>
-            <!--返回值为"input"时，跳转至login.jsp，并通过login.jsp中的s:actionerror 告诉用户错误信息-->
             <result name="success" type="redirect">/index.jsp</result>
-            <!--返回值为“success”时，跳转到管理界面-->
         </action>
+        <!--项目-->
         <action name="pro_*" class="com.test.ssh.action.ProjectAction" method="{1}">
             <result type="json">
                 <param name="root">backJson</param>
             </result>
         </action>
+        <!--管理-->
         <action name="getDepts" class="com.test.ssh.action.DepartmentAction" method="getDepts">
             <result type="json">
                 <param name="root">deptsJson</param>
             </result>
-        </action>
-        <action name="department_getAllDepartments" class="com.test.ssh.action.DepartmentAction"
-                method="getAllDepartments">
-            <result name="success">/html/manage/employee_DeptOption.jsp</result>
-        </action>
-        <action name="group_getGroupsByDept" class="com.test.ssh.action.GroupAction" method="getGroupsByDept">
-            <result name="success">/html/manage/employee_GroupOption.jsp</result>
         </action>
         <action name="employee_*" class="com.test.ssh.action.EmployeeAction" method="{1}">
             <result type="json">
@@ -64,7 +58,13 @@
                 <param name="root">importEmployeesJson</param>
             </result>
         </action>
-
-
+        <!--得到所有部门信息-->
+        <action name="department_getAllDepartments" class="com.test.ssh.action.DepartmentAction" method="getAllDepartments">
+            <result name="success">/html/manage/employee_DeptOption.jsp</result>
+        </action>
+        <!--根据部门得到职能组信息-->
+        <action name="group_getGroupsByDept" class="com.test.ssh.action.GroupAction" method="getGroupsByDept">
+            <result name="success">/html/manage/employee_GroupOption.jsp</result>
+        </action>
     </package>
 </struts>

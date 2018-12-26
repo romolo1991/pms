@@ -11,7 +11,7 @@ import java.util.List;
 
 public class ProjectDaoImpl extends HibernateDaoSupport implements ProjectDao {
 
-    public String getAllProjectSql(String projectId, String projectName, int hostGroup, String isSponsor, String projectScale, String startTime, String endTime){
+    public String getAllProjectSql(String projectId, String projectName, int hostGroup, String projectType, String projectScale, String startTime, String endTime){
         String sql = "from Project where isDelete='0'";
         if (projectId != null && !projectId.equals("")){
             sql += "and projectId='" + projectId + "'";
@@ -23,8 +23,8 @@ public class ProjectDaoImpl extends HibernateDaoSupport implements ProjectDao {
         if (!hostGroupStr.equals("-1")){
             sql += "and hostGroup='" + hostGroup + "'";
         }
-        if (isSponsor != null && !isSponsor.equals("")){
-            sql += "and isSponsor='" + isSponsor + "'";
+        if (projectType != null && !projectType.equals("")){
+            sql += "and projectType='" + projectType + "'";
         }
         if (projectScale != null && !projectScale.equals("")){
             sql += "and projectScale='" + projectScale + "'";
@@ -39,14 +39,14 @@ public class ProjectDaoImpl extends HibernateDaoSupport implements ProjectDao {
     }
 
     @Override
-    public List<Project> getProjects(String projectId, String projectName, int hostGroup, String isSponsor, String projectScale, String startTime, String endTime, final int page, final int limit) {
-        String sql = getAllProjectSql(projectId, projectName, hostGroup, isSponsor, projectScale, startTime, endTime);
+    public List<Project> getProjects(String projectId, String projectName, int hostGroup, String projectType, String projectScale, String startTime, String endTime, final int page, final int limit) {
+        String sql = getAllProjectSql(projectId, projectName, hostGroup, projectType, projectScale, startTime, endTime);
         final String finalSql = sql;
         List list = this.getHibernateTemplate().executeFind(
                 new HibernateCallback() {
                     public Object doInHibernate(Session session) {
                         Query query = session.createQuery(finalSql);
-                        query.setFirstResult((page-1)*limit);
+                        query.setFirstResult((page - 1)*limit);
                         query.setMaxResults(limit);
                         return query.list();
                     }
@@ -60,8 +60,8 @@ public class ProjectDaoImpl extends HibernateDaoSupport implements ProjectDao {
     }
 
     @Override
-    public int getProjectCount (String projectId, String projectName, int hostGroup, String isSponsor, String projectScale, String startTime, String endTime){
-        String sql = getAllProjectSql(projectId, projectName, hostGroup, isSponsor, projectScale, startTime, endTime);
+    public int getProjectCount (String projectId, String projectName, int hostGroup, String projectType, String projectScale, String startTime, String endTime){
+        String sql = getAllProjectSql(projectId, projectName, hostGroup, projectType, projectScale, startTime, endTime);
         List list = this.getHibernateTemplate().find(sql);
         return list.size();
     }

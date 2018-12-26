@@ -107,42 +107,43 @@
             </dl>
           </li>
 
-          <li data-name="user" class="layui-nav-item">
-            <a href="javascript:;" lay-tips="用户" lay-direction="2">
-              <i class="layui-icon layui-icon-user"></i>
-              <cite>管理</cite>
-            </a>
-            <dl class="layui-nav-child">
-              <dd>
-                <a lay-href="html/manage/department.html">部门管理</a>
-              </dd>
-              <dd>
-                <a lay-href="user/administrators/list.html">职能组管理</a>
-              </dd>
-              <dd>
-                <a lay-href="user/administrators/role.html">职员管理</a>
-              </dd>
-            </dl>
-          </li>
-          <li data-name="set" class="layui-nav-item">
-            <a href="javascript:;" lay-tips="设置" lay-direction="2">
-              <i class="layui-icon layui-icon-set"></i>
-              <cite>设置</cite>
-            </a>
-            <dl class="layui-nav-child">
-              <dd class="layui-nav-itemed">
-                <a href="javascript:;">我的设置</a>
-                <dl class="layui-nav-child">
-                  <dd><a lay-href="set/user/info.html">基本资料</a></dd>
-                  <dd><a lay-href="set/user/password.html">修改密码</a></dd>
-                  <dd><a lay-href="">登陆授权</a></dd>
-                </dl>
-              </dd>
-            </dl>
-          </li>
-        </ul>
-      </div>
-    </div>
+                    <li data-name="user" class="layui-nav-item">
+                        <a href="javascript:;" lay-tips="用户" lay-direction="2">
+                            <i class="layui-icon layui-icon-user"></i>
+                            <cite>管理</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd>
+                                <a lay-href="html/manage/department.html">部门管理</a>
+                            </dd>
+                            <dd>
+                                <a lay-href="user/administrators/list.html">职能组管理</a>
+                            </dd>
+                            <dd>
+                                <a lay-href="html/manage/employee.html">职员管理</a>
+                            </dd>
+                        </dl>
+                    </li>
+
+                    <li data-name="set" class="layui-nav-item">
+                        <a href="javascript:;" lay-tips="设置" lay-direction="2">
+                            <i class="layui-icon layui-icon-set"></i>
+                            <cite>设置</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd class="layui-nav-itemed">
+                                <a href="javascript:;">我的设置</a>
+                                <dl class="layui-nav-child">
+                                    <dd><a lay-href="set/user/info.html">基本资料</a></dd>
+                                    <dd><a lay-href="set/user/password.html">修改密码</a></dd>
+                                    <dd><a lay-href="">登陆授权</a></dd>
+                                </dl>
+                            </dd>
+                        </dl>
+                    </li>
+                </ul>
+            </div>
+        </div>
 
     <!-- 页面标签 -->
       <div class="layadmin-pagetabs" id="LAY_app_tabs">

@@ -11,7 +11,6 @@ public class Project {
     private String projectName;
     private String projectType;
     private String projectScale;
-    private String isSponsor;
     private String leader;
     private int hostGroup;
     private String projectManager;
@@ -21,8 +20,6 @@ public class Project {
     private String startTime;
     private String endTime;
     private String isDelete;
-    private String remark1;
-    private String remark2;
 
     @Id
     @Column(name = "projectId")
@@ -62,16 +59,6 @@ public class Project {
 
     public void setProjectScale(String projectScale) {
         this.projectScale = projectScale;
-    }
-
-    @Basic
-    @Column(name = "isSponsor")
-    public String getIsSponsor() {
-        return isSponsor;
-    }
-
-    public void setIsSponsor(String isSponsor) {
-        this.isSponsor = isSponsor;
     }
 
     @Basic
@@ -164,26 +151,6 @@ public class Project {
         this.isDelete = isDelete;
     }
 
-    @Basic
-    @Column(name = "remark1")
-    public String getRemark1() {
-        return remark1;
-    }
-
-    public void setRemark1(String remark1) {
-        this.remark1 = remark1;
-    }
-
-    @Basic
-    @Column(name = "remark2")
-    public String getRemark2() {
-        return remark2;
-    }
-
-    public void setRemark2(String remark2) {
-        this.remark2 = remark2;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -200,15 +167,12 @@ public class Project {
         if (projectType != null ? !projectType.equals(project.projectType) : project.projectType != null) return false;
         if (projectScale != null ? !projectScale.equals(project.projectScale) : project.projectScale != null)
             return false;
-        if (isSponsor != null ? !isSponsor.equals(project.isSponsor) : project.isSponsor != null) return false;
         if (leader != null ? !leader.equals(project.leader) : project.leader != null) return false;
         if (projectManager != null ? !projectManager.equals(project.projectManager) : project.projectManager != null)
             return false;
         if (startTime != null ? !startTime.equals(project.startTime) : project.startTime != null) return false;
         if (endTime != null ? !endTime.equals(project.endTime) : project.endTime != null) return false;
         if (isDelete != null ? !isDelete.equals(project.isDelete) : project.isDelete != null) return false;
-        if (remark1 != null ? !remark1.equals(project.remark1) : project.remark1 != null) return false;
-        if (remark2 != null ? !remark2.equals(project.remark2) : project.remark2 != null) return false;
 
         return true;
     }
@@ -221,7 +185,6 @@ public class Project {
         result = 31 * result + (projectName != null ? projectName.hashCode() : 0);
         result = 31 * result + (projectType != null ? projectType.hashCode() : 0);
         result = 31 * result + (projectScale != null ? projectScale.hashCode() : 0);
-        result = 31 * result + (isSponsor != null ? isSponsor.hashCode() : 0);
         result = 31 * result + (leader != null ? leader.hashCode() : 0);
         result = 31 * result + hostGroup;
         result = 31 * result + (projectManager != null ? projectManager.hashCode() : 0);
@@ -234,8 +197,6 @@ public class Project {
         result = 31 * result + (startTime != null ? startTime.hashCode() : 0);
         result = 31 * result + (endTime != null ? endTime.hashCode() : 0);
         result = 31 * result + (isDelete != null ? isDelete.hashCode() : 0);
-        result = 31 * result + (remark1 != null ? remark1.hashCode() : 0);
-        result = 31 * result + (remark2 != null ? remark2.hashCode() : 0);
         return result;
     }
 }

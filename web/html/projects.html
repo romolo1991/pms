@@ -56,12 +56,13 @@
                         </div>
                     </div>
                     <div class="layui-inline layui-col-md2">
-                        <label class="layui-form-label">协办项目</label>
+                        <label class="layui-form-label">项目类型</label>
                         <div class="layui-input-block">
-                            <select id="isSponsor">
+                            <select id="projectType">
                                 <option value=""></option>
-                                <option value="1">是</option>
-                                <option value="0">否</option>
+                                <option value="00">项目</option>
+                                <option value="01">协办</option>
+                                <option value="02">专项</option>
                             </select>
                         </div>
                     </div>
@@ -104,7 +105,7 @@
             </div>
             <div class="layui-card-body">
                 <div style="padding-bottom: 10px">
-                    <button class="layui-btn layui-btn-warm" id="del">
+                    <button class="layui-btn layui-btn-danger" id="del">
                         <i class="layui-icon layui-icon-delete layuiadmin-button-btn"></i>删除
                     </button>
                     <button class="layui-btn" id="add">
@@ -129,10 +130,9 @@
                     <div class="layui-input-block">
                         <select id="new-projectType">
                             <option value="">请选择项目类型</option>
-                            <option value="00">专项</option>
-                            <option value="01">快捷项目</option>
-                            <option value="02">项目协办</option>
-                            <option value="03">项目主办</option>
+                            <option value="00">项目主办</option>
+                            <option value="01">项目协办</option>
+                            <option value="02">专项项目</option>
                         </select>
                     </div>
                 </div>
@@ -166,7 +166,7 @@
                         <input type="text" readonly="readonly" id="new-leader" class="layui-input" about="0">
                     </div>
                 </div>
-                <button class="layui-btn layui-btn-sm">
+                <button class="layui-btn layui-btn-sm" style="width: 46px">
                     <i class="layui-icon layui-icon-friends"></i>
                 </button>
             </div>
@@ -177,7 +177,7 @@
                         <input type="text" readonly="readonly" id="new-hostGroup" class="layui-input" about="0">
                     </div>
                 </div>
-                <button class="layui-btn layui-btn-sm">
+                <button class="layui-btn layui-btn-sm" style="width: 46px">
                     <i class="layui-icon layui-icon-group"></i>
                 </button>
             </div>
@@ -188,7 +188,7 @@
                         <input type="text" readonly="readonly" id="new-projectManager" class="layui-input" about="0">
                     </div>
                 </div>
-                <button class="layui-btn layui-btn-sm">
+                <button class="layui-btn layui-btn-sm" style="width: 46px">
                     <i class="layui-icon layui-icon-friends"></i>
                 </button>
             </div>
@@ -213,12 +213,12 @@
                         <input type="text" class="layui-input" id="new-workload" readonly="readonly" value="0">
                     </div>
                 </div>
-                <div class="layui-inline">
+                <!--<div class="layui-inline">
                     <label class="layui-form-label">协办项目：</label>
                     <div class="layui-input-block">
                         <input type="checkbox" lay-skin="switch" lay-text="是|否" id="new-isSponsor">
                     </div>
-                </div>
+                </div>-->
             </div>
             <div class="layui-form-item">
                 <div class="layui-inline">
@@ -281,16 +281,16 @@
                     {field: 'projectId', sort: true, title: '项目编号', fixed: true, width: 120},
                     {field: 'projectName', title: '项目名称', width: 120},
                     {field: 'projectScale', sort: true, title: '项目规模', width: 80},
-                    {field: 'isSponsor', title: '协办项目', width: 80},
+                    {field: 'projectType', sort: true, title: '项目类型', width: 80},
                     {field: 'leader', sort: true, title: '负责人', width: 80},
                     {field: 'hostGroup', sort: true, title: '职能组', width: 80},
                     {field: 'projectManager', sort: true, title: '项目经理', width: 80},
                     {field: 'efficiency', sort: true, title: '研发效率', width: 100},
                     {field: 'functionPoint', sort: true, title: '功能点', width: 80},
                     {field: 'workload', sort: true, title: '工作量', width: 80},
-                    {field: 'startTime', sort: true, title: '开始时间', width: 110},
-                    {field: 'endTime', sort: true, title: '结束时间', width: 110},
-                    {fixed: 'right', align: 'center', toolbar: '#bar', sort: false}
+                    {field: 'startTime', sort: true, title: '开始时间'},
+                    {field: 'endTime', sort: true, title: '结束时间'},
+                    {fixed: 'right', align: 'center', toolbar: '#bar', sort: false, width: 80}
                 ]],
                 page: true
             });
@@ -299,12 +299,12 @@
                     var projectId = $("#projectId").val();
                     var projectName = $("#projectName").val();
                     var hostGroup = $("#hostGroup").val();
-                    var isSponsor = $("#isSponsor").val();
+                    var projectType = $("#projectType").val();
                     var projectScale = $("#projectScale").val();
                     var startTime = $("#laydate-start").val();
                     var endTime = $("#laydate-end").val();
                     if (hostGroup==""){
-                        hostGroup = parseInt("-1");
+                        hostGroup = parseInt("0");
                     }else{
                         hostGroup = parseInt(hostGroup);
                     }
@@ -313,7 +313,7 @@
                             projectId : projectId,
                             projectName : projectName,
                             hostGroup : hostGroup,
-                            isSponsor : isSponsor,
+                            projectType : projectType,
                             projectScale : projectScale,
                             startTime : startTime,
                             endTime : endTime
@@ -401,7 +401,7 @@
                 var workload = $("#new-workload").val();
                 var startTime = $("#new-startTime").val();
                 var endTime = $("#new-endTime").val();
-                var isSponsor = $("#new-isSponsor").checked ? "1":"0";
+                // var isSponsor = $("#new-isSponsor").get(0).checked ? "1" : "0";
 
                 if (hostGroup==""){
                     hostGroup = parseInt("0");
@@ -431,8 +431,7 @@
                         functionPoint: functionPoint,
                         workload: workload,
                         startTime: startTime,
-                        endTime: endTime,
-                        isSponsor: isSponsor
+                        endTime: endTime
                     },
                     success:function (data) {
                         if (data.msg=="success"){

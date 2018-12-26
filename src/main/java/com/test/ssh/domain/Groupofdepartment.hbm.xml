@@ -10,7 +10,5 @@
         <property name="introduction" column="introduction"/>
         <property name="department" column="department"/>
         <property name="isDelete" column="isDelete"/>
-        <property name="remark1" column="remark1"/>
-        <property name="remark2" column="remark2"/>
     </class>
 </hibernate-mapping>

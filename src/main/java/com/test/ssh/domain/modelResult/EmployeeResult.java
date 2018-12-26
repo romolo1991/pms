@@ -2,7 +2,7 @@ package com.test.ssh.domain.modelResult;
 
 import com.test.ssh.domain.Employee;
 
-public class EmployeeResult extends Employee {
+public class EmployeeResult{
     private String employeeId;
     private String employeeName;
     private String employeeNameSpell;
@@ -13,6 +13,7 @@ public class EmployeeResult extends Employee {
     private String isDelete;
 
     //添加字段
+    private String remark;
     private String departmentName;
     private String groupName;
     private String groupLeaderStr;
@@ -38,82 +39,66 @@ public class EmployeeResult extends Employee {
         this.groupLeaderStr = groupLeaderStr;
     }
 
-    @Override
     public String getEmployeeId() {
         return employeeId;
     }
 
-    @Override
     public void setEmployeeId(String employeeId) {
         this.employeeId = employeeId;
     }
 
-    @Override
     public String getEmployeeName() {
         return employeeName;
     }
 
-    @Override
     public void setEmployeeName(String employeeName) {
         this.employeeName = employeeName;
     }
 
-    @Override
     public String getEmployeeNameSpell() {
         return employeeNameSpell;
     }
 
-    @Override
     public void setEmployeeNameSpell(String employeeNameSpell) {
         this.employeeNameSpell = employeeNameSpell;
     }
 
-    @Override
     public String getEntryTime() {
         return entryTime;
     }
 
-    @Override
     public void setEntryTime(String entryTime) {
         this.entryTime = entryTime;
     }
 
-    @Override
     public int getDepartment() {
         return department;
     }
 
-    @Override
     public void setDepartment(int department) {
         this.department = department;
     }
 
-    @Override
     public int getGroupOfEmployee() {
         return groupOfEmployee;
     }
 
-    @Override
     public void setGroupOfEmployee(int groupOfEmployee) {
         this.groupOfEmployee = groupOfEmployee;
     }
 
-    @Override
     public String getGroupLeader() {
         return groupLeader;
     }
 
-    @Override
     public void setGroupLeader(String groupLeader) {
         this.groupLeader = groupLeader;
     }
 
-    @Override
     public String getIsDelete() {
         return isDelete;
     }
 
-    @Override
     public void setIsDelete(String isDelete) {
         this.isDelete = isDelete;
     }
@@ -140,5 +125,13 @@ public class EmployeeResult extends Employee {
 
     public void setGroupLeaderStr(String groupLeaderStr) {
         this.groupLeaderStr = groupLeaderStr;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }
