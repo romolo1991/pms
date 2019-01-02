@@ -9,6 +9,7 @@
         <property name="groupName" column="groupName"/>
         <property name="introduction" column="introduction"/>
         <property name="department" column="department"/>
+        <property name="groupLeader" column="groupLeader"/>
         <property name="isDelete" column="isDelete"/>
     </class>
 </hibernate-mapping>

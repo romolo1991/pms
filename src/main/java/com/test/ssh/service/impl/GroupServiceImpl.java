@@ -10,16 +10,13 @@ public class GroupServiceImpl implements GroupService {
 
     private GroupDao groupDao;
 
-    public void setGroupDao(GroupDao groupDao){
+    public void setGroupDao(GroupDao groupDao) {
         this.groupDao = groupDao;
     }
 
     @Override
     public List<Groupofdepartment> getGroups(Groupofdepartment group) {
-        if (group.getDepartment()==0)
-            return null;
-        else
-            return groupDao.getGroups(group);
+        return groupDao.getGroups(group);
     }
 
 

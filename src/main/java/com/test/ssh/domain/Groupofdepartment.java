@@ -11,6 +11,7 @@ public class Groupofdepartment {
     private String groupName;
     private String introduction;
     private int department;
+    private String groupLeader;
     private String isDelete;
 
     @Id
@@ -54,6 +55,16 @@ public class Groupofdepartment {
     }
 
     @Basic
+    @Column(name = "groupLeader")
+    public String getGroupLeader() {
+        return groupLeader;
+    }
+
+    public void setGroupLeader(String groupLeader) {
+        this.groupLeader = groupLeader;
+    }
+
+    @Basic
     @Column(name = "isDelete")
     public String getIsDelete() {
         return isDelete;
@@ -88,4 +99,6 @@ public class Groupofdepartment {
         result = 31 * result + (isDelete != null ? isDelete.hashCode() : 0);
         return result;
     }
+
+
 }
