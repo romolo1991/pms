@@ -4,7 +4,7 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="com.test.ssh.domain.JobassignmentEntity" table="jobassignment" schema="pms">
+    <class name="com.test.ssh.domain.Jobassignment" table="jobassignment" schema="pms">
         <id name="assignmentId" column="assignmentId"/>
         <property name="project" column="project"/>
         <property name="workload" column="workload"/>

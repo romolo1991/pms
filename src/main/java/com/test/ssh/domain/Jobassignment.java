@@ -1,9 +1,12 @@
 package com.test.ssh.domain;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Entity
-public class JobassignmentEntity {
+public class Jobassignment {
     private int assignmentId;
     private String project;
     private double workload;
@@ -76,7 +79,7 @@ public class JobassignmentEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        JobassignmentEntity that = (JobassignmentEntity) o;
+        Jobassignment that = (Jobassignment) o;
 
         if (assignmentId != that.assignmentId) return false;
         if (Double.compare(that.workload, workload) != 0) return false;
