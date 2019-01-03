@@ -22,12 +22,12 @@ public class LoginInterceptoe extends MethodFilterInterceptor {
         while (xx.hasNext()) {
             String excludeMethod = xx.next();
             if (url.contains(excludeMethod)) {
-                System.out.println("----用户正在登陆，放行:" + url);
+                System.out.println("----Action拦截器：用户正在登陆，放行:" + url);
                 return actionInvocation.invoke();
             }
         }
         if (null == request.getSession().getAttribute("user")) {
-            System.out.println("----用户未登录，拦截:" + url);
+            System.out.println("----Action拦截器：用户未登录，拦截:" + url);
             return "fail";  // 这里返回用户登录页面视图
         }
         return actionInvocation.invoke();

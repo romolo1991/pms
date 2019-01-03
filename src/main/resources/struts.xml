@@ -25,7 +25,6 @@
             <result name="fail" type="redirect">/login.jsp</result>
         </global-results>
 
-
         <!--主页-->
         <action name="user" class="com.test.ssh.action.UserAction" method="login">
             <result name="failed">/login.jsp</result>
@@ -35,6 +34,12 @@
         <action name="pro_*" class="com.test.ssh.action.ProjectAction" method="{1}">
             <result type="json">
                 <param name="root">backJson</param>
+            </result>
+        </action>
+        <!--绩效-->
+        <action name="efficiency_*" class="com.test.ssh.action.EfficiencyAction" method="{1}">
+            <result type="json">
+                <param name="root">{1}Json</param>
             </result>
         </action>
         <!--管理-->

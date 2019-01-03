@@ -19,7 +19,7 @@ public class GroupDaoImpl extends HibernateDaoSupport implements GroupDao {
             sql.append(" and groupId =" + group.getGroupId());
         }
         List<Groupofdepartment> list = this.getHibernateTemplate().find(sql.toString());
-        resultList = (list.size() > 0) ? list : null;
+        resultList = (list.size() > 0) ? list : new ArrayList<Groupofdepartment>();
         return resultList;
     }
 }

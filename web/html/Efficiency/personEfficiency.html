@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>personPerf</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="../../WebTemplate/layuiadmin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../WebTemplate/layuiadmin/style/admin.css" media="all">
+
+    <script src="../../WebTemplate/layuiadmin/layui/layui.js"></script>
+    <script type="text/html" id="searchBar">
+        <a class="layui-icon layui-icon-search editIcon" lay-event="openEfficiencyDiv">查看效率</a>
+    </script>
+    <script>
+        layui.config({
+            base: '../../WebTemplate/layuiadmin/'  //静态资源所在路径
+        }).extend({
+            index: 'lib/index'
+        });
+        layui.use(['index', 'table', 'form', 'laydate', 'jquery'], function () {
+            var table = layui.table;
+            var table2 = layui.table;
+            var form = layui.form;
+            var laydate = layui.laydate;
+            var $ = layui.jquery;
+
+            <!-- 页面初始化完成后查询部门和职能组 -->
+            $(document).ready(function () {
+                $.ajax({
+                    type: "post",
+                    url: "department_getAllDepartments",
+                    data: {},
+                    success: function (data) {
+                        $("#department").html(data);
+                        // 初始化职能组
+                        $.ajax({
+                            type: "post",
+                            url: "group_getGroupsByDept",
+                            data: {},
+                            success: function (res) {
+                                $("#groupOfEmployee").html(res);
+                                form.render("select");
+                            }
+                        });
+                    }
+                });
+            });
+
+            form.on("select(department)", function () {
+                var departmentId = $("#department").val();
+                var departmentParam = $.param({
+                    department: departmentId
+                }, true);
+                $.ajax({
+                    type: "post",
+                    url: "group_getGroupsByDept",
+                    data: departmentParam,
+                    success: function (data) {
+                        $("#groupOfEmployee").html(data);
+                        form.render("select");
+                    }
+                });
+            });
+
+            table.render({
+                elem: "#employeeTable",
+                url: "employee_getEmployees",
+                type: "post",
+                limit: 10,
+                limits: [10, 15, 20, 50],
+                id: "employeeTableReload",
+                cellMinWidth: 40,
+                cols: [[
+                    {field: "employeeId", sort: true, title: "员工编号", fixed: true, width: "14%"},
+                    {field: "employeeName", title: "员工姓名", width: "14%"},
+                    {field: "departmentName", title: "部门", width: "14%"},
+                    {field: "groupName", title: "职能组", width: "14%"},
+                    {field: "entryTime", title: "入职时间", width: "14%"},
+                    {field: "groupLeaderStr", width: "14%", title: "是否组长"},
+                    {fixed: "right", align: "center", toolbar: "#searchBar"}
+                ]],
+                page: true
+            });
+
+            var active = {
+                reload: function () {
+                    var employeeName = $("#employeeName").val();
+                    var department = $("#department").val();
+                    var groupOfEmployee = $("#groupOfEmployee").val();
+                    table.reload("employeeTableReload", {
+                        where: {
+                            employeeName: employeeName,
+                            department: department,
+                            groupOfEmployee: groupOfEmployee
+                        }
+                    });
+                },
+                EfficiencyReload: function () {
+                    var startMonth = $("#startMonth").val();
+                    var endMonth = $("#endMonth").val();
+                    table2.reload("efficiencyTableReload", {
+                        where: {
+                            employeeId: employeeId,
+                            employeeEntryTime: employeeEntryTime,
+                            startMonth: startMonth,
+                            endMonth: endMonth
+                        }
+                    });
+                }
+            };
+
+            $("#searchEmployee").on("click", function () {
+                var type = $(this).data("type");
+                active[type] ? active[type].call(this) : "";
+                return false;  //不提交form表单
+            });
+
+            var indexOfPersonEfficiency;
+            var employeeId;
+            var employeeEntryTime;
+            var nowDate = new Date();
+
+            table.on("tool(employeeTable)", function (obj) {
+                if (obj.event === "openEfficiencyDiv") {
+                    laydate.render({
+                        elem: "#startMonth",
+                        type: "month",
+                        value: nowDate.getFullYear() + '-' + lay.digit(nowDate.getMonth()),
+                        max: -30,
+                        theme: "grid"
+                    });
+
+                    laydate.render({
+                        elem: "#endMonth",
+                        type: "month",
+                        value: nowDate.getFullYear() + '-' + lay.digit(nowDate.getMonth()),
+                        max: -30,
+                        theme: "grid"
+                    });
+
+                    // 弹出个人研发效率界面
+                    indexOfPersonEfficiency = layer.open({
+                        type: 1,
+                        content: $("#EfficiencyDiv"),
+                        area: ["80%", "80%"],
+                        title: "个人研发效率"
+                    });
+
+                    var data = obj.data;
+                    employeeId = data.employeeId;
+                    employeeEntryTime = data.entryTime;
+
+                    table2.render({
+                        elem: "#efficiencyTable",
+                        url: "efficiency_getPersonEfficiency",
+                        type: "post",
+                        limit: 7,
+                        limits: [7, 10, 15, 20],
+                        id: "efficiencyTableReload",
+                        cellMinWidth: 40,
+                        cols: [[
+                            {fixed: true, field: "month", sort: true, title: "月份", width: "12%"},
+                            {field: "totalPeople", title: "总人数", width: "12%"},
+                            {field: "specialItem", title: "专项占用", width: "13%"},
+                            {field: "project", title: "项目占用", width: "13%"},
+                            {field: "humanSurplus", title: "人力剩余", width: "13%"},
+                            {field: "efficiency", title: "研发效率", width: "13%"},
+                            {field: "workLoad", title: "人月", width: "12%"},
+                            {fix: true, field: "fp", title: "总功能点"}
+                        ]],
+                        page: true
+                    });
+                }
+            });
+
+            $("#getEfficiency").on("click", function () {
+                var startMonth = $("#startMonth").val();
+                var endMonth = $("#endMonth").val();
+                if (startMonth === "" || startMonth == null) {
+                    alert("请输入开始月份！");
+                    return;
+                }
+                if (endMonth === "" || endMonth == null) {
+                    alert("请输入结束月份！");
+                    return;
+                }
+                if (startMonth > endMonth) {
+                    alert("开始月不能大于结束月！");
+                    return;
+                }
+                var type = $(this).data("type");
+                active[type] ? active[type].call(this) : "";
+                return false;  //不提交form表单
+            });
+
+
+        });
+    </script>
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-card">
+        <form class="layui-form layui-card-header layuiadmin-card-header-auto">
+
+            <div class="layui-form-item layui-row layui-col-space12">
+                <div class="layui-inline layui-col-md3">
+                    <label class="layui-form-label">所属部门</label>
+                    <div class="layui-input-block">
+                        <select name="department" id="department" lay-filter="department">
+                            <option value="0">全部</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline layui-col-md3">
+                    <label class="layui-form-label">所属职能组</label>
+                    <div class="layui-input-block">
+                        <select name="groupOfEmployee" id="groupOfEmployee" lay-filter="groupOfEmployee">
+                            <option value="0">全部</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline layui-col-md3">
+                    <label class="layui-form-label">员工姓名</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="employeeName" placeholder="姓名/拼音" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline layui-col-md1">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" style="margin-left:20px; margin-bottom:5px" data-type="reload"
+                                id="searchEmployee">
+                            <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div class="layui-card-body">
+            <table id="employeeTable" lay-filter="employeeTable"></table>
+        </div>
+    </div>
+</div>
+
+<div class="layui-fluid" id="EfficiencyDiv" style="display: none">
+    <div class="layui-card">
+        <form class="layui-form layui-card-header layuiadmin-card-header-auto">
+            <div class="layui-form-item layui-row layui-col-space10">
+                <div class="layui-inline layui-col-md4">
+                    <label class="layui-form-label">开始月</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" id="startMonth" name="startMonth" autocomplete="off"
+                               placeholder="yyyy-MM">
+                    </div>
+                </div>
+                <div class="layui-inline layui-col-md4">
+                    <label class="layui-form-label">结束月</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" id="endMonth" name="endMonth" autocomplete="off"
+                               placeholder="yyyy-MM">
+                    </div>
+                </div>
+                <div class="layui-inline layui-col-md1">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" style="margin-bottom:5px" data-type="EfficiencyReload"
+                                id="getEfficiency">
+                            <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div class="layui-card-body">
+            <table id="efficiencyTable" lay-filter="efficiencyTable"></table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

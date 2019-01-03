@@ -29,16 +29,16 @@ public class VerifyLoginFilter implements Filter {
         if (requestUrl == null || requestUrl.trim().length() == 0)
             return;
         if (requestUrl.contains("login.jsp")) {
-            //放行user.action
+            System.out.println("----Web.xml过滤器：请求登录界面，放行:" + requestUrl);
             filterChain.doFilter(request, response);
-            System.out.println("----请求登录界面，放行:" + requestUrl);
+
         } else {
             if (request.getSession().getAttribute("user") != null) {
+                System.out.println("----Web.xml过滤器：用户已登录，放行:" + requestUrl);
                 filterChain.doFilter(request, response); // 执行目标资源，放行
-                System.out.println("----用户已登录，放行:" + requestUrl);
             } else {
+                System.out.println("----Web.xml过滤器：用户未登录，拦截:" + requestUrl);
                 response.sendRedirect("/login.jsp");
-                System.out.println("----用户未登录，拦截:" + requestUrl);
             }
         }
 

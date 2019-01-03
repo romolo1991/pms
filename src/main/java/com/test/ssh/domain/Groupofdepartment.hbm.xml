@@ -8,11 +8,8 @@
         <id name="groupId" column="groupId"/>
         <property name="groupName" column="groupName"/>
         <property name="introduction" column="introduction"/>
-        <property name="dapartment" column="dapartment"/>
+        <property name="department" column="department"/>
         <property name="groupLeader" column="groupLeader"/>
         <property name="isDelete" column="isDelete"/>
-        <property name="remark1" column="remark1"/>
-        <property name="remark2" column="remark2"/>
-        <property name="department" column="department"/>
     </class>
 </hibernate-mapping>

@@ -22,7 +22,7 @@ public class EmployeeDaoImpl extends HibernateDaoSupport implements EmployeeDao 
                 "AND e.groupOfEmployee = g.groupId " +
                 "AND e.isDelete = '0' ");
         if (StringUtils.isNotEmpty(employee.getEmployeeName()))
-            sql.append(" And e.employeeName = '" + employee.getEmployeeName() + "'");
+            sql.append(" And e.employeeName like '%" + employee.getEmployeeName() + "%'");
         if (StringUtils.isNotEmpty(employee.getEmployeeId()))
             sql.append(" And e.employeeId = '" + employee.getEmployeeId() + "'");
         if (StringUtils.isNotEmpty(employee.getEmployeeNameSpell()))
