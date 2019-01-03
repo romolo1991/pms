@@ -8,6 +8,8 @@ import java.util.List;
 public interface EmployeeDao {
     List getEmployees(Employee employee, int page, int limit);
 
+    Employee getEmployeeById(String employeeId);
+
     String delEmployeeByIds(ArrayList<String> employeeIds);
 
     String addEmployee(Employee employee);

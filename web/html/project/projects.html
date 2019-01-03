@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>projects</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="../../WebTemplate/layuiadmin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../WebTemplate/layuiadmin/style/admin.css" media="all">
+
+    <style>
+        .editIcon {
+            font-size: 25px;
+            color: #009688;
+        }
+
+        .editIcon:hover {
+            color: #5FB878;
+            cursor: pointer;
+        }
+    </style>
+
+    <script src="../../WebTemplate/layuiadmin/layui/layui.js"></script>
+    <script>
+        layui.config({
+            base: '../../WebTemplate/layuiadmin/' //静态资源所在路径
+        }).extend({
+            index: 'lib/index' //主入口模块
+        });
+    </script>
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+            <div class="layui-form-item layui-row layui-col-space12">
+                <div class="layui-inline layui-col-md3">
+                    <label class="layui-form-label">项目编号</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="projectId" placeholder="请输入" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline layui-col-md3">
+                    <label class="layui-form-label">项目名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="projectName" placeholder="请输入" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline layui-col-md5">
+                    <label class="layui-form-label">职能组</label>
+                    <div class="layui-input-inline">
+                        <select id="hostDepartment">
+                            <option value="">请选择项目负责部门</option>
+                        </select>
+                    </div>
+                    <div class="layui-input-inline">
+                        <select id="hostGroup">
+                            <option value="">请选择项目负责组</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item layui-row layui-col-space12">
+                <div class="layui-inline layui-col-md3">
+                    <label class="layui-form-label">开始时间</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" id="laydate-start" placeholder="yyyy-MM-dd"
+                               name="startTime">
+                    </div>
+                </div>
+                <div class="layui-inline layui-col-md3">
+                    <label class="layui-form-label">结束时间</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" id="laydate-end" placeholder="yyyy-MM-dd" name="endTime">
+                    </div>
+                </div>
+                <div class="layui-inline layui-col-md3">
+                    <label class="layui-form-label">项目类型</label>
+                    <div class="layui-input-block">
+                        <select id="projectType">
+                            <option value="">请选择项目类型</option>
+                            <option value="00">项目主办</option>
+                            <option value="01">项目协办</option>
+                            <option value="02">专项项目</option>
+                            <option value="03">科维主办</option>
+                            <option value="04">科维协办</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline layui-col-md2">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" data-type="reload" id="search">
+                            <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-card-body">
+            <div style="padding-bottom: 10px">
+                <button class="layui-btn layui-btn-danger" id="del">
+                    <i class="layui-icon layui-icon-delete layuiadmin-button-btn"></i>删除
+                </button>
+                <button class="layui-btn" id="add">
+                    <i class="layui-icon layui-icon-add-1 layuiadmin-button-btn"></i>添加
+                </button>
+            </div>
+            <table id="projectTable"></table>
+        </div>
+    </div>
+</div>
+<div class="layui-fluid" id="addNew" style="display: none">
+    <div class="layui-form">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">项目编号：</label>
+                <div class="layui-input-block">
+                    <input type="text" class="layui-input" id="new-projectId" autocomplete="off">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">项目类型：</label>
+                <div class="layui-input-block">
+                    <select id="new-projectType">
+                        <option value="">请选择项目类型</option>
+                        <option value="00">项目主办</option>
+                        <option value="01">项目协办</option>
+                        <option value="02">专项项目</option>
+                        <option value="03">科维主办</option>
+                        <option value="04">科维协办</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">项目名称：</label>
+                <div class="layui-input-block">
+                    <input type="text" class="layui-input" id="new-projectName" autocomplete="off">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">负责人：</label>
+                <div class="layui-input-block">
+                    <input type="text" readonly="readonly" id="new-leaderName" class="layui-input" about="0">
+                </div>
+                <input type="hidden" id="new-leader" value="">
+            </div>
+            <button class="layui-btn layui-btn-sm" style="width: 46px" id="find-leader">
+                <i class="layui-icon layui-icon-friends"></i>
+            </button>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">负责组：</label>
+                <div class="layui-input-block">
+                    <input type="text" readonly="readonly" id="new-hostGroupName" class="layui-input" about="0">
+                </div>
+                <input type="hidden" id="new-hostGroup" value="">
+            </div>
+            <button class="layui-btn layui-btn-sm" style="width: 46px" id="find-hostGroup">
+                <i class="layui-icon layui-icon-group"></i>
+            </button>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">项目经理：</label>
+                <div class="layui-input-block">
+                    <input type="text" readonly="readonly" id="new-projectManagerName" class="layui-input" about="0">
+                </div>
+                <input type="hidden" id="new-projectManager" value="">
+            </div>
+            <button class="layui-btn layui-btn-sm" style="width: 46px" id="find-projectManager">
+                <i class="layui-icon layui-icon-friends"></i>
+            </button>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">研发效率：</label>
+                <div class="layui-input-block">
+                    <input type="text" class="layui-input" id="new-efficiency">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">功能点：</label>
+                <div class="layui-input-block">
+                    <input type="test" class="layui-input" id="new-functionPoint">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">工作量：</label>
+                <div class="layui-input-block">
+                    <input type="text" class="layui-input" id="new-workload" readonly="readonly" value="0">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">开始时间：</label>
+                <div class="layui-input-block">
+                    <input type="text" class="layui-input" id="new-startTime" placeholder="yyyy-MM-dd" name="startTime">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">结束时间：</label>
+                <div class="layui-input-block">
+                    <input type="text" class="layui-input" id="new-endTime" placeholder="yyyy-MM-dd" name="startTime">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item" style="text-align: right">
+            <button class="layui-btn" id="sureAdd">确定</button>
+            <button class="layui-btn layui-btn-primary" id="cancelAdd">取消</button>
+        </div>
+    </div>
+</div>
+<div class="layui-fluid" id="addNewEmployee" style="display: none">
+    <div class="layui-card">
+        <div class="layui-form layui-form-pane layui-card-header layuiadmin-card-header-auto">
+            <div class="layui-form-item layui-row layui-col-space12">
+                <div class="layui-inline layui-col-md4">
+                    <label class="layui-form-label">员工编号</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="add-employeeId" placeholder="请输入员工编号" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline layui-col-md4">
+                    <label class="layui-form-label">员工姓名</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="add-employeeName" placeholder="请输入员工姓名" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-col-md3">
+                    <div class="layui-input-inline">
+                        <button class="layui-btn" id="searchEmployee">
+                            <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-card-body">
+            <table id="addEmployeeTable"></table>
+            <div style="text-align: right; margin-top: 7px">
+                <button class="layui-btn" id="sureAddEmployee1">确定</button>
+                <button class="layui-btn" id="sureAddEmployee2">确定</button>
+                <button class="layui-btn layui-btn-primary" id="cancelAddEmployee">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="layui-fluid" id="addNewGroup" style="display: none">
+    <div class="layui-card">
+        <div class="layui-form layui-form-pane layui-card-header layuiadmin-card-header-auto">
+            <div class="layui-form-item layui-row layui-col-space12">
+                <div class="layui-inline layui-col-md4">
+                    <label class="layui-form-label">所属部门</label>
+                    <div class="layui-input-block">
+                        <select id="add-groupDepartment">
+                            <option value="">请选择部门</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline layui-col-md4">
+                    <label class="layui-form-label">职能组</label>
+                    <div class="layui-input-block">
+                        <select id="add-group">
+                            <option value="">请选择职能组</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-col-md3">
+                    <div class="layui-input-inline">
+                        <button class="layui-btn" id="searchGroup" style="margin-bottom: 7px">
+                            <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-card-body">
+            <table id="addGroupTable"></table>
+            <div style="text-align: right; margin-top: 7px">
+                <button class="layui-btn" id="sureAddGroup">确定</button>
+                <button class="layui-btn layui-btn-primary" id="cancelAddGroup">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="bar">
+    <i class="layui-icon layui-icon-edit editIcon"></i>
+</script>
+<script>
+    layui.use(['index', 'form', 'laydate', 'table', 'jquery', 'layer'], function () {
+        var laydate = layui.laydate;
+        var table = layui.table;
+        var layer = layui.layer;
+        var $ = layui.jquery;
+
+        var indexOfAddPro;
+        var employeeOfAddPro;
+        var groupOfAddPro;
+
+        laydate.render({
+            elem: '#laydate-start',
+            theme: 'grid'
+        });
+        laydate.render({
+            elem: '#laydate-end',
+            theme: 'grid'
+        });
+        laydate.render({
+            elem: '#new-startTime',
+            theme: 'grid'
+        });
+        laydate.render({
+            elem: '#new-endTime',
+            theme: 'grid'
+        });
+        table.render({
+            elem: '#projectTable',
+            url: 'pro_getProjects',
+            type: 'post',
+            limit: 7,
+            limits: [7, 10, 15, 20],
+            id: 'projectTableReload',
+            cellMinWidth: 40,
+            cols: [[
+                {type: 'checkbox', fixed: true},
+                {field: 'projectId', sort: true, title: '项目编号', fixed: true, width: 120},
+                {field: 'projectName', title: '项目名称', minWidth: 120},
+                {field: 'projectTypeName', sort: true, title: '项目类型', minWidth: 120},
+                {field: 'leaderName', sort: true, title: '负责人', minWidth: 80},
+                {field: 'hostGroupName', sort: true, title: '职能组', minWidth: 120},
+                {field: 'projectManagerName', sort: true, title: '项目经理', minWidth: 80},
+                {field: 'efficiency', sort: true, title: '研发效率', width: 80},
+                {field: 'functionPoint', sort: true, title: '功能点', width: 80},
+                {field: 'workload', sort: true, title: '工作量', width: 80},
+                {field: 'startTime', sort: true, title: '开始时间', minWidth: 120},
+                {field: 'endTime', sort: true, title: '结束时间', minWidth: 120},
+                {fixed: 'right', align: 'center', toolbar: '#bar', sort: false, width: 80}
+            ]],
+            page: true
+        });
+        table.render({
+            elem: "#addEmployeeTable",
+            url: "employee_getEmployees",
+            type: "post",
+            limit: 3,
+            limits: [1, 3],
+            id: "employeeTableReload",
+            cols: [[
+                {type: 'radio', fixed: true},
+                {field: 'employeeId', sort: true, title: '员工编号', width: "25%"},
+                {field: 'employeeName', sort: true, title: '员工姓名', width: "25%"},
+                {field: 'departmentName', sort: true, title: '所在部门', width: "25%"},
+                {field: 'groupName', sort: true, title: '所在组'}
+            ]],
+            page: true
+        });
+        table.render({
+            elem: "#addGroupTable",
+            url: "group_getGroups",
+            type: "post",
+            limit: 3,
+            limits: [1, 3],
+            id: "groupTableReload",
+            cols: [[
+                {type: 'radio', fixed: true},
+                {field: 'groupId', sort: true, title: "职能组编号", width: "50%"},
+                {field: 'groupName', sort: true, title: "职能组名称"}
+            ]],
+            page: true
+        });
+        $(document).ready(function () {
+            $.ajax({
+                type: "post",
+                url: "department_getAllDepartments",
+                success: function (data) {
+                    if (data.msg == "success"){
+                        $("#hostDepartment").html(data);
+                        form.render("select");
+                    }
+                }
+            });
+            $("#hostDepartment")
+        });
+        var active = {
+            reload: function () {
+                var projectId = $("#projectId").val();
+                var projectName = $("#projectName").val();
+                var hostGroup = $("#hostGroup").val();
+                var projectType = $("#projectType").val();
+                var startTime = $("#laydate-start").val();
+                var endTime = $("#laydate-end").val();
+                if (hostGroup == "") {
+                    hostGroup = parseInt("0");
+                } else {
+                    hostGroup = parseInt(hostGroup);
+                }
+                table.reload("projectTableReload", {
+                    where: {
+                        projectId: projectId,
+                        projectName: projectName,
+                        hostGroup: hostGroup,
+                        projectType: projectType,
+                        startTime: startTime,
+                        endTime: endTime
+                    }
+                });
+            }
+        };
+        $("#del").on("click", function () {
+            var checked = table.checkStatus("projectTableReload").data;
+            var projectIds = new Array();
+            if (checked.length < 1) {
+                layer.msg("无可删除项！", {
+                    time: 3000,
+                    shadeClose: true
+                });
+                return;
+            }
+            for (var i = 0; i < checked.length; i++) {
+                var projectId = checked[i].projectId;
+                projectIds.push(projectId);
+            }
+            var projectsParams = $.param({
+                projectIds: projectIds
+            }, true);
+            $.ajax({
+                url: "pro_delProject",
+                type: "post",
+                data: projectsParams,
+                success: function (data) {
+                    if (data.msg == "success") {
+                        layer.msg("删除项目成功！", {
+                            time: 3000,
+                            shadeClose: true
+                        });
+                        var type = $("#search").data("type");
+                        active[type] ? active[type].call("#search") : "";
+                    }
+                }
+            });
+        });
+        $("#add").on("click", function () {
+            indexOfAddPro = layer.open({
+                type: 1,
+                content: $("#addNew"),
+                area: "55%",
+                title: "新建项目"
+            });
+        });
+        $("#search").on("click", function () {
+            var type = $(this).data("type");
+            active[type] ? active[type].call(this) : "";
+        });
+        $("#find-leader").on("click", function () {
+            $("#add-employeeId").val("");
+            $("#add-employeeName").val("");
+            employeeOfAddPro = layer.open({
+                type: 1,
+                content: $("#addNewEmployee"),
+                area: ["70%", 500],
+                title: "选择项目负责人"
+            });
+            $("#sureAddEmployee1").show();
+            $("#sureAddEmployee2").hide();
+            table.reload("employeeTableReload", {
+                page: {
+                    curr: 1
+                }
+            });
+        });
+        $("#find-projectManager").on("click", function () {
+            $("#add-employeeId").val("");
+            $("#add-employeeName").val("");
+            employeeOfAddPro = layer.open({
+                type: 1,
+                content: $("#addNewEmployee"),
+                area: ["70%", 500],
+                title: "选择项目经理"
+            });
+            $("#sureAddEmployee1").hide();
+            $("#sureAddEmployee2").show();
+            table.reload("employeeTableReload", {
+                page: {
+                    curr: 1
+                }
+            });
+        });
+        $("#searchEmployee").on("click", function () {
+            var employeeId = $("#add-employeeId").val();
+            var employeeName = $("#add-employeeName").val();
+            table.reload("employeeTableReload", {
+                where: {
+                    employeeId: employeeId,
+                    employeeName: employeeName
+                }
+            });
+        });
+        $("#sureAddEmployee1").on("click", function () {
+            var checkedData = table.checkStatus("employeeTableReload").data[0];
+            var checkedEmployeeId = checkedData.employeeId;
+            var checkedEmployeeName = checkedData.employeeName;
+            $("#new-leader").val(checkedEmployeeId);
+            $("#new-leaderName").val(checkedEmployeeName);
+            layer.close(employeeOfAddPro);
+        });
+        $("#sureAddEmployee2").on("click", function () {
+            var checkedData = table.checkStatus("employeeTableReload").data[0];
+            var checkedEmployeeId = checkedData.employeeId;
+            var checkedEmployeeName = checkedData.employeeName;
+            $("#new-projectManager").val(checkedEmployeeId);
+            $("#new-projectManagerName").val(checkedEmployeeName);
+            layer.close(employeeOfAddPro);
+        });
+        $("#cancelAddEmployee").on("click", function () {
+            layer.close(employeeOfAddPro);
+        });
+        $("#find-hostGroup").on("click", function () {
+            groupOfAddPro = layer.open({
+                type: 1,
+                content: $("#addNewGroup"),
+                area: ["50%", 500],
+                title: "选择项目负责组"
+            });
+            table.reload("groupTableReload", {
+                page: {
+                    curr: 1
+                }
+            });
+        });
+        $("#sureAddGroup").on("click", function () {
+            var checkedData = table.checkStatus("groupTableReload").data[0];
+            var checkedGroupId = checkedData.groupId;
+            var checkedGroupName = checkedData.groupName;
+            $("#new-hostGroup").val(checkedGroupId);
+            $("#new-hostGroupName").val(checkedGroupName);
+            layer.close(groupOfAddPro);
+        });
+        $("#cancelAddGroup").on("click", function () {
+            layer.close(groupOfAddPro);
+        });
+        $("#new-efficiency").on("click", function () {
+            layer.tips("请填写本组所分得的主办或协办项目工作量", this, {
+                tips: [3, "#FF5722"]
+            });
+        });
+        $("#new-functionPoint").on("change", function () {
+            var efficiency = $("#new-efficiency").val();
+            if (efficiency != "") {
+                efficiency = parseFloat(efficiency);
+                if (efficiency == 0) {
+                    return;
+                }
+                var functionPoint = $("#new-functionPoint").val();
+                functionPoint = parseFloat(functionPoint);
+                var workload = functionPoint / efficiency;
+                $("#new-workload").val(workload.toFixed(1));
+            }
+        });
+        $("#new-efficiency").on("change", function () {
+            var functionPoint = $("#new-functionPoint").val();
+            if (functionPoint != "") {
+                functionPoint = parseFloat(functionPoint);
+                var efficiency = $("#new-efficiency").val();
+                efficiency = parseFloat(efficiency);
+                if (efficiency == 0) {
+                    return;
+                }
+                var workload = functionPoint / efficiency;
+                $("#new-workload").val(workload.toFixed(1));
+            }
+        });
+        $("#cancelAdd").on("click", function () {
+            layer.close(indexOfAddPro);
+        });
+        $("#sureAdd").on("click", function () {
+            var projectId = $("#new-projectId").val();
+            var projectName = $("#new-projectName").val();
+            var projectType = $("#new-projectType").val();
+            var leader = $("#new-leader").val();
+            var hostGroup = $("#new-hostGroup").val();
+            var projectManager = $("#new-projectManager").val();
+            var efficiency = $("#new-efficiency").val();
+            var functionPoint = $("#new-functionPoint").val();
+            var workload = $("#new-workload").val();
+            var startTime = $("#new-startTime").val();
+            var endTime = $("#new-endTime").val();
+            // var isSponsor = $("#new-isSponsor").get(0).checked ? "1" : "0";
+
+            if (hostGroup == "") {
+                hostGroup = parseInt("0");
+            }
+            if (efficiency == "") {
+                layer.open({
+                    content: "请填写研发效率！",
+                    title: "提示"
+                });
+                return;
+            }
+            if (functionPoint == "") {
+                functionPoint = parseFloat("0");
+            }
+            if (workload == "") {
+                workload = parseFloat("0");
+            }
+
+            $.ajax({
+                type: "post",
+                url: "pro_addProject",
+                data: {
+                    projectId: projectId,
+                    projectName: projectName,
+                    projectType: projectType,
+                    leader: leader,
+                    hostGroup: hostGroup,
+                    projectManager: projectManager,
+                    efficiency: efficiency,
+                    functionPoint: functionPoint,
+                    workload: workload,
+                    startTime: startTime,
+                    endTime: endTime
+                },
+                success: function (data) {
+                    if (data.msg == "success") {
+                        layer.msg("新添项目成功！", {
+                            time: 3000,
+                            shadeClose: true
+                        });
+                        layer.close(indexOfAddPro);
+                        var type = $("#search").data("type");
+                        active[type] ? active[type].call("#search") : "";
+                    }
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

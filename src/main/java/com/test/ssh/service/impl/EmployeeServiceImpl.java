@@ -61,6 +61,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public Employee getEmployeeById(String employeeId) {
+        return employeeDao.getEmployeeById(employeeId);
+    }
+
+    @Override
     public String delEmployeeByIds(ArrayList<String> employeeIds) {
         return employeeDao.delEmployeeByIds(employeeIds);
     }

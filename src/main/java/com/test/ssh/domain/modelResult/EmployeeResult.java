@@ -1,6 +1,5 @@
 package com.test.ssh.domain.modelResult;
 
-
 import com.test.ssh.domain.Employee;
 
 public class EmployeeResult{

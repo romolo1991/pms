@@ -61,6 +61,23 @@ public class EmployeeDaoImpl extends HibernateDaoSupport implements EmployeeDao 
     }
 
     @Override
+    public Employee getEmployeeById(String employeeId) {
+        String sql = "from Employee where isDelete = '0'";
+        if (employeeId != null && !"".equals(employeeId)){
+            sql += " and employeeId='" + employeeId + "'";
+        }else {
+            Debug.println("getEmployeeById", "传入职员编号为null或空字符串" + "\n" + sql);
+        }
+        List<Employee> result = this.getHibernateTemplate().find(sql);
+        if (result.size()>0){
+            return result.get(0);
+        }else {
+            Debug.println("getEmployeeById", "无法找到该职员" + "\n" + sql);
+            return null;
+        }
+    }
+
+    @Override
     public String delEmployeeByIds(final ArrayList<String> employeeIds) {
         List resultList = this.getHibernateTemplate().executeFind(new HibernateCallback() {
             @Override

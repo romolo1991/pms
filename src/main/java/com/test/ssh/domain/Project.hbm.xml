@@ -8,7 +8,6 @@
         <id name="projectId" column="projectId"/>
         <property name="projectName" column="projectName"/>
         <property name="projectType" column="projectType"/>
-        <property name="projectScale" column="projectScale"/>
         <property name="leader" column="leader"/>
         <property name="hostGroup" column="hostGroup"/>
         <property name="projectManager" column="projectManager"/>
@@ -18,8 +17,5 @@
         <property name="startTime" column="startTime"/>
         <property name="endTime" column="endTime"/>
         <property name="isDelete" column="isDelete"/>
-        <property name="remark1" column="remark1"/>
-        <property name="remark2" column="remark2"/>
-        <property name="isSponsor" column="isSponsor"/>
     </class>
 </hibernate-mapping>

@@ -11,57 +11,54 @@ import java.util.List;
 
 public class ProjectDaoImpl extends HibernateDaoSupport implements ProjectDao {
 
-    public String getAllProjectSql(String projectId, String projectName, int hostGroup, String projectType, String projectScale, String startTime, String endTime){
+    public String getAllProjectSql(String projectId, String projectName, int hostGroup, String projectType, String startTime, String endTime) {
         String sql = "from Project where isDelete='0'";
-        if (projectId != null && !projectId.equals("")){
-            sql += "and projectId='" + projectId + "'";
+        if (projectId != null && !projectId.equals("")) {
+            sql += " and projectId='" + projectId + "'";
         }
-        if (projectName != null && !projectName.equals("")){
-            sql += "and projectName like '%" + projectName + "%'";
+        if (projectName != null && !projectName.equals("")) {
+            sql += " and projectName like '%" + projectName + "%'";
         }
         String hostGroupStr = hostGroup + "";
-        if (!hostGroupStr.equals("-1")){
-            sql += "and hostGroup='" + hostGroup + "'";
+        if (!hostGroupStr.equals("0")) {
+            sql += " and hostGroup='" + hostGroup + "'";
         }
-        if (projectType != null && !projectType.equals("")){
-            sql += "and projectType='" + projectType + "'";
+        if (projectType != null && !projectType.equals("")) {
+            sql += " and projectType='" + projectType + "'";
         }
-        if (projectScale != null && !projectScale.equals("")){
-            sql += "and projectScale='" + projectScale + "'";
+        if (startTime != null && !startTime.equals("")) {
+            sql += " and startTime>'" + startTime + "'";
         }
-        if (startTime != null && !startTime.equals("")){
-            sql += "and startTime>'" + startTime + "'";
-        }
-        if (endTime != null && !endTime.equals("")){
-            sql += "and endTime<'" + endTime + "'";
+        if (endTime != null && !endTime.equals("")) {
+            sql += " and endTime<'" + endTime + "'";
         }
         return sql;
     }
 
     @Override
-    public List<Project> getProjects(String projectId, String projectName, int hostGroup, String projectType, String projectScale, String startTime, String endTime, final int page, final int limit) {
-        String sql = getAllProjectSql(projectId, projectName, hostGroup, projectType, projectScale, startTime, endTime);
+    public List<Project> getProjects(String projectId, String projectName, int hostGroup, String projectType, String startTime, String endTime, final int page, final int limit) {
+        String sql = getAllProjectSql(projectId, projectName, hostGroup, projectType, startTime, endTime);
         final String finalSql = sql;
         List list = this.getHibernateTemplate().executeFind(
                 new HibernateCallback() {
                     public Object doInHibernate(Session session) {
                         Query query = session.createQuery(finalSql);
-                        query.setFirstResult((page - 1)*limit);
+                        query.setFirstResult((page - 1) * limit);
                         query.setMaxResults(limit);
                         return query.list();
                     }
                 }
         );
-        if (list.size()>0){
+        if (list.size() > 0) {
             return list;
-        }else{
+        } else {
             return null;
         }
     }
 
     @Override
-    public int getProjectCount (String projectId, String projectName, int hostGroup, String projectType, String projectScale, String startTime, String endTime){
-        String sql = getAllProjectSql(projectId, projectName, hostGroup, projectType, projectScale, startTime, endTime);
+    public int getProjectCount(String projectId, String projectName, int hostGroup, String projectType, String startTime, String endTime) {
+        String sql = getAllProjectSql(projectId, projectName, hostGroup, projectType, startTime, endTime);
         List list = this.getHibernateTemplate().find(sql);
         return list.size();
     }

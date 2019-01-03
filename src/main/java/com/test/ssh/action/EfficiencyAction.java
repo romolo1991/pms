@@ -6,6 +6,7 @@ import com.test.ssh.service.EfficiencyService;
 import com.test.ssh.utils.StringUtils;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.struts2.json.annotations.JSON;
 
 import java.util.*;
 
@@ -22,19 +23,14 @@ public class EfficiencyAction extends ActionSupport {
     //后台返回结果
     private JSONObject getPersonEfficiencyJson;
 
-    private JSONObject getGroupEfficiencyJson;
 
-
-    //计算个人绩效
-    //param｛ employeeId，employeeEntryTime，startMonth，endMonth ｝
-    //result{ getPersonEfficiencyJson }
     public String getPersonEfficiency() {
         Map<String, Object> result = new HashMap<String, Object>();
         List<EfficiencyResult> efficiencyList = new ArrayList();
         JSONArray array = new JSONArray();
         result.put("code", 0);
         if (StringUtils.isNotEmpty(employeeId) && StringUtils.isNotEmpty(employeeEntryTime)) {
-            List<String> monthList = efficiencyService.getMonths(startMonth, endMonth, 0, 0, employeeId);
+            List<String> monthList = efficiencyService.getMonths(startMonth, endMonth,employeeId);
             Iterator<String> iterator = monthList.iterator();
             while (iterator.hasNext()) {
                 String month = iterator.next();
@@ -52,18 +48,8 @@ public class EfficiencyAction extends ActionSupport {
         }
         setGetPersonEfficiencyJson(JSONObject.fromObject(result));
         return SUCCESS;
-    }
 
 
-    //就算组绩效
-    //param{  }
-    //result{ getGroupEfficiencyJson }
-    public String getGroupEfficiency() {
-        Map<String, String> result = new HashMap<String, String>();
-
-
-        setGetGroupEfficiencyJson(JSONObject.fromObject(result));
-        return SUCCESS;
     }
 
 
@@ -125,13 +111,5 @@ public class EfficiencyAction extends ActionSupport {
 
     public void setEmployeeEntryTime(String employeeEntryTime) {
         this.employeeEntryTime = employeeEntryTime;
-    }
-
-    public JSONObject getGetGroupEfficiencyJson() {
-        return getGroupEfficiencyJson;
-    }
-
-    public void setGetGroupEfficiencyJson(JSONObject getGroupEfficiencyJson) {
-        this.getGroupEfficiencyJson = getGroupEfficiencyJson;
     }
 }

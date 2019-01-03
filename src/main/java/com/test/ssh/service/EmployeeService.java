@@ -9,6 +9,8 @@ import java.util.List;
 public interface EmployeeService{
     List<EmployeeResult> getEmployees(Employee employee, int page, int limit);
 
+    Employee getEmployeeById(String employeeId);
+
     String delEmployeeByIds(ArrayList<String> employeeIds);
 
     String addEmployee(Employee employee);

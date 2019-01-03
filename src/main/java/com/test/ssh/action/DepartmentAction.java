@@ -17,107 +17,61 @@ public class DepartmentAction extends ActionSupport implements ModelDriven<Depar
 
     private DepartmentService departmentService;
 
-    private List<Department> departmentList;
-
     @Override
     public Department getModel() {
         return department;
     }
 
-    private JSONObject deptJson;
+    private JSONObject deptsJson;
 
-    //获取部门信息
-    public String getDeptInfo(){
+    private List<Department> departmentList;
 
-        List<Department> depts = departmentService.getDept();
+    public String getDepts(){
+        List<Department> depts = departmentService.getDepts();
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("code", 0);
         result.put("msg", "");
         if (depts != null){
             result.put("count", depts.size());
         }else{
-            result.put("msg", "暂无数据");
             result.put("count", 0);
         }
         JSONArray array = JSONArray.fromObject(depts);
         result.put("data", array);
-        deptJson = JSONObject.fromObject(result);
+        deptsJson = JSONObject.fromObject(result);
         return SUCCESS;
-
     }
-
-    //增加部门
-    public String addDept(){
-
-        department.setIsDelete("0");
-        Map<String, Object> result = new HashMap<String, Object>();
-        String addResult = departmentService.addDept(department);
-        result.put("msg",addResult);
-        deptJson = JSONObject.fromObject(result);
-        return SUCCESS;
-
-    }
-
-
-    //修改部门信息
-    public String editDept(){
-
-        Map<String, Object> result = new HashMap<String, Object>();
-        department.setIsDelete("0");
-        String editResult = departmentService.editDept(department);
-        result.put("msg",editResult);
-        deptJson = JSONObject.fromObject(result);
-        return SUCCESS;
-
-    }
-
-
-    //验证新建部门中的部门id
-    public String verifyDepartmentId(){
-
-        Map<String, Object> result = new HashMap<String, Object>();
-        int departmentId = department.getDepartmentId();
-        String verifyResult = departmentService.verifyDepartmentId(departmentId);
-        result.put("msg",verifyResult);
-        deptJson = JSONObject.fromObject(result);
-        return SUCCESS;
-
-    }
-
 
     public String getAllDepartments() {
-
-        List<Department> departmentList = departmentService.getDept();
+        List<Department> departmentList = departmentService.getDepts();
         Department department = new Department();
         department.setDepartmentId(0);
         department.setDepartmentName("请选择部门");
         departmentList.add(0,department);
         setDepartmentList(departmentList);
         return SUCCESS;
-
     }
 
 
-    public void setDepartmentList(List<Department> departmentList){
-        this.departmentList = departmentList;
+    public void setDepartmentService(DepartmentService departmentService) {
+        this.departmentService = departmentService;
     }
 
     public List<Department> getDepartmentList() {
         return departmentList;
     }
 
-    public void setDepartmentService(DepartmentService departmentService) {
-        this.departmentService = departmentService;
+    public void setDepartmentList(List<Department> departmentList){
+        this.departmentList = departmentList;
     }
 
-    public JSONObject getDeptJson() {
-        return deptJson;
+    public JSONObject getDeptsJson() {
+        return deptsJson;
     }
 
-    public void setDeptJson(JSONObject deptJson) {
-        this.deptJson = deptJson;
+    public void setDeptsJson(JSONObject deptsJson) {
+        this.deptsJson = deptsJson;
     }
-
 
 
 }

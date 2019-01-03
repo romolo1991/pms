@@ -83,29 +83,29 @@
             </a>
             <dl class="layui-nav-child">
               <dd>
-                <a lay-href="html/projects.html">项目简介</a>
+                <a lay-href="html/project/projects.html">项目简介</a>
               </dd>
               <dd data-name="workload">
                 <a lay-href="html/element.html">工作量详情</a>
               </dd>
               <dd data-name="workload">
-                <a lay-href="html/project/workload/manage.html">工作量管理</a>
+                <a lay-href="html/element.html">工作量管理</a>
               </dd>
 
-            </dl>
-          </li>
+                        </dl>
+                    </li>
 
-          <li data-name="performance" class="layui-nav-item">
-            <a href="javascript:;" lay-tips="绩效" lay-direction="2">
-              <i class="layui-icon layui-icon-performance"></i>
-              <cite>绩效</cite>
-            </a>
-            <dl class="layui-nav-child">
-                <dd><a lay-href="performance/performance.html">部门效率</a></dd>
-                <dd><a lay-href="performance/performance.html">职能组效率</a></dd>
-                <dd><a lay-href="html/Efficiency/personEfficiency.html">个人效率</a></dd>
-            </dl>
-          </li>
+                    <li data-name="performance" class="layui-nav-item">
+                        <a href="javascript:;" lay-tips="研发效率" lay-direction="2">
+                            <i class="layui-icon layui-icon-performance"></i>
+                            <cite>研发效率</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd><a lay-href="performance/performance.html">部门效率</a></dd>
+                            <dd><a lay-href="performance/performance.html">职能组效率</a></dd>
+                            <dd><a lay-href="html/Efficiency/personEfficiency.html">个人效率</a></dd>
+                        </dl>
+                    </li>
 
                     <li data-name="user" class="layui-nav-item">
                         <a href="javascript:;" lay-tips="用户" lay-direction="2">
@@ -113,7 +113,7 @@
                             <cite>管理</cite>
                         </a>
                         <dl class="layui-nav-child">
-                            <dd><a lay-href="html/manage/department/department.html">部门管理</a></dd>
+                            <dd><a lay-href="html/manage/department.html">部门管理</a></dd>
                             <dd><a lay-href="user/administrators/list.html">职能组管理</a></dd>
                             <dd><a lay-href="html/manage/employee.html">职员管理</a></dd>
                         </dl>
@@ -157,8 +157,9 @@
             </div>
             <div class="layui-tab" lay-unauto lay-allowClose="true" lay-filter="layadmin-layout-tabs">
                 <ul class="layui-tab-title" id="LAY_app_tabsheader">
-                    <li lay-id="mainPage.jsp" lay-attr="mainPage.jsp" class="layui-this"><i
-                            class="layui-icon layui-icon-home"></i></li>
+                    <li lay-id="mainPage.jsp" lay-attr="mainPage.jsp" class="layui-this">
+                        <i class="layui-icon layui-icon-home"></i>
+                    </li>
                 </ul>
             </div>
         </div>

@@ -79,8 +79,8 @@ public class EfficiencyServiceImpl implements EfficiencyService {
     }
 
     @Override
-    public List<String> getMonths(String startMonth, String endMonth, int departmentId, int groupId, String employeeId) {
-        return efficiencyDao.getMonths(startMonth, endMonth, departmentId, groupId, employeeId);
+    public List<String> getMonths(String startMonth, String endMonth, String employeeId) {
+        return efficiencyDao.getMonths(startMonth, endMonth,employeeId);
     }
 
 
