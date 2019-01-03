@@ -38,9 +38,10 @@
             </result>
         </action>
         <!--管理-->
-        <action name="getDepts" class="com.test.ssh.action.DepartmentAction" method="getDepts">
+
+        <action name="dept_*" class="com.test.ssh.action.DepartmentAction" method="{1}">
             <result type="json">
-                <param name="root">deptsJson</param>
+                <param name="root">deptJson</param>
             </result>
         </action>
         <action name="employee_*" class="com.test.ssh.action.EmployeeAction" method="{1}">

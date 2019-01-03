@@ -89,7 +89,7 @@
                 <a lay-href="html/element.html">工作量详情</a>
               </dd>
               <dd data-name="workload">
-                <a lay-href="html/element.html">工作量管理</a>
+                <a lay-href="html/project/workload/manage.html">工作量管理</a>
               </dd>
 
             </dl>
@@ -114,7 +114,7 @@
                         </a>
                         <dl class="layui-nav-child">
                             <dd>
-                                <a lay-href="html/manage/department.html">部门管理</a>
+                                <a lay-href="html/manage/department/department.html">部门管理</a>
                             </dd>
                             <dd>
                                 <a lay-href="user/administrators/list.html">职能组管理</a>

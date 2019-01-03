@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>department</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../../WebTemplate/layuiadmin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../../WebTemplate/layuiadmin/style/admin.css" media="all">
+
+</head>
+
+<body>
+    <div class="layui-fluid">
+        <div class="layui-card">
+            <div class="layui-card-header layuiadmin-card-header-auto" style="padding-bottom: 10px" id="departmentBtn">
+                <button class="layui-btn" data-method="add">
+                    <i class="layui-icon layui-icon-add-1 layuiadmin-button-btn"></i>添加
+                </button>
+                <button class="layui-btn layui-btn-normal" data-method="edit">
+                    <i class="layui-icon layuiadmin-button-btn" lay-event="getCheckData">&#xe642;</i>编辑
+                </button>
+            </div>
+            <div class="layui-card-body">
+                <table class="layui-hide" id="departmentTable" lay-filter="departmentTable"></table>
+            </div>
+        </div>
+    </div>
+
+<script type="text/html" id="bar">
+    <a class="layui-icon layui-icon-about" lay-event="intro"></a>
+</script>
+
+
+<script src="../../../WebTemplate/layuiadmin/layui/layui.js"></script>
+
+
+
+<script>
+    layui.config({
+        base: '../../../WebTemplate/layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index','table','layer','jquery','form'], function () {
+        var table = layui.table;
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var form = layui.form;
+
+        table.render({
+            elem: '#departmentTable',
+            url: 'dept_getDeptInfo',
+            id:'departmentTableReload',
+            cellMinWidth: 80,
+            page: true,
+            cols: [[//标题栏
+            {type:'radio'},
+            {field: 'departmentId', title: '部门编号', sort: true},
+            {field: 'departmentName', title: '部门名称'},
+            {field: 'chief', title: '处长姓名'},
+                //{field: 'departmentIntro', title:'部门简介', templet:'<div><span title="{{d.departmentIntro}}">{{d.departmentIntro}}</span></div>'},
+                {fixed: "right", title:'简介', align: "center", toolbar: "#bar", width: 100}
+                ]],
+
+            });
+
+        var active = {
+            //添加部门
+            add: function () {
+                layer.open({
+                    type:2,
+                    title:'添加部门',
+                    content:['addDept.html','no'],
+                    area:['50%','60%']
+                })
+            },
+
+
+
+
+            //修改部门信息
+            edit: function () {
+                var checkedData = table.checkStatus("departmentTableReload").data; //获取选中行
+                if(checkedData.length==0){
+                    layer.msg("请选择一条数据",{
+                        time:2000,
+                    });
+                }
+                else {
+                    var departmentInfo = checkedData[0];
+                    //layer.alert(departmentId);
+                    layer.open(
+                    {
+                        type:2,
+                        id:'editDept',
+                        title:'修改部门信息',
+                        content:['editDept.html','no'],
+                        area:['50%','60%'],
+                        success: function (layero, index) {
+                            var body = layui.layer.getChildFrame('body', index);
+                                body.find("#departmentId").val(departmentInfo.departmentId);    //用户状态
+                                body.find("#departmentName").val(departmentInfo.departmentName);
+                                body.find("#chief").val(departmentInfo.chief);
+                                body.find("#departmentIntro").text(departmentInfo.departmentIntro);
+                                form.render();
+                            }
+                        })
+                }
+            }
+
+        };
+
+
+        /***
+        //(操作栏)监听修改
+        table.on('tool(departmentTable)', function(obj){
+            var departmentInfo = obj.data;
+            if(obj.event === 'edit') {
+                layer.open(
+                    {
+                        type:2,
+                        id:'editDept',
+                        title:'修改部门信息',
+                        content:['editDept.html','no'],
+                        area:['30%','45%'],
+                        success: function (layero, index) {
+                            var body = layui.layer.getChildFrame('body', index);
+                            body.find("#departmentId").val(departmentInfo.departmentId);    //用户状态
+                            body.find("#departmentName").val(departmentInfo.departmentName);
+                            body.find("#chief").val(departmentInfo.chief);
+                            body.find("#departmentIntro").text(departmentInfo.departmentIntro);
+                            form.render();
+                        }
+                    })
+            }
+        });***/
+
+
+        //部门简介
+        table.on('tool(departmentTable)', function(obj){
+            var departmentIntro = obj.data.departmentIntro;
+            if(obj.event === 'intro') {
+                layer.alert(departmentIntro, {
+                    title: '部门简介'
+                });
+
+                //标注选中样式
+                obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
+            }
+        });
+
+
+        $('.layui-btn').on('click', function(){
+            var method = $(this).data('method');
+            active[method] ? active[method].call(this) : '';
+        });
+
+
+    });
+</script>
+</body>
+</html>

@@ -11,6 +11,7 @@ public class Department {
     private String departmentName;
     private String chief;
     private String isDelete;
+    private String departmentIntro;
 
     @Id
     @Column(name = "departmentId")
@@ -28,8 +29,8 @@ public class Department {
         return departmentName;
     }
 
-    public void setDepartmentName(String dapartmentName) {
-        this.departmentName = dapartmentName;
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
     }
 
     @Basic
@@ -52,6 +53,16 @@ public class Department {
         this.isDelete = isDelete;
     }
 
+    @Basic
+    @Column(name = "departmentIntro")
+    public String getDepartmentIntro() {
+        return departmentIntro;
+    }
+
+    public void setDepartmentIntro(String departmentIntro) {
+        this.departmentIntro = departmentIntro;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -64,6 +75,8 @@ public class Department {
             return false;
         if (chief != null ? !chief.equals(that.chief) : that.chief != null) return false;
         if (isDelete != null ? !isDelete.equals(that.isDelete) : that.isDelete != null) return false;
+        if (departmentIntro != null ? !departmentIntro.equals(that.departmentIntro) : that.departmentIntro != null)
+            return false;
 
         return true;
     }
@@ -74,6 +87,8 @@ public class Department {
         result = 31 * result + (departmentName != null ? departmentName.hashCode() : 0);
         result = 31 * result + (chief != null ? chief.hashCode() : 0);
         result = 31 * result + (isDelete != null ? isDelete.hashCode() : 0);
+        result = 31 * result + (departmentIntro != null ? departmentIntro.hashCode() : 0);
+
         return result;
     }
 }

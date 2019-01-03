@@ -9,5 +9,7 @@
         <property name="departmentName" column="departmentName"/>
         <property name="chief" column="chief"/>
         <property name="isDelete" column="isDelete"/>
+        <property name="departmentIntro" column="departmentIntro"/>
+
     </class>
 </hibernate-mapping>

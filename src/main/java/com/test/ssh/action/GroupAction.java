@@ -2,7 +2,6 @@ package com.test.ssh.action;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
-import com.test.ssh.domain.modelResult.GroupResult;
 import com.test.ssh.domain.Groupofdepartment;
 import com.test.ssh.service.GroupService;
 
