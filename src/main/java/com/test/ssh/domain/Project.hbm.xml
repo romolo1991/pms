@@ -18,5 +18,8 @@
         <property name="startTime" column="startTime"/>
         <property name="endTime" column="endTime"/>
         <property name="isDelete" column="isDelete"/>
+        <property name="remark1" column="remark1"/>
+        <property name="remark2" column="remark2"/>
+        <property name="isSponsor" column="isSponsor"/>
     </class>
 </hibernate-mapping>

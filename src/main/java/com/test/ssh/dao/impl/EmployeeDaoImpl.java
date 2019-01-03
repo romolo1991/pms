@@ -2,7 +2,6 @@ package com.test.ssh.dao.impl;
 
 import com.test.ssh.dao.EmployeeDao;
 import com.test.ssh.domain.Employee;
-import com.test.ssh.domain.modelResult.EmployeeResult;
 import com.test.ssh.utils.StringUtils;
 import org.hibernate.*;
 import org.springframework.orm.hibernate3.HibernateCallback;

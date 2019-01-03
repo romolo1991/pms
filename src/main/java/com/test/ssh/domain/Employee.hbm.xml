@@ -7,11 +7,11 @@
     <class name="com.test.ssh.domain.Employee" table="employee" schema="pms">
         <id name="employeeId" column="employeeId"/>
         <property name="employeeName" column="employeeName"/>
-        <property name="employeeNameSpell" column="employeeNameSpell"/>
         <property name="entryTime" column="entryTime"/>
         <property name="department" column="department"/>
         <property name="groupOfEmployee" column="groupOfEmployee"/>
         <property name="groupLeader" column="groupLeader"/>
+        <property name="employeeNameSpell" column="employeeNameSpell"/>
         <property name="isDelete" column="isDelete"/>
     </class>
 </hibernate-mapping>

@@ -4,7 +4,6 @@ import com.test.ssh.dao.GroupDao;
 import com.test.ssh.domain.Groupofdepartment;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GroupDaoImpl extends HibernateDaoSupport implements GroupDao {
