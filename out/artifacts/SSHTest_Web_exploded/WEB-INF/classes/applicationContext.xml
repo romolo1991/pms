@@ -63,6 +63,9 @@
     <bean id="groupAction" class="com.test.ssh.action.GroupAction" scope="prototype">
         <property name="groupService" ref="groupService"/>
     </bean>
+    <bean id="efficiencyAction" class="com.test.ssh.action.EfficiencyAction" scope="prototype">
+        <property name="efficiencyService" ref="efficiencyService"/>
+    </bean>
 
     <!--配置 Struts Service类Bean，Scope为Prototype -->
     <bean id="employeeService" class="com.test.ssh.service.impl.EmployeeServiceImpl">
@@ -80,6 +83,9 @@
     <bean id="groupService" class="com.test.ssh.service.impl.GroupServiceImpl">
         <property name="groupDao" ref="groupDao"/>
     </bean>
+    <bean id="efficiencyService" class="com.test.ssh.service.impl.EfficiencyServiceImpl">
+        <property name="efficiencyDao" ref="efficiencyDao"/>
+    </bean>
 
     <!--配置 Struts Dao类Bean，Scope为Prototype -->
     <bean id="employeeDao" class="com.test.ssh.dao.impl.EmployeeDaoImpl">
@@ -95,6 +101,9 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="groupDao" class="com.test.ssh.dao.impl.GroupDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="efficiencyDao" class="com.test.ssh.dao.impl.EfficiencyDaoImpl">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 

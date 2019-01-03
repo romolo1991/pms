@@ -101,9 +101,9 @@
               <cite>绩效</cite>
             </a>
             <dl class="layui-nav-child">
-              <dd><a lay-href="performance/performance.html">部门绩效</a></dd>
-              <dd><a lay-href="performance/performance.html">职能组绩效</a></dd>
-              <dd><a lay-href="performance/performance.html">人员绩效</a></dd>
+                <dd><a lay-href="performance/performance.html">部门效率</a></dd>
+                <dd><a lay-href="performance/performance.html">职能组效率</a></dd>
+                <dd><a lay-href="html/Efficiency/personEfficiency.html">个人效率</a></dd>
             </dl>
           </li>
 
