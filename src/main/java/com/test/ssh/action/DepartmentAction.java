@@ -102,6 +102,9 @@ public class DepartmentAction extends ActionSupport implements ModelDriven<Depar
         this.departmentList = departmentList;
     }
 
+    public List<Department> getDepartmentList() {
+        return departmentList;
+    }
 
     public void setDepartmentService(DepartmentService departmentService) {
         this.departmentService = departmentService;
@@ -114,6 +117,7 @@ public class DepartmentAction extends ActionSupport implements ModelDriven<Depar
     public void setDeptJson(JSONObject deptJson) {
         this.deptJson = deptJson;
     }
+
 
 
 }

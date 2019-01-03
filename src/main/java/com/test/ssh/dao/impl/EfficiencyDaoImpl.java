@@ -23,11 +23,18 @@ public class EfficiencyDaoImpl extends HibernateDaoSupport implements Efficiency
     }
 
     @Override
-    public List<String> getMonths(String startMonth, String endMonth, String employeeId) {
+    public List<String> getMonths(String startMonth, String endMonth, int departmentId, int groupId, String employeeId) {
         List<String> resultList = new ArrayList<String>();
-        String sql = "select monthOfAssignment from JobassignmentEntity where employee = '"+ employeeId + "' and '"
-                + startMonth + "' <= monthOfAssignment and monthOfAssignment <= '"
-                + endMonth + "' group by  monthOfAssignment order by monthOfAssignment";
+        String sql = "";
+        if (departmentId != 0) {
+
+        } else if (groupId != 0) {
+
+        } else {
+            sql = "select monthOfAssignment from JobassignmentEntity where employee = '" + employeeId + "' and '"
+                    + startMonth + "' <= monthOfAssignment and monthOfAssignment <= '"
+                    + endMonth + "' group by  monthOfAssignment order by monthOfAssignment";
+        }
         try {
             List list = getSession().createQuery(sql).list();
             resultList = list;

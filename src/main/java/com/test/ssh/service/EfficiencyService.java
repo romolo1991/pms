@@ -7,5 +7,5 @@ import java.util.List;
 public interface EfficiencyService {
     EfficiencyResult getEmployeePerf(String employeeId, String employeeEntryTime, String month);
 
-    List<String> getMonths(String startMonth, String endMonth, String employeeId);
+    List<String> getMonths(String startMonth, String endMonth, int departmentId, int groupId, String employeeId);
 }
