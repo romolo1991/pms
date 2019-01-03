@@ -30,7 +30,7 @@ public class EfficiencyAction extends ActionSupport {
         JSONArray array = new JSONArray();
         result.put("code", 0);
         if (StringUtils.isNotEmpty(employeeId) && StringUtils.isNotEmpty(employeeEntryTime)) {
-            List<String> monthList = efficiencyService.getMonths(startMonth, endMonth,employeeId);
+            List<String> monthList = efficiencyService.getMonths(startMonth, endMonth, 0, 0, employeeId);
             Iterator<String> iterator = monthList.iterator();
             while (iterator.hasNext()) {
                 String month = iterator.next();

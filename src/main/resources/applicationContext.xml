@@ -42,7 +42,7 @@
                 <value>com/test/ssh/domain/Project.hbm.xml</value>
                 <value>com/test/ssh/domain/Department.hbm.xml</value>
                 <value>com/test/ssh/domain/Groupofdepartment.hbm.xml</value>
-                <value>classpath:com/test/ssh/domain/Jobassignment.hbm.xml</value>
+                <value>com/test/ssh/domain/Jobassignment.hbm.xml</value>
             </list>
         </property>
     </bean>

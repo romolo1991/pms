@@ -13,7 +13,7 @@ public class EfficiencyDaoImpl extends HibernateDaoSupport implements Efficiency
     @Override
     public List getEmployeePerf(String employeeId, String month) {
         String sql = "select p.projectType, j.workload, p.efficiency " +
-                "from JobassignmentEntity j, Project p " +
+                "from Jobassignment j, Project p " +
                 "where j.isDelete = '0' and j.project = p.projectId " +
                 "and j.employee='" + employeeId + "' and j.monthOfAssignment='" + month + "'";
 
@@ -23,11 +23,22 @@ public class EfficiencyDaoImpl extends HibernateDaoSupport implements Efficiency
     }
 
     @Override
-    public List<String> getMonths(String startMonth, String endMonth, String employeeId) {
+    public List<String> getMonths(String startMonth, String endMonth, int departmentId, int groupId, String employeeId) {
         List<String> resultList = new ArrayList<String>();
-        String sql = "select monthOfAssignment from JobassignmentEntity where employee = '"+ employeeId + "' and '"
-                + startMonth + "' <= monthOfAssignment and monthOfAssignment <= '"
-                + endMonth + "' group by  monthOfAssignment order by monthOfAssignment";
+        String sql = "";
+        if (departmentId != 0) {
+            sql = "select j.monthOfAssignment  from Jobassignment j, Employee e where j.employee=e.employeeId and '"
+                    + startMonth + "' <= j.monthOfAssignment and j.monthOfAssignment <= '"
+                    + endMonth + "' and e.department = " + departmentId + " group by j.monthOfAssignment order by j.monthOfAssignment";
+        } else if (groupId != 0) {
+            sql = "select j.monthOfAssignment  from Jobassignment j, Employee e where j.employee=e.employeeId and '"
+                    + startMonth + "' <= j.monthOfAssignment and j.monthOfAssignment <= '"
+                    + endMonth + "' and e.groupOfEmployee = " + groupId + " group by j.monthOfAssignment order by j.monthOfAssignment";
+        } else {
+            sql = "select monthOfAssignment from Jobassignment where employee = '" + employeeId + "' and '"
+                    + startMonth + "' <= monthOfAssignment and monthOfAssignment <= '"
+                    + endMonth + "' group by  monthOfAssignment order by monthOfAssignment";
+        }
         try {
             List list = getSession().createQuery(sql).list();
             resultList = list;
